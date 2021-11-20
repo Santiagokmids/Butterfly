@@ -1,7 +1,11 @@
 package dataStructure;
 
-public class MatrixGraph<U, V, H, E> implements IMatrixGraph<U, V, H, E>{
+import java.util.ArrayList;
 
+public class MatrixGraph<U, V, H, E> implements IMatrixGraph<U, V, H, E>{
+	
+	public ArrayList<Vertice<V, E>> vertice;
+	
 	@Override
 	public void createGraph() {
 	}
@@ -35,5 +39,43 @@ public class MatrixGraph<U, V, H, E> implements IMatrixGraph<U, V, H, E>{
 	public Edge<U, V, H> getEdges() {
 		return null;
 	}
+
+	@Override
+	public ArrayList<Vertice<V, E>> bfs() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<Vertice<V, E>> dfs() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<H> dijkstra() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void floyd() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public H prim() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public H kruskal() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 
 }

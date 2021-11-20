@@ -1,8 +1,10 @@
 package dataStructure;
 
+import java.util.ArrayList;
+
 public class ListGraph<U, V, E, H> implements IListGraph<U, V, E, H>{
 	
-	private ListVertice<V, E> listVertice;
+	private ArrayList<ListVertice<V, E>> listVertice;
 
 	@Override
 	public void createGraph() {
@@ -38,11 +40,47 @@ public class ListGraph<U, V, E, H> implements IListGraph<U, V, E, H>{
 		return null;
 	}
 
-	public ListVertice<V, E> getListVertice() {
+	public ArrayList<ListVertice<V,E>> getListVertice() {
 		return listVertice;
 	}
 
-	public void setListVertice(ListVertice<V, E> listVertice) {
+	public void setListVertice(ArrayList<ListVertice<V, E>> listVertice) {
 		this.listVertice = listVertice;
+	}
+
+	@Override
+	public ArrayList<ListVertice<V, E>> bfs() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<ListVertice<V, E>> dfs() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<H> dijkstra() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void floyd() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public H prim() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public H kruskal() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
