@@ -110,11 +110,12 @@ public class MatrixGraph<V extends Comparable <V>, U, H> implements IMatrixGraph
 			
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public ArrayList<H> dijkstra(Vertice<V, U, H> start, Vertice<V, U, H> Final) {
 		
 		ArrayList<Integer> dist = new ArrayList<>();
-		ArrayList<V> prev = new ArrayList<>();
+		ArrayList<Vertice<V, U, H>> prev = new ArrayList<>();
 		Queue<Vertice<V, U, H>> queue = new LinkedList<>();
 		ArrayList<Vertice<V, U, H>> reference = new ArrayList<>();
 
@@ -124,19 +125,24 @@ public class MatrixGraph<V extends Comparable <V>, U, H> implements IMatrixGraph
 		reference = assignRef();
 
 		while(!queue.isEmpty()) {
-			int height = 0;
+			
+			int weight = 0;
 			queue = extractMin(queue, dist);
 			Vertice<V, U, H> value = queue.poll();
 			int index = searchReference(value, reference);
 			
 			for (int i = 0; i < value.getEdge().size(); i++) {
-				int finalVertice = searchReference(value.getEdge().get(index).getFinalVertice(), reference);
-				height +=  + (Integer)value.getEdge().get(index).getHeight();
-				
+				int finalVertice = searchReference(value.getEdge().get(i).getFinalVertice(), reference);
+				weight += dist.get(index) + (Integer)value.getEdge().get(index).getHeight();
+
+				if(weight < dist.get(finalVertice)) {
+					dist.set(finalVertice, weight);
+					prev.set(finalVertice, value);
+				}
 			}
 		}
 
-		return null;
+		return (ArrayList<H>) dist;
 	}
 
 	private ArrayList<Integer> assignSource(Vertice<V, U, H> start, ArrayList<Integer> dist){
@@ -153,7 +159,7 @@ public class MatrixGraph<V extends Comparable <V>, U, H> implements IMatrixGraph
 		return dist;
 	}
 
-	private ArrayList<V> assignPrev(ArrayList<V> prev){
+	private ArrayList<Vertice<V, U, H>> assignPrev(ArrayList<Vertice<V, U, H>> prev){
 
 		for (int i = 0; i < vertice.size(); i++) {
 			prev.add(null);

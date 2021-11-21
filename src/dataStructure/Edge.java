@@ -6,7 +6,7 @@ public class Edge<U, V, H> {
 	private Vertice<V, U, H> finalVertice;
 	private H height;
 	
-	public Edge( Vertice<V, U, H> initVertice,  Vertice<V, U, H>finalVertice, H height) {
+	public Edge(Vertice<V, U, H> initVertice, Vertice<V, U, H>finalVertice, H height) {
 		this.initVertice = initVertice;
 		this.finalVertice = finalVertice;
 		this.height = height;
