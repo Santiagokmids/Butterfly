@@ -45,6 +45,7 @@ public class MatrixGraph<V extends Comparable <V>, U, H> implements IMatrixGraph
 	@Override
 	public ArrayList<Vertice<V, U, H>> bfs(V v) {
 		boolean found = false;
+		ArrayList<Vertice<V, U, H>> vertic = new ArrayList<Vertice<V, U, H>>();
 		int position =0;
 		for(int i =0;i<vertice.size()&& found == false;i++) {
 			if(vertice.get(i).getValue().compareTo(v)==0) {
@@ -56,7 +57,7 @@ public class MatrixGraph<V extends Comparable <V>, U, H> implements IMatrixGraph
 			vertice.get(i).setColor(0);
 		}
 		if(found ==true) {
-			
+			bfs(vertic,vertice.get(position));
 		}
 		return null;
 	}
@@ -96,7 +97,7 @@ public class MatrixGraph<V extends Comparable <V>, U, H> implements IMatrixGraph
 			}
 		}
 		dfs(vertic, vertice.get(position));
-		return null;
+		return vertic;
 	}
 	
 	public void dfs(ArrayList<Vertice<V, U, H>> vertic,Vertice<V, U, H> e) {
