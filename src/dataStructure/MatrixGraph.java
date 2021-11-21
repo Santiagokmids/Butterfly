@@ -5,10 +5,10 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class MatrixGraph<U, V extends Comparable <V>, H, E> implements IMatrixGraph<U, V, H, E>{
-
-	public ArrayList<Vertice<V, E>> vertice;
-
+public class MatrixGraph<V extends Comparable <V>, U, H> implements IMatrixGraph<U, V, H>{
+	
+	public ArrayList<Vertice<V, U, H>> vertice;
+	
 	@Override
 	public void createGraph() {
 	}
@@ -34,7 +34,7 @@ public class MatrixGraph<U, V extends Comparable <V>, H, E> implements IMatrixGr
 	}
 
 	@Override
-	public Vertice<V, E> getVertice() {
+	public Vertice<V, U, H> getVertice() {
 		return null;
 	}
 
@@ -44,19 +44,19 @@ public class MatrixGraph<U, V extends Comparable <V>, H, E> implements IMatrixGr
 	}
 
 	@Override
-	public ArrayList<Vertice<V, E>> bfs() {
+	public ArrayList<Vertice<V, U, H>> bfs() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ArrayList<Vertice<V, E>> dfs() {
+	public ArrayList<Vertice<V, U, H>> dfs() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ArrayList<H> dijkstra(Vertice<V, E> start, Vertice<V, E> Final) {
+	public ArrayList<H> dijkstra(Vertice<V, U, H> start, Vertice<V, U, H> Final) {
 		ArrayList<Integer> dist = new ArrayList<>();
 		ArrayList<V> nameDist = new ArrayList<>();
 		ArrayList<V> prev = new ArrayList<>();
@@ -74,7 +74,7 @@ public class MatrixGraph<U, V extends Comparable <V>, H, E> implements IMatrixGr
 		return null;
 	}
 
-	private ArrayList<Integer> assignSource(Vertice<V, E> start, ArrayList<Integer> dist){
+	private ArrayList<Integer> assignSource(Vertice<V, U, H> start, ArrayList<Integer> dist){
 
 		for (int i = 0; i < vertice.size(); i++) {
 
@@ -106,7 +106,7 @@ public class MatrixGraph<U, V extends Comparable <V>, H, E> implements IMatrixGr
 		return queue;
 	}
 
-	private ArrayList<V> assignNames(Vertice<V, E> start, ArrayList<V> names) {
+	private ArrayList<V> assignNames(Vertice<V, U, H> start, ArrayList<V> names) {
 
 		for (int i = 0; i < vertice.size(); i++) {
 
@@ -130,11 +130,11 @@ public class MatrixGraph<U, V extends Comparable <V>, H, E> implements IMatrixGr
 				
 				if(dist.get(j) < min) {
 					int temp = dist.get(j);
-					array[j] = min;
+					dist.set(j, min);
 					min = temp;
 				}
 			}
-			array[i] = min;
+			dist.set(i, min);
 		}
 		return names;
 	}

@@ -2,21 +2,21 @@ package dataStructure;
 
 import java.util.ArrayList;
 
-public class Vertice<V, E>{
+public class Vertice<V, U, H>{
 	
 	private V value;
-	private ArrayList<E> edge;
+	private ArrayList<Edge<U, V, H>> edge;
 	
-	public Vertice(V value, ArrayList<E> edge) {
+	public Vertice(V value, ArrayList<Edge<U, V, H>> edge) {
 		this.value = value;
 		this.edge = edge;
 	}
 	
-	public boolean addEdge(E edge) {
+	public boolean addEdge(Edge<U, V, H> edge) {
 		return true;
 	}
 	
-	public boolean deleteEdge(E edge) {
+	public boolean deleteEdge(Edge<U, V, H> edge) {
 		return true;
 	}
 	
@@ -26,10 +26,10 @@ public class Vertice<V, E>{
 	public void setValue(V value) {
 		this.value = value;
 	}
-	public ArrayList<E> getEdge() {
+	public ArrayList<Edge<U, V, H>> getEdge() {
 		return edge;
 	}
-	public void setEdge(ArrayList<E> edge) {
+	public void setEdge(ArrayList<Edge<U, V, H>> edge) {
 		this.edge = edge;
 	}
 }
