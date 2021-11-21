@@ -64,10 +64,23 @@ public class ListGraph<U extends Comparable<ListVertice<V, U, H>>, V extends Com
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public int makeDijkstra(ListVertice<V, U, H> start, ListVertice<V, U, H> end) {
+		ArrayList<H> dijkstra = dijkstra(start);
+		ArrayList<ListVertice<V, U, H>> reference = assignRef();
+		int weight = 0;
+		
+		for (int i = 0; i < reference.size(); i++) {
+			if(reference.get(i).getValue().compareTo(end.getValue()) == 0) {
+				weight = (int) dijkstra.get(i);
+			}
+		}
+		return weight;
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public ArrayList<H> dijkstra(ListVertice<V, U, H> start, ListVertice<V, U, H> Final) {
+	public ArrayList<H> dijkstra(ListVertice<V, U, H> start) {
 		
 		ArrayList<Integer> dist = new ArrayList<>();
 		ArrayList<ListVertice<V, U, H>> prev = new ArrayList<>();
@@ -83,7 +96,7 @@ public class ListGraph<U extends Comparable<ListVertice<V, U, H>>, V extends Com
 			
 			int weight = 0;
 			queue = extractMin(queue, dist);
-			ListVertice<V, U, H> value = queue.poll();
+			ListVertice<V, U, H> value = queue.peek();
 			int index = searchReference(value, reference);
 			
 			for (int i = 0; i < value.getEdge().size(); i++) {
@@ -93,6 +106,7 @@ public class ListGraph<U extends Comparable<ListVertice<V, U, H>>, V extends Com
 				if(weight < dist.get(finalVertice)) {
 					dist.set(finalVertice, weight);
 					prev.set(finalVertice, value);
+					queue.poll();
 				}
 			}
 		}
@@ -226,9 +240,57 @@ public class ListGraph<U extends Comparable<ListVertice<V, U, H>>, V extends Com
 	}
 
 	@Override
-	public H prim() {
-		// TODO Auto-generated method stub
-		return null;
+	public int prim(ListVertice<V, U, H> start) {
+		
+		ArrayList<Integer> dist = new ArrayList<>();
+		ArrayList<ListVertice<V, U, H>> prev = new ArrayList<>();
+		Queue<ListVertice<V, U, H>> queue = new LinkedList<>();
+
+		dist = assignSource(start, dist);
+		prev = assignPrev(prev);
+		queue = assignQueue(queue);
+		
+		ArrayList<Boolean> colors = assignColors();
+		ArrayList<ListVertice<V, U, H>> reference = assignRef();
+
+		while(!queue.isEmpty()) {
+			
+			int weight = 0;
+			queue = extractMin(queue, dist);
+			ListVertice<V, U, H> value = queue.peek();
+			int index = searchReference(value, reference);
+			
+			for (int i = 0; i < value.getEdge().size(); i++) {
+				int finalVertice = searchReference(value.getEdge().get(i).getFinalVertice(), reference);
+				weight += dist.get(index) + (Integer)value.getEdge().get(index).getHeight();
+
+				if(weight < dist.get(finalVertice) && !colors.get(i)) {
+					dist.set(finalVertice, weight);
+					prev.set(finalVertice, value);
+					queue.poll();
+				}
+			}
+			colors.set(index, true);
+		}
+		
+		int amount = 0;
+		
+		for (int i = 0; i < dist.size(); i++) {
+			amount += dist.get(i);
+		} 
+		
+		return amount;
+	}
+	
+	private ArrayList<Boolean> assignColors() {
+		
+		ArrayList<Boolean> colors = new ArrayList<>();
+		
+		for (int i = 0; i < listVertice.size(); i++) {
+			colors.add(false);
+		}
+		
+		return colors;
 	}
 
 	@Override
