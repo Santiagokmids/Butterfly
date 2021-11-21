@@ -76,6 +76,7 @@ public class MatrixGraph<V extends Comparable <V>, U, H> implements IMatrixGraph
 		}
 		e.setColor(2);
 		for(int i = 0; i<verticeO.size();i++) {
+			if(verticeO.get(i).getColor()!=2)
 			bfs(vertic, verticeO.get(i));
 		}
 	}
@@ -84,7 +85,7 @@ public class MatrixGraph<V extends Comparable <V>, U, H> implements IMatrixGraph
 	public ArrayList<Vertice<V, U, H>>dfs(V v ) {
 		boolean found = false;
 		int position = 0;
-		
+		ArrayList<Vertice<V, U, H>> vertic = new ArrayList<Vertice<V, U, H>>();
 		for(int i=0;i< vertice.size()-1 ;i++) {
 			vertice.get(i).setVisited(false);
 		}
@@ -94,17 +95,17 @@ public class MatrixGraph<V extends Comparable <V>, U, H> implements IMatrixGraph
 				found = true;
 			}
 		}
-		
+		dfs(vertic, vertice.get(position));
 		return null;
 	}
 	
-	public void dfs(ArrayList<Vertice<V, U, H>> vertic,Vertice e) {
-		ArrayList<Vertice<V, U, H>> verticeO = e.getEdge();
+	public void dfs(ArrayList<Vertice<V, U, H>> vertic,Vertice<V, U, H> e) {
+		ArrayList<Edge<U, V, H>> verticeO = e.getEdge();
 		for(int i =0;i<verticeO.size();i++) {
-			if(verticeO.get(i).isVisited() == false) {
-				verticeO.get(i).setVisited(true);
-				vertic.add(verticeO.get(i));
-				dfs(vertic, verticeO.get(i));
+			if(verticeO.get(i).getFinalVertice().isVisited() == false) {
+				verticeO.get(i).getFinalVertice().setVisited(true);
+				vertic.add(verticeO.get(i).getFinalVertice());
+				dfs(vertic, verticeO.get(i).getFinalVertice());
 			}
 		}
 			
