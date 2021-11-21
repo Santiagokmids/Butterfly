@@ -49,10 +49,34 @@ public class MatrixGraph<V extends Comparable <V>, U, H> implements IMatrixGraph
 		return null;
 	}
 
+	
 	@Override
-	public ArrayList<Vertice<V, U, H>> dfs() {
-		// TODO Auto-generated method stub
+	public ArrayList<Vertice<V, U, H>>dfs(V v ) {
+		boolean found = false;
+		int position = 0;
+		
+		for(int i=0;i< vertice.size()-1 ;i++) {
+			vertice.get(i).setVisited(false);
+		}
+		for(int i=0;i< vertice.size()-1 && found ==false;i++) {
+			if(vertice.get(i).getValue().compareTo(v)==0) {
+				position = i;
+			}
+		}
+		
 		return null;
+	}
+	
+	public void dfs(ArrayList<Vertice<V, U, H>> vertic,Vertice e) {
+		ArrayList<Vertice<V, U, H>> verticeO = e.getEdge();
+		for(int i =0;i<verticeO.size();i++) {
+			if(verticeO.get(i).isVisited() == false) {
+				verticeO.get(i).setVisited(true);
+				vertic.add(verticeO.get(i));
+				dfs(vertic, verticeO.get(i));
+			}
+		}
+			
 	}
 
 	@Override
