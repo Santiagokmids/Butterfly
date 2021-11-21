@@ -43,11 +43,42 @@ public class MatrixGraph<V extends Comparable <V>, U, H> implements IMatrixGraph
 	}
 
 	@Override
-	public ArrayList<Vertice<V, U, H>> bfs() {
-		// TODO Auto-generated method stub
+	public ArrayList<Vertice<V, U, H>> bfs(V v) {
+		boolean found = false;
+		int position =0;
+		for(int i =0;i<vertice.size()&& found == false;i++) {
+			if(vertice.get(i).getValue().compareTo(v)==0) {
+				position = i;
+				found = true;
+			}
+		}
+		for(int i = 0; i < vertice.size();i++) {
+			vertice.get(i).setColor(0);
+		}
+		if(found ==true) {
+			
+		}
 		return null;
 	}
-
+	
+	public void bfs(ArrayList<Vertice<V, U, H>> vertic,Vertice<V, U, H> e) {	
+		ArrayList<Vertice<V, U, H>> verticeO = new ArrayList<Vertice<V,U,H>>();
+		for(int i = 0 ; i <e.getEdge().size(); i++) {
+			verticeO.add(e.getEdge().get(i).getFinalVertice() );
+		}
+		
+		for(int i =0; i< e.getEdge().size();i++) {
+			if(verticeO.get(i).getColor() == 0) {
+				vertic.add(verticeO.get(i));
+				verticeO.get(i).setColor(1);
+			}
+		
+		}
+		e.setColor(2);
+		for(int i = 0; i<verticeO.size();i++) {
+			bfs(vertic, verticeO.get(i));
+		}
+	}
 	
 	@Override
 	public ArrayList<Vertice<V, U, H>>dfs(V v ) {
@@ -60,6 +91,7 @@ public class MatrixGraph<V extends Comparable <V>, U, H> implements IMatrixGraph
 		for(int i=0;i< vertice.size()-1 && found ==false;i++) {
 			if(vertice.get(i).getValue().compareTo(v)==0) {
 				position = i;
+				found = true;
 			}
 		}
 		
@@ -78,23 +110,39 @@ public class MatrixGraph<V extends Comparable <V>, U, H> implements IMatrixGraph
 			
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public ArrayList<H> dijkstra(Vertice<V, U, H> start, Vertice<V, U, H> Final) {
+		
 		ArrayList<Integer> dist = new ArrayList<>();
-		ArrayList<V> nameDist = new ArrayList<>();
-		ArrayList<V> prev = new ArrayList<>();
-		Queue<V> queue = new LinkedList<>();
+		ArrayList<Vertice<V, U, H>> prev = new ArrayList<>();
+		Queue<Vertice<V, U, H>> queue = new LinkedList<>();
+		ArrayList<Vertice<V, U, H>> reference = new ArrayList<>();
 
 		dist = assignSource(start, dist);
 		prev = assignPrev(prev);
 		queue = assignQueue(queue);
-		nameDist = assignNames(start, nameDist);
+		reference = assignRef();
 
 		while(!queue.isEmpty()) {
+			
+			int weight = 0;
+			queue = extractMin(queue, dist);
+			Vertice<V, U, H> value = queue.poll();
+			int index = searchReference(value, reference);
+			
+			for (int i = 0; i < value.getEdge().size(); i++) {
+				int finalVertice = searchReference(value.getEdge().get(i).getFinalVertice(), reference);
+				weight += dist.get(index) + (Integer)value.getEdge().get(index).getHeight();
 
+				if(weight < dist.get(finalVertice)) {
+					dist.set(finalVertice, weight);
+					prev.set(finalVertice, value);
+				}
+			}
 		}
 
-		return null;
+		return (ArrayList<H>) dist;
 	}
 
 	private ArrayList<Integer> assignSource(Vertice<V, U, H> start, ArrayList<Integer> dist){
@@ -111,7 +159,7 @@ public class MatrixGraph<V extends Comparable <V>, U, H> implements IMatrixGraph
 		return dist;
 	}
 
-	private ArrayList<V> assignPrev(ArrayList<V> prev){
+	private ArrayList<Vertice<V, U, H>> assignPrev(ArrayList<Vertice<V, U, H>> prev){
 
 		for (int i = 0; i < vertice.size(); i++) {
 			prev.add(null);
@@ -120,53 +168,71 @@ public class MatrixGraph<V extends Comparable <V>, U, H> implements IMatrixGraph
 		return prev;
 	}
 
-	private Queue<V> assignQueue(Queue<V> queue) {
+	private Queue<Vertice<V, U, H>> assignQueue(Queue<Vertice<V, U, H>> queue) {
 
 		for (int i = 0; i < vertice.size(); i++) {
-			queue.add(vertice.get(i).getValue());
+			queue.add(vertice.get(i));
 		}
 
 		return queue;
 	}
 
-	private ArrayList<V> assignNames(Vertice<V, U, H> start, ArrayList<V> names) {
-
-		for (int i = 0; i < vertice.size(); i++) {
-
-			if(start.getValue().compareTo(vertice.get(i).getValue()) == 0) {
-				names.add(0, vertice.get(i).getValue());
-
-			}else {
-				names.add(vertice.get(i).getValue());
-			}
+	private Queue<Vertice<V, U, H>> extractMin(Queue<Vertice<V, U, H>> queue, ArrayList<Integer> dist) {
+		
+		ArrayList<Vertice<V, U, H>> values = new ArrayList<>();
+		
+		for (int i = 0; i < dist.size(); i++) {
+			values.add(queue.poll());
 		}
-
-		return names;
-	}
-
-	private ArrayList<V> sortDist(ArrayList<V> names, ArrayList<Integer> dist) {
-
+		
 		for(int i = 0;i < dist.size();i++) {
 			int min = dist.get(i);
+			Vertice<V, U, H> minim = values.get(i);
 			
 			for(int j = i+1;j < dist.size();j++) {
 				
 				if(dist.get(j) < min) {
 					int temp = dist.get(j);
+					Vertice<V, U, H> temporal = values.get(j);
 					dist.set(j, min);
+					values.set(j, minim);
 					min = temp;
+					minim = temporal;
 				}
 			}
 			dist.set(i, min);
+			values.set(i, minim);
 		}
-		return names;
+		
+		queue.clear();
+		
+		for (int i = 0; i < values.size(); i++) {
+			queue.add(values.get(i));
+		}
+		return queue;
 	}
-
-	private V extractMin(ArrayList<V> names,Queue<V> queue) {
-
-		return null;
+	
+	private ArrayList<Vertice<V, U, H>> assignRef(){
+		
+		ArrayList<Vertice<V, U, H>> ref = new ArrayList<Vertice<V, U, H>>();
+		
+		for (int i = 0; i < vertice.size(); i++) {
+			ref.add(vertice.get(i));
+		}
+		return ref;
 	}
-
+	
+	private int searchReference(Vertice<V, U, H> vert, ArrayList<Vertice<V, U, H>> reference) {
+		int index = 0;
+		
+		for (int i = 0; i < reference.size(); i++) {
+			if(reference.get(i) == vert) {
+				index = i;
+			}
+		}
+		return index;
+	}
+	
 	@Override
 	public void floyd() {
 		// TODO Auto-generated method stub

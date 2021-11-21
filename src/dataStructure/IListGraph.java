@@ -12,7 +12,7 @@ public interface IListGraph<U, V, H> {
 	public Edge<U, V, H> getEdge();
 	public ArrayList<ListVertice<V, U, H>> bfs();
 	public ArrayList<ListVertice<V, U, H>> dfs();
-	public ArrayList<H> dijkstra();
+	public ArrayList<H> dijkstra(ListVertice<V, U, H> start, ListVertice<V, U, H> Final);
 	public void floyd();
 	public H prim();
 	public H kruskal();
