@@ -43,15 +43,71 @@ public class MatrixGraph<V extends Comparable <V>, U, H> implements IMatrixGraph
 	}
 
 	@Override
-	public ArrayList<Vertice<V, U, H>> bfs() {
-		// TODO Auto-generated method stub
+	public ArrayList<Vertice<V, U, H>> bfs(V v) {
+		boolean found = false;
+		int position =0;
+		for(int i =0;i<vertice.size()&& found == false;i++) {
+			if(vertice.get(i).getValue().compareTo(v)==0) {
+				position = i;
+				found = true;
+			}
+		}
+		for(int i = 0; i < vertice.size();i++) {
+			vertice.get(i).setColor(0);
+		}
+		if(found ==true) {
+			
+		}
 		return null;
 	}
-
+	
+	public void bfs(ArrayList<Vertice<V, U, H>> vertic,Vertice<V, U, H> e) {	
+		ArrayList<Vertice<V, U, H>> verticeO = new ArrayList<Vertice<V,U,H>>();
+		for(int i = 0 ; i <e.getEdge().size(); i++) {
+			verticeO.add(e.getEdge().get(i).getFinalVertice() );
+		}
+		
+		for(int i =0; i< e.getEdge().size();i++) {
+			if(verticeO.get(i).getColor() == 0) {
+				vertic.add(verticeO.get(i));
+				verticeO.get(i).setColor(1);
+			}
+		
+		}
+		e.setColor(2);
+		for(int i = 0; i<verticeO.size();i++) {
+			bfs(vertic, verticeO.get(i));
+		}
+	}
+	
 	@Override
-	public ArrayList<Vertice<V, U, H>> dfs() {
-		// TODO Auto-generated method stub
+	public ArrayList<Vertice<V, U, H>>dfs(V v ) {
+		boolean found = false;
+		int position = 0;
+		
+		for(int i=0;i< vertice.size()-1 ;i++) {
+			vertice.get(i).setVisited(false);
+		}
+		for(int i=0;i< vertice.size()-1 && found ==false;i++) {
+			if(vertice.get(i).getValue().compareTo(v)==0) {
+				position = i;
+				found = true;
+			}
+		}
+		
 		return null;
+	}
+	
+	public void dfs(ArrayList<Vertice<V, U, H>> vertic,Vertice e) {
+		ArrayList<Vertice<V, U, H>> verticeO = e.getEdge();
+		for(int i =0;i<verticeO.size();i++) {
+			if(verticeO.get(i).isVisited() == false) {
+				verticeO.get(i).setVisited(true);
+				vertic.add(verticeO.get(i));
+				dfs(vertic, verticeO.get(i));
+			}
+		}
+			
 	}
 
 	@Override

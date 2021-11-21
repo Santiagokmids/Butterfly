@@ -2,29 +2,29 @@ package dataStructure;
 
 public class Edge<U, V, H> {
 	
-	private U initVertice;
-	private V finalVertice;
+	private Vertice<V, U, H> initVertice;
+	private Vertice<V, U, H> finalVertice;
 	private H height;
 	
-	public Edge(U initVertice, V finalVertice, H height) {
+	public Edge( Vertice<V, U, H> initVertice,  Vertice<V, U, H>finalVertice, H height) {
 		this.initVertice = initVertice;
 		this.finalVertice = finalVertice;
 		this.height = height;
 	}
 
-	public U getInitVertice() {
+	public  Vertice<V, U, H> getInitVertice() {
 		return initVertice;
 	}
 
-	public void setInitVertice(U initVertice) {
+	public void setInitVertice( Vertice<V, U, H> initVertice) {
 		this.initVertice = initVertice;
 	}
 
-	public V getFinalVertice() {
+	public  Vertice<V, U, H> getFinalVertice() {
 		return finalVertice;
 	}
 
-	public void setFinalVertice(V finalVertice) {
+	public void setFinalVertice( Vertice<V, U, H> finalVertice) {
 		this.finalVertice = finalVertice;
 	}
 
