@@ -47,6 +47,7 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 	@Override
 	public ArrayList<Vertice<V, U, H>> bfs(V v) {
 		boolean found = false;
+		ArrayList<Vertice<V, U, H>> vertic = new ArrayList<Vertice<V, U, H>>();
 		int position =0;
 		for(int i =0;i<vertice.size()&& found == false;i++) {
 			if(vertice.get(i).getValue().compareTo(v)==0) {
@@ -58,7 +59,7 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 			vertice.get(i).setColor(0);
 		}
 		if(found ==true) {
-			
+			bfs(vertic,vertice.get(position));
 		}
 		return null;
 	}
@@ -78,6 +79,7 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 		}
 		e.setColor(2);
 		for(int i = 0; i<verticeO.size();i++) {
+			if(verticeO.get(i).getColor()!=2)
 			bfs(vertic, verticeO.get(i));
 		}
 	}
@@ -86,7 +88,7 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 	public ArrayList<Vertice<V, U, H>>dfs(V v ) {
 		boolean found = false;
 		int position = 0;
-		
+		ArrayList<Vertice<V, U, H>> vertic = new ArrayList<Vertice<V, U, H>>();
 		for(int i=0;i< vertice.size()-1 ;i++) {
 			vertice.get(i).setVisited(false);
 		}
@@ -96,17 +98,17 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 				found = true;
 			}
 		}
-		
-		return null;
+		dfs(vertic, vertice.get(position));
+		return vertic;
 	}
 	
-	public void dfs(ArrayList<Vertice<V, U, H>> vertic,Vertice e) {
-		ArrayList<Vertice<V, U, H>> verticeO = e.getEdge();
+	public void dfs(ArrayList<Vertice<V, U, H>> vertic,Vertice<V, U, H> e) {
+		ArrayList<Edge<U, V, H>> verticeO = e.getEdge();
 		for(int i =0;i<verticeO.size();i++) {
-			if(verticeO.get(i).isVisited() == false) {
-				verticeO.get(i).setVisited(true);
-				vertic.add(verticeO.get(i));
-				dfs(vertic, verticeO.get(i));
+			if(verticeO.get(i).getFinalVertice().isVisited() == false) {
+				verticeO.get(i).getFinalVertice().setVisited(true);
+				vertic.add(verticeO.get(i).getFinalVertice());
+				dfs(vertic, verticeO.get(i).getFinalVertice());
 			}
 		}
 			
