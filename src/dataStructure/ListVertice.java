@@ -2,11 +2,11 @@ package dataStructure;
 
 import java.util.ArrayList;
 
-public class ListVertice<V, E> extends Vertice<V, E>{
+public class ListVertice<V, U, H> extends Vertice<V, U, H>{
 
 	private ArrayList<V> adjacency;
 	
-	public ListVertice(V value, ArrayList<E> edge, ArrayList<V> adjacency) {
+	public ListVertice(V value, ArrayList<Edge<U, V, H>> edge, ArrayList<V> adjacency) {
 		super(value, edge);
 		this.adjacency = adjacency;
 	}

@@ -2,9 +2,9 @@ package dataStructure;
 
 import java.util.ArrayList;
 
-public class MatrixGraph<U, V, H, E> implements IMatrixGraph<U, V, H, E>{
+public class MatrixGraph<U, V, H> implements IMatrixGraph<U, V, H>{
 	
-	public ArrayList<Vertice<V, E>> vertice;
+	public ArrayList<Vertice<V, U, H>> vertice;
 	
 	@Override
 	public void createGraph() {
@@ -31,7 +31,7 @@ public class MatrixGraph<U, V, H, E> implements IMatrixGraph<U, V, H, E>{
 	}
 
 	@Override
-	public Vertice<V, E> getVertice() {
+	public Vertice<V, U, H> getVertice() {
 		return null;
 	}
 
@@ -41,13 +41,13 @@ public class MatrixGraph<U, V, H, E> implements IMatrixGraph<U, V, H, E>{
 	}
 
 	@Override
-	public ArrayList<Vertice<V, E>> bfs() {
+	public ArrayList<Vertice<V, U, H>> bfs() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ArrayList<Vertice<V, E>> dfs() {
+	public ArrayList<Vertice<V, U, H>> dfs() {
 		// TODO Auto-generated method stub
 		return null;
 	}
