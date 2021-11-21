@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class MatrixGraph<V extends Comparable <V>, U, H> implements IMatrixGraph<U, V, H>{
+public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> implements IMatrixGraph<U, V, H>{
 	
 	public ArrayList<Vertice<V, U, H>> vertice;
+	private ArrayList<NodeM<V, U, H>> ensembleArrayList = new ArrayList<NodeM<V, U, H>>();
+	private int distance[][] = new int[10][10];
 	
 	@Override
 	public void createGraph() {
@@ -248,8 +250,39 @@ public class MatrixGraph<V extends Comparable <V>, U, H> implements IMatrixGraph
 	
 	@Override
 	public void floyd() {
-		// TODO Auto-generated method stub
-
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				if (j == i) {
+					distance[i][j] = 0;
+				}else if (checkWeight(i, j) != null) {
+					distance[i][j] = (int) checkWeight(i, j);
+				}else {
+					distance[i][j] = Integer.MAX_VALUE;
+				}
+			}
+		}
+		
+		for (int k = 0; k < 9; k++) {
+			for (int i = 0; i < 9; i++) {
+				for (int j = 0; j < distance.length; j++) {
+					if (distance[i][j] > distance[i][k] + distance[k][j]) {
+						distance[i][j] = distance[i][k] + distance[k][j];
+					}
+				}
+			}
+		}
+	}
+	
+	public H checkWeight(int verticeOne, int verticeTwo) {
+		V verticeOneFind = vertice.get(verticeOne).getValue();
+		V verticeTwoFind = vertice.get(verticeTwo).getValue();
+		
+		for (int i = 0; i < vertice.get(verticeOne).getEdge().size()-1; i++) {
+			if(vertice.get(verticeOne).getEdge().get(i).getInitVertice().getValue().compareTo(verticeOneFind) == 0 && vertice.get(verticeOne).getEdge().get(i).getFinalVertice().getValue().compareTo(verticeTwoFind) == 0) {
+				return vertice.get(verticeOne).getEdge().get(i).getHeight();
+			}
+		}
+		return null;
 	}
 
 	@Override
@@ -308,11 +341,125 @@ public class MatrixGraph<V extends Comparable <V>, U, H> implements IMatrixGraph
 
 
 	@Override
-	public H kruskal() {
-		// TODO Auto-generated method stub
-		return null;
+	public int kruskal() {
+		
+		int cont = 0;
+		Queue<Edge<U, V, H>> priorityQueue = priority();
+		
+		for (int i = 0; i < 9; i++) {
+			makeset(vertice.get(i));
+		}
+		
+		for (int i = 0; i < priorityQueue.size()-1; i++) {
+			
+			Edge<U, V, H> priority = priorityQueue.poll();
+			
+			NodeM<V, U, H> nodeOne = findNode(priority.getInitVertice().getValue());
+			NodeM<V, U, H> nodeTwo = findNode(priority.getFinalVertice().getValue());
+			
+			if(findSet(nodeOne) == findSet(nodeTwo)) {
+				cont += (Integer) priority.getHeight();
+				union(nodeOne, nodeTwo);
+			}
+			
+			priorityQueue = secondPriority(priorityQueue);
+		}
+		
+		return cont;
 	}
 
+	public Queue<Edge<U, V, H>> priority() {
+		
+		ArrayList<Vertice<V, U, H>> newArrayList = vertice;
+		ArrayList<Edge<U, V, H>> toOrganize = new ArrayList<>();
+		Queue<Edge<U, V, H>> priorityQueue = new LinkedList<>();
+		
+		for (int i = 0; i < newArrayList.size()-1; i++) {
+			for (int j = 0; j < newArrayList.get(i).getEdge().size()-1; j++) {
+				toOrganize.add(newArrayList.get(i).getEdge().get(j));
+			}
+		}
+		
+		toOrganize = organize(toOrganize);
+		priorityQueue = intoQueue(toOrganize);
+		
+		return priorityQueue;
+	}
+	
+	private ArrayList<Edge<U, V, H>> organize(ArrayList<Edge<U, V, H>> toOrganize) {
+		
+		ArrayList<Edge<U, V, H>> newArrayList = toOrganize;
+		
+		for (int i = 1; i < newArrayList.size(); i++) {
+			for (int j = i; j > 0 && newArrayList.get(j-1).getHeight().compareTo(newArrayList.get(j).getHeight()) > 0; j--) {
+				Edge<U, V, H> newEdge = newArrayList.get(j);
+				
+				newArrayList.set(j, newArrayList.get(j-1));
+				newArrayList.set(j-1, newEdge);
+			}
+		}
+		
+		return newArrayList;
+	}
 
+	private Queue<Edge<U, V, H>> intoQueue(ArrayList<Edge<U, V, H>> arrayList) {
 
+		ArrayList<Edge<U, V, H>> newArrayList = arrayList;
+		Queue<Edge<U, V, H>> newQueue = new LinkedList<>();
+		
+		for (int i = 0; i < newArrayList.size()-1; i++) {
+			newQueue.add(newArrayList.get(i));
+		}
+		
+		return newQueue;
+	}
+	
+	public void makeset(Vertice<V, U, H> vertice) {
+		ensembleArrayList.add(new NodeM<V, U, H>(vertice));
+	}
+	
+	private NodeM<V, U, H> findNode(V value) {
+		
+		boolean verify = false;
+		
+		for (int i = 0; i < ensembleArrayList.size()-1 && !verify; i++) {
+			if(ensembleArrayList.get(i).getVertice().getValue().compareTo(value) == 0) {
+				verify = true;
+				return ensembleArrayList.get(i);
+			}
+		}
+		return null;
+	}
+	
+	public NodeM<V, U, H> findSet(NodeM<V, U, H> toFind){
+		
+		NodeM<V, U, H> newNode = toFind;
+		
+		if(toFind.getParent() != null) {
+			return newNode = findSet(toFind.getParent());
+		}
+		
+		return newNode;
+	}
+	
+	private void union(NodeM<V, U, H> nodeOne, NodeM<V, U, H> nodeTwo) {
+		if (nodeOne.getVertice().getValue().compareTo(nodeTwo.getVertice().getValue()) < 0) {
+			nodeTwo.setParent(nodeOne);
+		}
+	}
+	
+	private Queue<Edge<U, V, H>> secondPriority(Queue<Edge<U, V, H>> priorityQueue) {
+		
+		Queue<Edge<U, V, H>> newQueue = new LinkedList<>();
+		ArrayList<Edge<U, V, H>> newArrayList = new ArrayList<>();
+		
+		for (Edge<U, V, H> listEdge : priorityQueue) {
+			newArrayList.add(listEdge);
+		}
+		
+		newArrayList = organize(newArrayList);
+		newQueue = intoQueue(newArrayList);
+		
+		return newQueue;
+	}
 }

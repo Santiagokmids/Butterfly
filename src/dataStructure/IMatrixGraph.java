@@ -15,5 +15,5 @@ public interface IMatrixGraph<U, V, H> {
 	public ArrayList<H> dijkstra(Vertice<V, U, H> start);
 	public void floyd();
 	public int prim(Vertice<V, U, H> start);
-	public H kruskal();
+	public int kruskal();
 }
