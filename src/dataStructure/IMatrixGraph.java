@@ -12,8 +12,8 @@ public interface IMatrixGraph<U, V, H> {
 	public Edge<U, V, H> getEdges();
 	public ArrayList<Vertice<V, U, H>> bfs(V v);
 	public ArrayList<Vertice<V, U, H>> dfs(V v);
-	public ArrayList<H> dijkstra(Vertice<V, U, H> start, Vertice<V, U, H> Final);
+	public ArrayList<H> dijkstra(Vertice<V, U, H> start);
 	public void floyd();
-	public H prim();
+	public int prim(Vertice<V, U, H> start);
 	public H kruskal();
 }

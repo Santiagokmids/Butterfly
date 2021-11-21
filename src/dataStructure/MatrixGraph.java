@@ -1,6 +1,7 @@
 package dataStructure;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -109,26 +110,38 @@ public class MatrixGraph<V extends Comparable <V>, U, H> implements IMatrixGraph
 		}
 			
 	}
+	
+	public int makeDijkstra(Vertice<V, U, H> start, Vertice<V, U, H> end) {
+		ArrayList<H> dijkstra = dijkstra(start);
+		ArrayList<Vertice<V, U, H>> reference = assignRef();
+		int weight = 0;
+		
+		for (int i = 0; i < reference.size(); i++) {
+			if(reference.get(i).getValue().compareTo(end.getValue()) == 0) {
+				weight = (int) dijkstra.get(i);
+			}
+		}
+		return weight;
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public ArrayList<H> dijkstra(Vertice<V, U, H> start, Vertice<V, U, H> Final) {
+	public ArrayList<H> dijkstra(Vertice<V, U, H> start) {
 		
 		ArrayList<Integer> dist = new ArrayList<>();
 		ArrayList<Vertice<V, U, H>> prev = new ArrayList<>();
 		Queue<Vertice<V, U, H>> queue = new LinkedList<>();
-		ArrayList<Vertice<V, U, H>> reference = new ArrayList<>();
 
 		dist = assignSource(start, dist);
 		prev = assignPrev(prev);
 		queue = assignQueue(queue);
-		reference = assignRef();
+		ArrayList<Vertice<V, U, H>> reference = assignRef();
 
 		while(!queue.isEmpty()) {
 			
 			int weight = 0;
 			queue = extractMin(queue, dist);
-			Vertice<V, U, H> value = queue.poll();
+			Vertice<V, U, H> value = queue.peek();
 			int index = searchReference(value, reference);
 			
 			for (int i = 0; i < value.getEdge().size(); i++) {
@@ -138,10 +151,11 @@ public class MatrixGraph<V extends Comparable <V>, U, H> implements IMatrixGraph
 				if(weight < dist.get(finalVertice)) {
 					dist.set(finalVertice, weight);
 					prev.set(finalVertice, value);
+					queue.poll();
 				}
 			}
 		}
-
+		
 		return (ArrayList<H>) dist;
 	}
 
@@ -240,10 +254,59 @@ public class MatrixGraph<V extends Comparable <V>, U, H> implements IMatrixGraph
 	}
 
 	@Override
-	public H prim() {
+	public int prim(Vertice<V, U, H> start) {
+		
+		ArrayList<Integer> dist = new ArrayList<>();
+		ArrayList<Vertice<V, U, H>> prev = new ArrayList<>();
+		Queue<Vertice<V, U, H>> queue = new LinkedList<>();
 
-		return null;
+		dist = assignSource(start, dist);
+		prev = assignPrev(prev);
+		queue = assignQueue(queue);
+		
+		ArrayList<Boolean> colors = assignColors();
+		ArrayList<Vertice<V, U, H>> reference = assignRef();
+
+		while(!queue.isEmpty()) {
+			
+			int weight = 0;
+			queue = extractMin(queue, dist);
+			Vertice<V, U, H> value = queue.peek();
+			int index = searchReference(value, reference);
+			
+			for (int i = 0; i < value.getEdge().size(); i++) {
+				int finalVertice = searchReference(value.getEdge().get(i).getFinalVertice(), reference);
+				weight += dist.get(index) + (Integer)value.getEdge().get(index).getHeight();
+
+				if(weight < dist.get(finalVertice) && !colors.get(i)) {
+					dist.set(finalVertice, weight);
+					prev.set(finalVertice, value);
+					queue.poll();
+				}
+			}
+			colors.set(index, true);
+		}
+		
+		int amount = 0;
+		
+		for (int i = 0; i < dist.size(); i++) {
+			amount += dist.get(i);
+		} 
+		
+		return amount;
 	}
+	
+	private ArrayList<Boolean> assignColors() {
+		
+		ArrayList<Boolean> colors = new ArrayList<>();
+		
+		for (int i = 0; i < vertice.size(); i++) {
+			colors.add(false);
+		}
+		
+		return colors;
+	}
+
 
 	@Override
 	public H kruskal() {
