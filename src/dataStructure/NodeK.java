@@ -3,9 +3,9 @@ package dataStructure;
 public class NodeK <V, U, H> {
 	
 	private NodeK <V, U, H> parent;
-	private Vertice<V, U, H> vertice;
+	private ListVertice<V, U, H> vertice;
 	
-	public NodeK(Vertice<V, U, H> vertice){
+	public NodeK(ListVertice<V, U, H> vertice){
 		parent = null;
 		this.vertice = vertice;
 	}
@@ -18,11 +18,11 @@ public class NodeK <V, U, H> {
 		this.parent = parent;
 	}
 
-	public Vertice<V, U, H> getVertice() {
+	public ListVertice<V, U, H> getVertice() {
 		return vertice;
 	}
 
-	public void setVertice(Vertice<V, U, H> vertice) {
+	public void setVertice(ListVertice<V, U, H> vertice) {
 		this.vertice = vertice;
 	}
 }

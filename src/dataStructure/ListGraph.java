@@ -1,12 +1,11 @@
 package dataStructure;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 
 
-public class ListGraph<U extends Comparable<ListVertice<V, U, H>>, V extends Comparable<V>, H> implements IListGraph<U, V, H>{
+public class ListGraph<U extends Comparable<ListVertice<V, U, H>>, V extends Comparable<V>, H extends Comparable<H>> implements IListGraph<U, V, H>{
 	
 	private ArrayList<ListVertice<V, U, H>> listVertice;
 	private ArrayList<NodeK<V, U, H>> ensembleArrayList = new ArrayList<NodeK<V, U, H>>();
@@ -215,12 +214,12 @@ public class ListGraph<U extends Comparable<ListVertice<V, U, H>>, V extends Com
 	}
 	
 	public H checkWeight(int verticeOne, int verticeTwo) {
-		ListVertice<V, U, H> verticeOneFind = listVertice.get(verticeOne);
-		ListVertice<V, U, H> verticeTwoFind = listVertice.get(verticeTwo);
+		V verticeOneFind = listVertice.get(verticeOne).getValue();
+		V verticeTwoFind = listVertice.get(verticeTwo).getValue();
 		
-		for (int i = 0; i < verticeOneFind.getEdge().size()-1; i++) {
-			if(verticeOneFind.getEdge().get(i).getInitVertice().compareTo(verticeOneFind) == 0 && verticeOneFind.getEdge().get(i).getFinalVertice().compareTo(verticeTwoFind) == 0) {
-				return verticeOneFind.getEdge().get(i).getHeight();
+		for (int i = 0; i < listVertice.get(verticeOne).getAdjacency().size()-1; i++) {
+			if(listVertice.get(verticeOne).getEdge().get(i).getInitVertice().getValue().compareTo(verticeOneFind) == 0 && listVertice.get(verticeOne).getEdge().get(i).getFinalVertice().getValue().compareTo(verticeTwoFind) == 0) {
+				return listVertice.get(verticeOne).getEdge().get(i).getHeight();
 			}
 		}
 		return null;
@@ -233,10 +232,10 @@ public class ListGraph<U extends Comparable<ListVertice<V, U, H>>, V extends Com
 	}
 
 	@Override
-	public H kruskal() {
+	public int kruskal() {
 		
 		int cont = 0;
-		Queue<Edge<U, V, H>> priorityQueue = priority();
+		Queue<ListEdge<U, V, H>> priorityQueue = priority();
 		
 		for (int i = 0; i < 9; i++) {
 			makeset(listVertice.get(i));
@@ -244,27 +243,84 @@ public class ListGraph<U extends Comparable<ListVertice<V, U, H>>, V extends Com
 		
 		for (int i = 0; i < priorityQueue.size()-1; i++) {
 			
+			ListEdge<U, V, H> priority = priorityQueue.poll();
+			
+			NodeK<V, U, H> nodeOne = findNode(priority.getInitVertice().getValue());
+			NodeK<V, U, H> nodeTwo = findNode(priority.getFinalVertice().getValue());
+			
+			if(findSet(nodeOne) == findSet(nodeTwo)) {
+				cont += (Integer) priority.getHeight();
+				union(nodeOne, nodeTwo);
+			}
+			
+			priorityQueue = secondPriority(priorityQueue);
 		}
 		
-		return null;
+		return cont;
 	}
 	
-	public NodeK<V, U, H> findSet(NodeK<V, U, H> toFind, H weight){
+	private Queue<ListEdge<U, V, H>> secondPriority(Queue<ListEdge<U, V, H>> priorityQueue) {
 		
-		NodeK<V, U, H> newNode = null;
-		/*
-		if(toFind.get) {
-			newNode = findSet(toFind.getParent());
+		Queue<ListEdge<U, V, H>> newQueue = new LinkedList<ListEdge<U,V,H>>();
+		ArrayList<ListEdge<U, V, H>> newArrayList = new ArrayList<>();
+		
+		for (ListEdge<U, V, H> listEdge : priorityQueue) {
+			newArrayList.add(listEdge);
 		}
-		*/
+		
+		newArrayList = organize(newArrayList);
+		newQueue = intoQueue(newArrayList);
+		
+		return newQueue;
+	}
+
+	private Queue<ListEdge<U, V, H>> intoQueue(ArrayList<ListEdge<U, V, H>> arrayList) {
+
+		ArrayList<ListEdge<U, V, H>> newArrayList = arrayList;
+		Queue<ListEdge<U, V, H>> newQueue = new LinkedList<>();
+		
+		for (int i = 0; i < newArrayList.size()-1; i++) {
+			newQueue.add(newArrayList.get(i));
+		}
+		
+		return newQueue;
+	}
+
+	private void union(NodeK<V, U, H> nodeOne, NodeK<V, U, H> nodeTwo) {
+		if (nodeOne.getVertice().getValue().compareTo(nodeTwo.getVertice().getValue()) < 0) {
+			nodeTwo.setParent(nodeOne);
+		}
+	}
+
+	private NodeK<V, U, H> findNode(V value) {
+		
+		boolean verify = false;
+		
+		for (int i = 0; i < ensembleArrayList.size()-1 && !verify; i++) {
+			if(ensembleArrayList.get(i).getVertice().getValue().compareTo(value) == 0) {
+				verify = true;
+				return ensembleArrayList.get(i);
+			}
+		}
+		return null;
+	}
+
+	public NodeK<V, U, H> findSet(NodeK<V, U, H> toFind){
+		
+		NodeK<V, U, H> newNode = toFind;
+		
+		if(toFind.getParent() != null) {
+			return newNode = findSet(toFind.getParent());
+		}
+		
 		return newNode;
 	}
 	
-	public Queue<Edge<U, V, H>> priority() {
+	public Queue<ListEdge<U, V, H>> priority() {
 		
 		ArrayList<ListVertice<V, U, H>> newArrayList = listVertice;
-		ArrayList<Edge<U, V, H>> toOrganize = new ArrayList<>();
-		Queue<Edge<U, V, H>> priorityQueue = new LinkedList<>();
+		ArrayList<ListEdge<U, V, H>> toOrganize = new ArrayList<>();
+		Queue<ListEdge<U, V, H>> priorityQueue = new LinkedList<>();
 		
 		for (int i = 0; i < newArrayList.size()-1; i++) {
 			for (int j = 0; j < newArrayList.get(i).getEdge().size()-1; j++) {
@@ -272,23 +328,29 @@ public class ListGraph<U extends Comparable<ListVertice<V, U, H>>, V extends Com
 			}
 		}
 		
-		for (int i = 1; i < toOrganize.size(); i++) {
-			for (int j = i; j > 0 && toOrganize.get(j-1).getHeight().compareTo(toOrganize.get(j).getHeight()) > 0; j--) {
-				Edge<U, V, H> newEdge = toOrganize.get(j);
-				
-				toOrganize.set(j, toOrganize.get(j-1));
-				toOrganize.set(j-1, newEdge);
-			}
-		}
-		
-		for (int i = 0; i < toOrganize.size()-1; i++) {
-			priorityQueue.add(toOrganize.get(i));
-		}
+		toOrganize = organize(toOrganize);
+		priorityQueue = intoQueue(toOrganize);
 		
 		return priorityQueue;
 	}
+
+	private ArrayList<ListEdge<U, V, H>> organize(ArrayList<ListEdge<U, V, H>> toOrganize) {
+		
+		ArrayList<ListEdge<U, V, H>> newArrayList = toOrganize;
+		
+		for (int i = 1; i < newArrayList.size(); i++) {
+			for (int j = i; j > 0 && newArrayList.get(j-1).getHeight().compareTo(newArrayList.get(j).getHeight()) > 0; j--) {
+				ListEdge<U, V, H> newEdge = newArrayList.get(j);
+				
+				newArrayList.set(j, newArrayList.get(j-1));
+				newArrayList.set(j-1, newEdge);
+			}
+		}
+		
+		return newArrayList;
+	}
 	
-	public void makeset(Vertice<V, U, H> vertice) {
+	public void makeset(ListVertice<V, U, H> vertice) {
 		ensembleArrayList.add(new NodeK<V, U, H>(vertice));
 	}
 }

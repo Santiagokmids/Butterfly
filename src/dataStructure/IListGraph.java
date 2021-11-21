@@ -15,5 +15,5 @@ public interface IListGraph<U, V, H> {
 	public ArrayList<H> dijkstra(ListVertice<V, U, H> start, ListVertice<V, U, H> Final);
 	public void floyd();
 	public H prim();
-	public H kruskal();
+	public int kruskal();
 }
