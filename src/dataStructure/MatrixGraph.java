@@ -8,7 +8,7 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 	
 	public ArrayList<Vertice<V, U, H>> vertice;
 	private ArrayList<NodeM<V, U, H>> ensembleArrayList = new ArrayList<NodeM<V, U, H>>();
-	private int distance[][] = new int[10][10];
+	private int distance[][];
 	
 	@Override
 	public void createGraph() {
@@ -252,23 +252,29 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 	
 	@Override
 	public void floyd() {
-		for (int i = 0; i < 9; i++) {
-			for (int j = 0; j < 9; j++) {
-				if (j == i) {
-					distance[i][j] = 0;
-				}else if (checkWeight(i, j) != null) {
-					distance[i][j] = (int) checkWeight(i, j);
-				}else {
-					distance[i][j] = Integer.MAX_VALUE;
+		
+		if (!vertice.isEmpty()) {
+			
+			distance = new int[vertice.size()][vertice.size()];
+			
+			for (int i = 0; i < 9; i++) {
+				for (int j = 0; j < 9; j++) {
+					if (j == i) {
+						distance[i][j] = 0;
+					}else if (checkWeight(i, j) != null) {
+						distance[i][j] = (int) checkWeight(i, j);
+					}else {
+						distance[i][j] = Integer.MAX_VALUE;
+					}
 				}
 			}
-		}
-		
-		for (int k = 0; k < 9; k++) {
-			for (int i = 0; i < 9; i++) {
-				for (int j = 0; j < distance.length; j++) {
-					if (distance[i][j] > distance[i][k] + distance[k][j]) {
-						distance[i][j] = distance[i][k] + distance[k][j];
+			
+			for (int k = 0; k < 9; k++) {
+				for (int i = 0; i < 9; i++) {
+					for (int j = 0; j < distance.length; j++) {
+						if (distance[i][j] > distance[i][k] + distance[k][j]) {
+							distance[i][j] = distance[i][k] + distance[k][j];
+						}
 					}
 				}
 			}
@@ -346,25 +352,28 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 	public int kruskal() {
 		
 		int cont = 0;
-		Queue<Edge<U, V, H>> priorityQueue = priority();
 		
-		for (int i = 0; i < 9; i++) {
-			makeset(vertice.get(i));
-		}
-		
-		for (int i = 0; i < priorityQueue.size()-1; i++) {
+		if (!vertice.isEmpty()) {
+			Queue<Edge<U, V, H>> priorityQueue = priority();
 			
-			Edge<U, V, H> priority = priorityQueue.poll();
-			
-			NodeM<V, U, H> nodeOne = findNode(priority.getInitVertice().getValue());
-			NodeM<V, U, H> nodeTwo = findNode(priority.getFinalVertice().getValue());
-			
-			if(findSet(nodeOne) == findSet(nodeTwo)) {
-				cont += (Integer) priority.getHeight();
-				union(nodeOne, nodeTwo);
+			for (int i = 0; i < 9; i++) {
+				makeset(vertice.get(i));
 			}
 			
-			priorityQueue = secondPriority(priorityQueue);
+			for (int i = 0; i < priorityQueue.size()-1; i++) {
+				
+				Edge<U, V, H> priority = priorityQueue.poll();
+				
+				NodeM<V, U, H> nodeOne = findNode(priority.getInitVertice().getValue());
+				NodeM<V, U, H> nodeTwo = findNode(priority.getFinalVertice().getValue());
+				
+				if(findSet(nodeOne) == findSet(nodeTwo)) {
+					cont += (Integer) priority.getHeight();
+					union(nodeOne, nodeTwo);
+				}
+				
+				priorityQueue = secondPriority(priorityQueue);
+			}
 		}
 		
 		return cont;
