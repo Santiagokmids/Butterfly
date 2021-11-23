@@ -9,9 +9,9 @@ public class Vertice<V, U, H>{
 	private boolean visited;
 	private int color;
 	
-	public Vertice(V value, ArrayList<Edge<U, V, H>> edge) {
+	public Vertice(V value) {
 		this.value = value;
-		this.edge = edge;
+		edge = new ArrayList<Edge<U, V, H>>();
 		setVisited(false);
 		color = 0;
 	}

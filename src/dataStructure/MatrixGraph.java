@@ -12,11 +12,14 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 	
 	@Override
 	public void createGraph() {
+		vertice = new ArrayList<Vertice<V,U,H>>();
 	}
 
 	@Override
-	public boolean addVertice() {
-		return false;
+	public boolean addVertice(V value) {
+		Vertice<V, U, H> vertic = new Vertice<V, U, H>(value);
+		vertice.add(vertic);
+		return true;
 	}
 
 	@Override
