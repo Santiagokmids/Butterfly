@@ -12,6 +12,7 @@ public class ListVertice<V extends Comparable<V>, U, H>{
 	private int color;
 	
 	public ListVertice(V value) {
+		adjacency = new ArrayList<>();
 		this.value = value;
 		edge = new ArrayList<ListEdge<U,V,H>>();
 		setVisited(false);
