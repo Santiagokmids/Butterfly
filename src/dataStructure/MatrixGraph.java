@@ -20,7 +20,9 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 	public boolean addVertice(V value) {
 		Vertice<V, U, H> vertic = new Vertice<V, U, H>(value);
 		vertice.add(vertic);
-		createMatrix(vertic);
+		
+		Vertice<V, U, H> vertix = new Vertice<V, U, H>(null);
+		createMatrix(vertix);
 		return true;
 	}
 
@@ -156,7 +158,7 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 	public int makeDijkstra(Vertice<V, U, H> start, Vertice<V, U, H> end) {
 		ArrayList<H> dijkstra = dijkstra(start);
 		ArrayList<Vertice<V, U, H>> reference = assignRef();
-		int weight = 0;
+		int weight = -1;
 
 		for (int i = 0; i < reference.size(); i++) {
 			if(reference.get(i).getValue().compareTo(end.getValue()) == 0) {
@@ -188,12 +190,15 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 
 			for (int i = 0; i < value.getEdge().size(); i++) {
 				int finalVertice = searchReference(value.getEdge().get(i).getFinalVertice(), reference);
-				weight += dist.get(index) + (Integer)value.getEdge().get(index).getHeight();
+				
+				if(finalVertice != -1) {
+					weight += dist.get(index) + (Integer)value.getEdge().get(index).getHeight();
 
-				if(weight < dist.get(finalVertice)) {
-					dist.set(finalVertice, weight);
-					prev.set(finalVertice, value);
-					queue.poll();
+					if(weight < dist.get(finalVertice)) {
+						dist.set(finalVertice, weight);
+						prev.set(finalVertice, value);
+						queue.poll();
+					}
 				}
 			}
 		}
@@ -202,14 +207,17 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 	}
 
 	private ArrayList<Integer> assignSource(Vertice<V, U, H> start, ArrayList<Integer> dist){
-
+		
+		Vertice<V, U, H>current = first;
+		
 		for (int i = 0; i < vertice.size(); i++) {
 
-			if(start.getValue().compareTo(vertice.get(i).getValue()) == 0) {
+			if(start.getValue().compareTo(current.getValue()) == 0) {
 				dist.add(i, 0);
 
 			}else {
 				dist.add(Integer.MAX_VALUE);
+				current.getDown();
 			}
 		}
 		return dist;
@@ -220,14 +228,16 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 		for (int i = 0; i < vertice.size(); i++) {
 			prev.add(null);
 		}
-
 		return prev;
 	}
 
 	private Queue<Vertice<V, U, H>> assignQueue(Queue<Vertice<V, U, H>> queue) {
-
+		
+		Vertice<V, U, H> current = first;
+		
 		for (int i = 0; i < vertice.size(); i++) {
-			queue.add(vertice.get(i));
+			queue.add(current);
+			current = current.getDown();
 		}
 
 		return queue;
@@ -271,15 +281,17 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 	private ArrayList<Vertice<V, U, H>> assignRef(){
 
 		ArrayList<Vertice<V, U, H>> ref = new ArrayList<Vertice<V, U, H>>();
-
+		Vertice<V, U, H> current = first;
+		
 		for (int i = 0; i < vertice.size(); i++) {
-			ref.add(vertice.get(i));
+			ref.add(current);
+			current = current.getNext();
 		}
 		return ref;
 	}
 
 	private int searchReference(Vertice<V, U, H> vert, ArrayList<Vertice<V, U, H>> reference) {
-		int index = 0;
+		int index = -1;
 
 		for (int i = 0; i < reference.size(); i++) {
 			if(reference.get(i) == vert) {
@@ -355,12 +367,15 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 
 			for (int i = 0; i < value.getEdge().size(); i++) {
 				int finalVertice = searchReference(value.getEdge().get(i).getFinalVertice(), reference);
-				weight += dist.get(index) + (Integer)value.getEdge().get(index).getHeight();
+				
+				if(finalVertice != -1) {
+					weight += dist.get(index) + (Integer)value.getEdge().get(index).getHeight();
 
-				if(weight < dist.get(finalVertice) && !colors.get(i)) {
-					dist.set(finalVertice, weight);
-					prev.set(finalVertice, value);
-					queue.poll();
+					if(weight < dist.get(finalVertice) && !colors.get(i)) {
+						dist.set(finalVertice, weight);
+						prev.set(finalVertice, value);
+						queue.poll();
+					}
 				}
 			}
 			colors.set(index, true);
