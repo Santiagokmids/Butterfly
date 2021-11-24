@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public interface IMatrixGraph<U, V, H> {
 	public void createGraph();
 	public boolean addVertice(V value);
-	public boolean addEdge();
+	public boolean addEdge(V valueIni, V valueEnd, H height);
 	public boolean deleteVertice();
 	public boolean deleteEdge();
 	public boolean setEdge();

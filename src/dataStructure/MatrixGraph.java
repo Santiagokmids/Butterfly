@@ -61,7 +61,7 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 	}
 	
 	@Override
-	public boolean addEdge() {
+	public boolean addEdge(V valueIni, V valueEnd, H height) {
 		return false;
 	}
 

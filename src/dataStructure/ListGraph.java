@@ -34,7 +34,7 @@ public class ListGraph<U extends Comparable< U>, V extends Comparable<V>, H exte
 	}
 
 	@Override
-	public boolean addEdge(V valueIni, V valueFi, H height) {
+	public boolean addEdge(V valueIni, V valueEnd, H height) {
 		int positionA = 0;
 		int positionB = 0;
 		boolean foundA = false;
@@ -44,7 +44,7 @@ public class ListGraph<U extends Comparable< U>, V extends Comparable<V>, H exte
 				foundA = true;
 				positionA = i;
 			}
-			if (listVertice.get(i).getValue().compareTo(valueFi) == 0) {
+			if (listVertice.get(i).getValue().compareTo(valueEnd) == 0) {
 				foundB = true;
 				positionB = i;
 			}
