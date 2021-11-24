@@ -32,10 +32,6 @@ public class ListVertice<V extends Comparable<V>, U, H>{
 		return false;
 	}
 	
-	public boolean deleteEdge(Edge<U, V, H> edge) {
-		return true;
-	}
-	
 	public V getValue() {
 		return value;
 	}

@@ -69,16 +69,26 @@ class ListGraphTest {
 		lg.addEdge("Portugal", "Colombia",1600);
 		lg.addEdge("Madagascar", "Colombia",-200);
 		assertEquals(1600, lg.searchEdge("Portugal", "Colombia"));
-		assertEquals(-1, lg.searchEdge("Madagascar", "Colombia"));
+		assertEquals(null, lg.searchEdge("Madagascar", "Colombia"));
+	}
+	
+	@Test
+	public void deleteVerticeTest() {
+		setupScenary2();
+		lg.deleteVertice("Dubai");
+		assertEquals(null, lg.searchVertice("Dubai"));
+		setupScenary1();
+		lg.deleteVertice("Colombia");
+		assertEquals(null, lg.searchVertice("Colombia"));
 	}
 	
 	@Test
 	public void deleteEdgeTest() {
 		setupScenary2();
-		lg.addEdge("Portugal", "Colombia",1600);
-		lg.addEdge("Madagascar", "Colombia",-200);
-		assertEquals(1600, lg.searchEdge("Portugal", "Colombia"));
-		assertEquals(-1, lg.searchEdge("Madagascar", "Colombia"));
+		lg.deleteEdge("Colombia","Dubai",1200);
+		lg.deleteEdge("Dubai","Portugal",3000);
+		assertEquals(null, lg.searchEdge("Colombia","Dubai"));
+		assertEquals(null, lg.searchEdge("Dubai", "Portugal"));
 	}
 
 	@Test

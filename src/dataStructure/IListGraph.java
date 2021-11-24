@@ -5,8 +5,10 @@ import java.util.ArrayList;
 public interface IListGraph<U, V extends Comparable<V>, H> {
 	public void createGraph();
 	public boolean addVertice(V value);
-	public boolean deleteVertice();
-	public boolean deleteEdge();
+	public boolean deleteVertice(V verticeToDelete);
+	public boolean deleteEdge(V verticeInit, V verticeEnd, H weight);
+	public H searchEdge(V verticeInit, V verticeEnd);
+	public V searchVertice(V vertice);
 	public ListVertice<V, U, H> getVertice();
 	public Edge<U, V, H> getEdge();
 	public ArrayList<ListVertice<V, U, H>> bfs(V v);
