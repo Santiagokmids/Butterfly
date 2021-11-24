@@ -1,6 +1,6 @@
 package dataStructure;
 
-public class ListEdge<U, V, H> {
+public class ListEdge<U, V extends Comparable<V>, H> {
 	
 	private ListVertice<V, U, H> initVertice;
 	private ListVertice<V, U, H> finalVertice;

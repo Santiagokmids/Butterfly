@@ -2,7 +2,7 @@ package dataStructure;
 
 import java.util.ArrayList;
 
-public interface IListGraph<U, V, H> {
+public interface IListGraph<U, V extends Comparable<V>, H> {
 	public void createGraph();
 	public boolean addVertice(V value);
 	public boolean deleteVertice();
