@@ -8,7 +8,7 @@ import dataStructure.MatrixGraph;
 
 
 
-class ButterflyDataTest<V extends Comparable <V>, U, H extends Comparable<H>>{
+class MatrixGraphTest<V extends Comparable <V>, U, H extends Comparable<H>>{
 	private MatrixGraph<V, U, H> mg;
 	
 	public void setupScenary1() {

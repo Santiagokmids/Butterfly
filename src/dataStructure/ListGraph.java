@@ -89,9 +89,44 @@ public class ListGraph<U extends Comparable< U>, V extends Comparable<V>, H exte
 	}
 
 	@Override
-	public ArrayList<ListVertice<V, U, H>> bfs() {
-		// TODO Auto-generated method stub
+	public ArrayList<ListVertice<V, U, H>> bfs(V v) {
+		boolean found = false;
+		ArrayList<ListVertice<V, U, H>> vertic = new ArrayList<ListVertice<V, U, H>>();
+		int position =0;
+		for(int i =0;i<listVertice.size()&& found == false;i++) {
+			if(listVertice.get(i).getValue().compareTo(v)==0) {
+				position = i;
+				found = true;
+			}
+		}
+		for(int i = 0; i < listVertice.size();i++) {
+			listVertice.get(i).setColor(0);
+		}
+		if(found ==true) {
+			 bfs(vertic,listVertice.get(position));
+			 return listVertice;
+		}
 		return null;
+	}
+	
+	public void bfs(ArrayList<ListVertice<V, U, H>>vertic,ListVertice<V, U, H> e) {	
+		ArrayList<ListVertice<V, U, H>>verticeO = new ArrayList<ListVertice<V, U, H>>();
+		for(int i = 0 ; i <e.getEdge().size(); i++) {
+			verticeO.add(e.getEdge().get(i).getFinalVertice() );
+		}
+		
+		for(int i =0; i< e.getEdge().size();i++) {
+			if(verticeO.get(i).getColor() == 0) {
+				vertic.add(verticeO.get(i));
+				verticeO.get(i).setColor(1);
+			}
+		
+		}
+		e.setColor(2);
+		for(int i = 0; i<verticeO.size();i++) {
+			if(verticeO.get(i).getColor()!=2)
+			bfs(vertic, verticeO.get(i));
+		}
 	}
 
 	@Override
