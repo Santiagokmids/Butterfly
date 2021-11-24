@@ -20,8 +20,8 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 	public boolean addVertice(V value) {
 		Vertice<V, U, H> vertic = new Vertice<V, U, H>(value);
 		vertice.add(vertic);
-		
-		Vertice<V, U, H> vertix = new Vertice<V, U, H>(null);
+		V zero = null;
+		Vertice<V, U, H> vertix = new Vertice<V, U, H>(zero);
 		createMatrix(vertix);
 		return true;
 	}
@@ -42,7 +42,8 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 			
 			if(cont < (vertice.size()-1)) {
 				dynamic.setNext(current);
-				createMatrix(dynamicV,dynamic.getNext(), current, cont++,contV);
+				cont++;
+				createMatrix(dynamicV,dynamic.getNext(), current, cont,contV);
 				
 			}else if(dynamicV.getDown() == null){
 				
@@ -55,7 +56,8 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 			}
 		}else{
 			if(cont < (vertice.size()-1)) {
-				createMatrix(dynamicV,dynamic.getNext(), current, cont++,contV);
+				cont++;
+				createMatrix(dynamicV,dynamic.getNext(), current, cont,contV);
 			}
 		}
 	}
@@ -76,8 +78,8 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 	}
 
 	@Override
-	public Vertice<V, U, H> getVertice() {
-		return null;
+	public ArrayList<Vertice<V, U, H>> getVertice() {
+		return vertice;
 	}
 
 	@Override

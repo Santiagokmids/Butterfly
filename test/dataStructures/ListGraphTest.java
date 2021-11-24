@@ -12,7 +12,6 @@ class ListGraphTest {
 		lg = new ListGraph<String, String, Integer>();
 		lg.createGraph();
 		lg.addVertice("Colombia");
-
 	}
 
 	public void setupScenary2() {
@@ -49,6 +48,24 @@ class ListGraphTest {
 		lg.addEdge("Dubai", "Madagascar", 5000);
 		lg.addEdge("Madagascar", "Japon", 1930);
 		lg.addEdge("Nigeria", "Japon", 1000);
+	}
+	
+	@Test
+	public void addVerticeTest() {
+		setupScenary1();
+		lg.addVertice("Japon");
+		lg.addVertice("Portugal");
+		assertEquals("Japon", lg.getListVertice().get(1).getValue());
+		assertEquals("Portugal", lg.getListVertice().get(2).getValue());
+	}
+	
+	@Test
+	public void addEdgeTest() {
+		setupScenary2();
+		lg.addVertice("Japon");
+		lg.addVertice("Portugal");
+		assertEquals("Japon", lg.getListVertice().get(1).getValue());
+		assertEquals("Portugal", lg.getListVertice().get(2).getValue());
 	}
 
 	@Test

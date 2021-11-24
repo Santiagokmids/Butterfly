@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import dataStructure.ListGraph;
 import dataStructure.MatrixGraph;
 
 class MatrixGraphTest<V extends Comparable <V>, U, H extends Comparable<H>>{
@@ -15,7 +14,6 @@ class MatrixGraphTest<V extends Comparable <V>, U, H extends Comparable<H>>{
 		matrixGraph = new MatrixGraph<String, String, Integer>();
 		matrixGraph.createGraph();
 		matrixGraph.addVertice("Colombia");
-
 	}
 
 	public void setupScenary2() {
@@ -67,7 +65,8 @@ class MatrixGraphTest<V extends Comparable <V>, U, H extends Comparable<H>>{
 
 	@Test
 	void test() {
-		fail("Not yet implemented");
+		setupScenary1();
+		assertEquals("Colombia", matrixGraph.getVertice().get(0).getValue());
 	}
 
 }
