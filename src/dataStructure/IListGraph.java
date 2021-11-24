@@ -9,8 +9,9 @@ public interface IListGraph<U, V extends Comparable<V>, H> {
 	public boolean deleteEdge(V verticeInit, V verticeEnd, H weight);
 	public H searchEdge(V verticeInit, V verticeEnd);
 	public V searchVertice(V vertice);
-	public ListVertice<V, U, H> getVertice();
+	public ArrayList<ListVertice<V, U, H>> getVertice();
 	public Edge<U, V, H> getEdge();
+	public boolean setEdge(V verticeInit, V verticeEnd, H weight);
 	public ArrayList<ListVertice<V, U, H>> bfs(V v);
 	public ArrayList<ListVertice<V, U, H>> dfs();
 	public ArrayList<H> dijkstra(ListVertice<V, U, H> start);

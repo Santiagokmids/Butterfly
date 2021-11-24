@@ -90,6 +90,15 @@ class ListGraphTest {
 		assertEquals(null, lg.searchEdge("Colombia","Dubai"));
 		assertEquals(null, lg.searchEdge("Dubai", "Portugal"));
 	}
+	
+	@Test
+	public void modifyEdgeTest() {
+		setupScenary2();
+		lg.setEdge("Dubai","Portugal",2130);
+		lg.setEdge("Colombia","Dubai",3000);
+		assertEquals(2130, lg.searchEdge("Dubai","Portugal"));
+		assertEquals(3000, lg.searchEdge("Colombia", "Dubai"));
+	}
 
 	@Test
 	public void bfsTest() {

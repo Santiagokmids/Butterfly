@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class ListGraph<U extends Comparable< U>, V extends Comparable<V>, H extends Comparable<H>>
+public class ListGraph<U extends Comparable<U>, V extends Comparable<V>, H extends Comparable<H>>
 implements IListGraph<U, V, H> {
 
 	private ArrayList<ListVertice<V, U, H>> listVertice;
@@ -111,6 +111,33 @@ implements IListGraph<U, V, H> {
 		}
 		return verify;
 	}
+	
+	@Override
+	public boolean setEdge(V verticeInit, V verticeEnd, H weight) {
+		
+		boolean stop = false, verify = false;
+		int index = -1;
+		
+		for (int i = 0; i < listVertice.size() && !stop; i++) {
+			if(verticeInit.compareTo(listVertice.get(i).getValue()) == 0) {
+				stop = true;
+				index = i;
+			}
+		}
+		
+		stop = false;
+		
+		if (index >= 0) {
+			for (int i = 0; i < listVertice.get(index).getEdge().size() && !stop; i++) {
+				if(listVertice.get(index).getEdge().get(i).getFinalVertice().getValue().compareTo(verticeEnd) == 0) {
+					listVertice.get(index).getEdge().get(i).setHeight(weight);
+					stop = true;
+					verify = true;
+				}
+			}
+		}
+		return verify;
+	}
 
 	public boolean deleteAdjacency(V verticeToDelete) {
 
@@ -165,8 +192,8 @@ implements IListGraph<U, V, H> {
 	}
 
 	@Override
-	public ListVertice<V, U, H> getVertice() {
-		return null;
+	public ArrayList<ListVertice<V, U, H>> getVertice() {
+		return listVertice;
 	}
 
 	@Override
@@ -634,4 +661,5 @@ implements IListGraph<U, V, H> {
 	public int[][] getDistance() {
 		return distance;
 	}
+
 }
