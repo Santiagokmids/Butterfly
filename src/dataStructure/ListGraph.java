@@ -54,7 +54,7 @@ public class ListGraph<U extends Comparable<ListVertice<V, U, H>>, V extends Com
 		}
 		if (foundA == true && foundB == true) {
 			ListEdge<U, V, H> list = new ListEdge<U,V,H>(listVertice.get(positionA),listVertice.get(positionB),height);
-			listVertice.get(positionA).addEdge(list);
+			return listVertice.get(positionA).addEdge(list);
 		}
 
 		return false;
