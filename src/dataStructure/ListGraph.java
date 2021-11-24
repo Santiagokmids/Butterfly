@@ -61,16 +61,16 @@ public class ListGraph<U extends Comparable< U>, V extends Comparable<V>, H exte
 		return false;
 	}
 	
-	public int searchEdge(ListVertice<U, V, H> verticeInit, ListVertice<U, V, H> verticeEnd, H height) {
+	public int searchEdge(V verticeInit, V verticeEnd) {
 		
 		boolean stop = false;
 		int weight = -1; 
 		
 		for (int i = 0; i < listVertice.size() && !stop; i++) {
-			if(verticeInit.equals(listVertice.get(i))) {
+			if(verticeInit.compareTo(listVertice.get(i).getValue()) == 0) {
 				
 				for (int k = 0; k < listVertice.get(i).getEdge().size() && !stop; k++) {
-					if(verticeEnd.equals(listVertice.get(i).getEdge().get(k).getFinalVertice())) {
+					if(verticeEnd.compareTo(listVertice.get(i).getEdge().get(k).getFinalVertice().getValue()) == 0) {
 						stop = true;
 						weight = (int) listVertice.get(i).getEdge().get(k).getHeight();
 					}
