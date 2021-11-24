@@ -1,4 +1,5 @@
 package dataStructures;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
@@ -9,22 +10,23 @@ class ListGraphTest {
 	private ListGraph<String,String ,Integer> lg;
 	
 	public void setupScenary1() {
-		lg = new ListGraph<String,String ,Integer>();
+		lg = new ListGraph<String, String, Integer>();
 		lg.createGraph();
 		lg.addVertice("Colombia");
-		
 	}
+
 	public void setupScenary2() {
 		setupScenary1();
 		lg.addVertice("Dubai");
 		lg.addVertice("Portugal");
 		lg.addVertice("Madagascar");
-		lg.addEdge("Dubai", "Portugal",3000);
-		lg.addEdge("Portugal", "Madagascar",2750);
-		lg.addEdge("Madagascar", "Dubai",590);
-		lg.addEdge("Colombia", "Dubai",1200);
-		
+		lg.addEdge("Dubai", "Portugal", 3000);
+		lg.addEdge("Portugal", "Madagascar", 2750);
+		lg.addEdge("Madagascar", "Dubai", 590);
+		lg.addEdge("Colombia", "Dubai", 1200);
+
 	}
+
 	public void setupScenary3() {
 		setupScenary1();
 		lg.addVertice("Colombia");
@@ -51,16 +53,34 @@ class ListGraphTest {
 		lg.addEdge("Madagascar", "Japon",1930);
 		lg.addEdge("Nigeria", "Japon",1000);
 	}
+	
+	@Test
+	public void addVerticeTest() {
+		setupScenary1();
+		lg.addVertice("Japon");
+		lg.addVertice("Portugal");
+		assertEquals("Japon", lg.getListVertice().get(1).getValue());
+		assertEquals("Portugal", lg.getListVertice().get(2).getValue());
+	}
+	
+	@Test
+	public void addEdgeTest() {
+		setupScenary2();
+		lg.addVertice("Japon");
+		lg.addVertice("Portugal");
+		assertEquals("Japon", lg.getListVertice().get(1).getValue());
+		assertEquals("Portugal", lg.getListVertice().get(2).getValue());
+	}
 
 	@Test
-	public void test() {
+	public void bfsTest() {
 		setupScenary2();
 		assertEquals("Colombia", lg.bfs("Colombia").get(0).getValue());
 		assertEquals("Dubai", lg.bfs("Colombia").get(1).getValue());
 		assertEquals("Portugal", lg.bfs("Colombia").get(2).getValue());
 		assertEquals("Madagascar", lg.bfs("Colombia").get(3).getValue());
 	}
-	
+
 	@Test
 	public void floydWarshallTest() {
 		setupScenary3();

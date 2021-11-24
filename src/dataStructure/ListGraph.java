@@ -34,17 +34,18 @@ public class ListGraph<U extends Comparable< U>, V extends Comparable<V>, H exte
 	}
 
 	@Override
-	public boolean addEdge(V valueIni, V valueFi, H height) {
+	public boolean addEdge(V valueIni, V valueEnd, H height) {
 		int positionA = 0;
 		int positionB = 0;
 		boolean foundA = false;
 		boolean foundB = false;
+		
 		for (int i = 0; i < listVertice.size(); i++) {
 			if (listVertice.get(i).getValue().compareTo(valueIni) == 0) {
 				foundA = true;
 				positionA = i;
 			}
-			if (listVertice.get(i).getValue().compareTo(valueFi) == 0) {
+			if (listVertice.get(i).getValue().compareTo(valueEnd) == 0) {
 				foundB = true;
 				positionB = i;
 			}
@@ -52,11 +53,30 @@ public class ListGraph<U extends Comparable< U>, V extends Comparable<V>, H exte
 				i = listVertice.size();
 			}
 		}
-		if (foundA == true && foundB == true) {
+		if (foundA == true && foundB == true && (int)height >= 0) {
 			ListEdge<U, V, H> list = new ListEdge<U,V,H>(listVertice.get(positionA),listVertice.get(positionB),height);
 			return listVertice.get(positionA).addEdge(list);
 		}
 		return false;
+	}
+	
+	public int searchEdge(ListVertice<U, V, H> verticeInit, ListVertice<U, V, H> verticeEnd, H height) {
+		
+		boolean stop = false;
+		int weight = -1; 
+		
+		for (int i = 0; i < listVertice.size() && !stop; i++) {
+			if(verticeInit.equals(listVertice.get(i))) {
+				
+				for (int k = 0; k < listVertice.get(i).getEdge().size() && !stop; k++) {
+					if(verticeEnd.equals(listVertice.get(i).getEdge().get(k).getFinalVertice())) {
+						stop = true;
+						weight = (int) listVertice.get(i).getEdge().get(k).getHeight();
+					}
+				}
+			}
+		}
+		return weight;
 	}
 
 	@Override

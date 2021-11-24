@@ -8,6 +8,8 @@ public class Vertice<V, U, H>{
 	private ArrayList<Edge<U, V, H>> edge;
 	private boolean visited;
 	private int color;
+	public Vertice<V, U, H> next;
+	public Vertice<V, U, H> down;
 	
 	public Vertice(V value) {
 		this.value = value;
@@ -51,6 +53,22 @@ public class Vertice<V, U, H>{
 
 	public void setColor(int color) {
 		this.color = color;
+	}
+	
+	public Vertice<V, U, H> getNext() {
+		return next;
+	}
+
+	public void setNext(Vertice<V, U, H> next) {
+		this.next = next;
+	}
+
+	public Vertice<V, U, H> getDown() {
+		return down;
+	}
+
+	public void setDown(Vertice<V, U, H> down) {
+		this.down = down;
 	}
 	
 }
