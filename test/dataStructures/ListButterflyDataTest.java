@@ -1,23 +1,23 @@
 package dataStructures;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.Test;
 
 import dataStructure.ListGraph;
 import dataStructure.ListVertice;
 
 
-class ListButterflyDataTest<U extends Comparable<ListVertice<V, U, H>>, V extends Comparable<V>, H extends Comparable<H>> {
-	private ListGraph<U,V,H> lg;
+class ListButterflyDataTest {
+	private ListGraph<String,String ,Integer> lg;
 	public void setupScenary1() {
 
-		lg = new ListGraph<U, V, H>();
+		lg = new ListGraph<String,String ,Integer>();
 		lg.createGraph();
 	}
 	public void setupScenary2() {
-		setupScenary2();
-		//lg.addVertice();
+		setupScenary1();
+		ListVertice<String, String , Integer> listV = new ListVertice<String, String, Integer>("Colombia");  
+		lg.addVertice("Colombia");
 	}
 
 	@Test

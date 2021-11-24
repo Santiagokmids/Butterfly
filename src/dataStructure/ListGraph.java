@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class ListGraph<U extends Comparable<ListVertice<V, U, H>>, V extends Comparable<V>, H extends Comparable<H>>
+public class ListGraph<U extends Comparable< U>, V extends Comparable<V>, H extends Comparable<H>>
 		implements IListGraph<U, V, H> {
 
 	private ArrayList<ListVertice<V, U, H>> listVertice;
