@@ -7,6 +7,7 @@ import java.util.Queue;
 public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> implements IMatrixGraph<U, V, H>{
 	
 	public ArrayList<Vertice<V, U, H>> vertice;
+	public Vertice<V, U, H> first;
 	private ArrayList<NodeM<V, U, H>> ensembleArrayList = new ArrayList<NodeM<V, U, H>>();
 	private int distance[][];
 	
@@ -19,7 +20,14 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 	public boolean addVertice(V value) {
 		Vertice<V, U, H> vertic = new Vertice<V, U, H>(value);
 		vertice.add(vertic);
+		createMatrix();
 		return true;
+	}
+	
+	private void createMatrix() {
+		for (int i = 0; i < vertice.size(); i++) {
+			
+		}
 	}
 
 	@Override
@@ -475,5 +483,11 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 		newQueue = intoQueue(newArrayList);
 		
 		return newQueue;
+	}
+
+	@Override
+	public boolean setEdge() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
