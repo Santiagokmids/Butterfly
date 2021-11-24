@@ -9,7 +9,7 @@ public interface IListGraph<U, V, H> {
 	public boolean deleteEdge();
 	public ListVertice<V, U, H> getVertice();
 	public Edge<U, V, H> getEdge();
-	public ArrayList<ListVertice<V, U, H>> bfs();
+	public ArrayList<ListVertice<V, U, H>> bfs(V v);
 	public ArrayList<ListVertice<V, U, H>> dfs();
 	public ArrayList<H> dijkstra(ListVertice<V, U, H> start);
 	public void floyd();
