@@ -54,6 +54,7 @@ public class ListGraph<U extends Comparable< U>, V extends Comparable<V>, H exte
 			}
 		}
 		if (foundA == true && foundB == true && (int)height >= 0) {
+			listVertice.get(positionA).getAdjacency().add(listVertice.get(positionB).getValue());
 			ListEdge<U, V, H> list = new ListEdge<U,V,H>(listVertice.get(positionA),listVertice.get(positionB),height);
 			return listVertice.get(positionA).addEdge(list);
 		}
@@ -295,28 +296,20 @@ public class ListGraph<U extends Comparable< U>, V extends Comparable<V>, H exte
 	public void floyd() {
 
 		if (!listVertice.isEmpty()) {
-
+			
 			distance = new int[listVertice.size()][listVertice.size()];
-
-			for (int i = 0; i < listVertice.size(); i++) {
-				for (int j = 0; j < listVertice.size(); j++) {
-					if (j == i) {
-						distance[i][j] = 0;
-					} else if (checkWeight(i, j) != null) {
-						distance[i][j] = (int) checkWeight(i, j);
-					} else {
-						distance[i][j] = Integer.MAX_VALUE;
-					}
-				}
-			}
-
+			
+			distance = toInfinte(distance);
+			
+			distance = toZero(distance);
+			
+			distance = toWeight(distance);
+			
 			for (int k = 0; k < listVertice.size(); k++) {
 				for (int i = 0; i < listVertice.size(); i++) {
-					for (int j = 0; j < distance.length; j++) {
-						
+					for (int j = 0; j < listVertice.size(); j++) {
 						if (distance[i][k] != Integer.MAX_VALUE && distance[k][j] != Integer.MAX_VALUE && distance[i][j] > (distance[i][k] + distance[k][j])) {
 							distance[i][j] = distance[i][k] + distance[k][j];
-							System.out.println("Total = "+distance[i][j]+" Primero = "+distance[i][k]+" Segundo = "+distance[k][j]);
 						}
 					}
 				}
@@ -324,12 +317,53 @@ public class ListGraph<U extends Comparable< U>, V extends Comparable<V>, H exte
 		}
 	}
 
+	private int[][] toWeight(int[][] distance) {
+		
+		int[][] newMatrix = distance;	
+		
+		for (int i = 0; i < newMatrix.length; i++) {
+			for (int j = 0; j < newMatrix.length; j++) {
+				if (checkWeight(i, j) != null) {
+					newMatrix[i][j] = (int) checkWeight(i, j);
+				}
+			}
+		}
+		
+		return newMatrix;
+	}
+
+	private int[][] toZero(int[][] distance) {
+		
+		int[][] newMatrix = distance;	
+		
+		for (int i = 0; i < newMatrix.length; i++) {
+			for (int j = 0; j < newMatrix.length; j++) {
+				if (i == j) {
+					newMatrix[i][j] = 0;
+				}
+			}
+		}
+		return newMatrix;
+	}
+
+	private int[][] toInfinte(int[][] distance) {
+		
+		int[][] newMatrix = distance;	
+		
+		for (int i = 0; i < newMatrix.length; i++) {
+			for (int j = 0; j < newMatrix.length; j++) {
+				newMatrix[i][j] = Integer.MAX_VALUE;
+			}
+		}
+		return newMatrix;
+	}
+
 	public H checkWeight(int verticeOne, int verticeTwo) {
 		V verticeOneFind = listVertice.get(verticeOne).getValue();
 		V verticeTwoFind = listVertice.get(verticeTwo).getValue();
 		
 		if (listVertice.get(verticeOne).getAdjacency() != null && listVertice.get(verticeOne).getEdge() != null) {
-			for (int i = 0; i < listVertice.get(verticeOne).getAdjacency().size() - 1; i++) {
+			for (int i = 0; i < listVertice.get(verticeOne).getEdge().size(); i++) {
 				if (listVertice.get(verticeOne).getEdge().get(i).getInitVertice().getValue().compareTo(verticeOneFind) == 0
 						&& listVertice.get(verticeOne).getEdge().get(i).getFinalVertice().getValue()
 								.compareTo(verticeTwoFind) == 0) {

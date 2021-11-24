@@ -94,22 +94,23 @@ class ListGraphTest {
 	public void floydWarshallTest() {
 		setupScenary3();
 		lg.floyd();
+		Integer infinite = Integer.MAX_VALUE;
 		
 		int matrix[][] = {
 				{0,3000,8000,700,10200,7700,10700,8950,11620,13950},
-				{0,0,5000,0,0,0,0,0,0,0},
-				{0,0,0,0,0,0,0,0,0,0},
-				{0,0,11000,0,9500,7000,10000,8250,10920,13250},
-				{0,0,0,0,0,0,0,0,0,0},
-				{0,0,4000,7000,2500,0,3000,1250,3920,6250},
-				{0,0,1000,4000,5520,3020,0,4270,920,9270},
-				{0,0,6930,0,0,0,0,0,0,5000},
-				{0,0,6100,9100,4600,2100,5100,3350,0,8350},
-				{0,0,1930,0,0,0,0,0,0,0}};
+				{infinite,0,5000,infinite,infinite,infinite,infinite,infinite,infinite,infinite},
+				{infinite,infinite,0,infinite,infinite,infinite,infinite,infinite,infinite,infinite},
+				{infinite,infinite,11000,0,9500,7000,10000,8250,10920,13250},
+				{infinite,infinite,infinite,infinite,0,infinite,infinite,infinite,infinite,infinite},
+				{infinite,infinite,4000,7000,2500,0,3000,1250,3920,6250},
+				{infinite,infinite,1000,4000,5520,3020,0,4270,920,9270},
+				{infinite,infinite,6930,infinite,infinite,infinite,infinite,0,infinite,5000},
+				{infinite,infinite,6100,9100,4600,2100,5100,3350,0,8350},
+				{infinite,infinite,1930,infinite,infinite,infinite,infinite,infinite,infinite,0}};
 		
 		for (int i = 0; i < matrix.length; i++) {
 			for (int j = 0; j < matrix.length; j++) {
-				//System.out.println("Matriz = "+matrix[i][j]+" Floyd = "+lg.getDistance()[i][j]);
+				assertEquals(matrix[i][j], lg.getDistance()[i][j]);
 			}
 		}
 	}
