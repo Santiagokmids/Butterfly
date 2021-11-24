@@ -11,15 +11,25 @@ public class ListVertice<V, U, H>{
 	private boolean visited;
 	private int color;
 	
-	public ListVertice(V value, ArrayList<ListEdge<U, V, H>> edge) {
+	public ListVertice(V value) {
 		this.value = value;
-		this.edge = edge;
+		edge = new ArrayList<ListEdge<U,V,H>>();
 		setVisited(false);
 		color = 0;
 	}
 	
-	public boolean addEdge(Edge<U, V, H> edge) {
-		return true;
+	public boolean addEdge(ListEdge<U, V, H> ed) {
+		boolean noFound = true; 
+		for(int i =0; i< edge.size()&& noFound;i++) {
+			if(edge.get(i).getFinalVertice().equals(ed.getFinalVertice())) {
+				noFound= false;
+			}
+		}if(noFound) {
+			edge.add(ed);
+			return true;
+			
+		}
+		return false;
 	}
 	
 	public boolean deleteEdge(Edge<U, V, H> edge) {
