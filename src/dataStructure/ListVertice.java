@@ -2,7 +2,7 @@ package dataStructure;
 
 import java.util.ArrayList;
 
-public class ListVertice<V, U, H>{
+public class ListVertice<V extends Comparable<V>, U, H>{
 
 	private ArrayList<V> adjacency;
 	
@@ -20,8 +20,8 @@ public class ListVertice<V, U, H>{
 	
 	public boolean addEdge(ListEdge<U, V, H> ed) {
 		boolean noFound = true; 
-		for(int i =0; i< edge.size()&& noFound;i++) {
-			if(edge.get(i).getFinalVertice().equals(ed.getFinalVertice())) {
+		for(int i =0; i< edge.size() && noFound;i++) {
+			if(edge.get(i).getFinalVertice().getValue().compareTo(ed.getFinalVertice().getValue()) == 0) {
 				noFound= false;
 			}
 		}if(noFound) {

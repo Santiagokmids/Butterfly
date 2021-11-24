@@ -56,7 +56,6 @@ public class ListGraph<U extends Comparable< U>, V extends Comparable<V>, H exte
 			ListEdge<U, V, H> list = new ListEdge<U,V,H>(listVertice.get(positionA),listVertice.get(positionB),height);
 			return listVertice.get(positionA).addEdge(list);
 		}
-
 		return false;
 	}
 
@@ -279,8 +278,8 @@ public class ListGraph<U extends Comparable< U>, V extends Comparable<V>, H exte
 
 			distance = new int[listVertice.size()][listVertice.size()];
 
-			for (int i = 0; i < 9; i++) {
-				for (int j = 0; j < 9; j++) {
+			for (int i = 0; i < listVertice.size(); i++) {
+				for (int j = 0; j < listVertice.size(); j++) {
 					if (j == i) {
 						distance[i][j] = 0;
 					} else if (checkWeight(i, j) != null) {
@@ -291,11 +290,13 @@ public class ListGraph<U extends Comparable< U>, V extends Comparable<V>, H exte
 				}
 			}
 
-			for (int k = 0; k < 9; k++) {
-				for (int i = 0; i < 9; i++) {
+			for (int k = 0; k < listVertice.size(); k++) {
+				for (int i = 0; i < listVertice.size(); i++) {
 					for (int j = 0; j < distance.length; j++) {
-						if (distance[i][j] > distance[i][k] + distance[k][j]) {
+						
+						if (distance[i][k] != Integer.MAX_VALUE && distance[k][j] != Integer.MAX_VALUE && distance[i][j] > (distance[i][k] + distance[k][j])) {
 							distance[i][j] = distance[i][k] + distance[k][j];
+							System.out.println("Total = "+distance[i][j]+" Primero = "+distance[i][k]+" Segundo = "+distance[k][j]);
 						}
 					}
 				}
@@ -306,14 +307,17 @@ public class ListGraph<U extends Comparable< U>, V extends Comparable<V>, H exte
 	public H checkWeight(int verticeOne, int verticeTwo) {
 		V verticeOneFind = listVertice.get(verticeOne).getValue();
 		V verticeTwoFind = listVertice.get(verticeTwo).getValue();
-
-		for (int i = 0; i < listVertice.get(verticeOne).getAdjacency().size() - 1; i++) {
-			if (listVertice.get(verticeOne).getEdge().get(i).getInitVertice().getValue().compareTo(verticeOneFind) == 0
-					&& listVertice.get(verticeOne).getEdge().get(i).getFinalVertice().getValue()
-							.compareTo(verticeTwoFind) == 0) {
-				return listVertice.get(verticeOne).getEdge().get(i).getHeight();
+		
+		if (listVertice.get(verticeOne).getAdjacency() != null && listVertice.get(verticeOne).getEdge() != null) {
+			for (int i = 0; i < listVertice.get(verticeOne).getAdjacency().size() - 1; i++) {
+				if (listVertice.get(verticeOne).getEdge().get(i).getInitVertice().getValue().compareTo(verticeOneFind) == 0
+						&& listVertice.get(verticeOne).getEdge().get(i).getFinalVertice().getValue()
+								.compareTo(verticeTwoFind) == 0) {
+					return listVertice.get(verticeOne).getEdge().get(i).getHeight();
+				}
 			}
 		}
+
 		return null;
 	}
 
@@ -497,5 +501,9 @@ public class ListGraph<U extends Comparable< U>, V extends Comparable<V>, H exte
 
 	public void makeset(ListVertice<V, U, H> vertice) {
 		ensembleArrayList.add(new NodeK<V, U, H>(vertice));
+	}
+
+	public int[][] getDistance() {
+		return distance;
 	}
 }
