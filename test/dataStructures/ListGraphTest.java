@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import dataStructure.ListGraph;
 import junit.framework.Assert;
-class ListButterflyDataTest {
+class ListGraphTest {
 	private ListGraph<String,String ,Integer> lg;
 	public void setupScenary1() {
 		lg = new ListGraph<String,String ,Integer>();
@@ -26,11 +26,15 @@ class ListButterflyDataTest {
 	}
 
 	@Test
-	void test() {
+	public void test() {
 		setupScenary2();
 		assertEquals("Colombia", lg.bfs("Colombia").get(0).getValue());
 		assertEquals("Colombia", lg.bfs("Dubai").get(1).getValue());
 		assertEquals("Colombia", lg.bfs("Portugal").get(2).getValue());
 	}
-
+	
+	@Test
+	public void floydWarshallTest() {
+		
+	}
 }
