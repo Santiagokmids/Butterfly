@@ -113,10 +113,10 @@ class ListGraphTest {
 	@Test
 	public void dijkstraTest() {
 		setupScenary3();
-		int value = 0;
+		/*int value = 0;
 		value = lg.makeDijkstra(lg.getVertice().get(8), lg.getVertice().get(2));
-		assertEquals(value, 6100);
-		/*ArrayList<Integer> dijkstra = lg.dijkstra(lg.getVertice().get(8));
+		assertEquals(value, 6100);*/
+		ArrayList<Integer> dijkstra = lg.dijkstra(lg.getVertice().get(8));
 		
 		ArrayList<Integer> values = new ArrayList<>();
 		values.add(Integer.MAX_VALUE);
@@ -132,7 +132,7 @@ class ListGraphTest {
 		
 		for (int i = 0; i < dijkstra.size(); i++) {
 			System.out.println(dijkstra.get(i));
-		}*/
+		}
 	}
 
 	@Test

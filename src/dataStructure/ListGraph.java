@@ -276,56 +276,54 @@ implements IListGraph<U, V, H> {
 
 		ArrayList<Integer> dist = new ArrayList<>();
 		ArrayList<Integer> distances = new ArrayList<>();
-		
-		for (int i = 0; i < listVertice.size(); i++) {
-			distances.add(null);
-		}
-		
 		ArrayList<ListVertice<V, U, H>> prev = new ArrayList<>();
 		Queue<ListVertice<V, U, H>> queue = new LinkedList<>();
 		ArrayList<ListVertice<V, U, H>> reference = new ArrayList<>();
 		
 		dist = assignSource(start, dist);
+		distances = assignSource(start, distances);
 		prev = assignPrev(prev);
 		queue = assignQueue(queue);
 		reference = assignRef();
+		int cont = 0;
 		
 		while (!queue.isEmpty()) {
 
 			int weight = 0;
 
-			queue = extractMin(queue, (ArrayList<Integer>)dist.clone());
+			queue = extractMin(queue, (ArrayList<Integer>)dist.clone(), (ArrayList<ListVertice<V, U, H>>)reference.clone(),cont);
 			
 			ListVertice<V, U, H> value = queue.peek();
-			
+			System.out.println(value.getValue());
 			int index = searchReference(value, reference);
 			
 			if(listVertice.get(index).getEdge().size() > 0) {
 				
 				for (int i = 0; i < listVertice.get(index).getEdge().size(); i++) {
-
+					
 					int finalVertice = searchReference(value.getEdge().get(i).getFinalVertice(), reference);
 					
 					if(finalVertice != -1 && dist.get(index) != Integer.MAX_VALUE) {
-						
+
 						weight += dist.get(index) + (Integer) value.getEdge().get(i).getHeight();
 
 						if (weight < dist.get(finalVertice)) {
+							distances.set(finalVertice, weight);
 							dist.set(finalVertice, weight);
 							prev.set(finalVertice, value);
-							distances.set(index, dist.get(index));
 							queue.poll();
 						}
 					}else {
 						queue.poll();
 					}
 				}
+				cont++;
 			}else {
 				queue.clear();
 			}
 		}
 
-		return (ArrayList<H>) distances;
+		return (ArrayList<H>) dist;
 	}
 
 	private ArrayList<Integer> assignSource(ListVertice<V, U, H> start, ArrayList<Integer> dist) {
@@ -360,37 +358,31 @@ implements IListGraph<U, V, H> {
 		return queue;
 	}
 
-	private Queue<ListVertice<V, U, H>> extractMin(Queue<ListVertice<V, U, H>> queue, ArrayList<Integer> dist) {
-
-		ArrayList<ListVertice<V, U, H>> values = new ArrayList<>();
-
-		for (int i = 0; i < dist.size(); i++) {
-			values.add(queue.poll());
-		}
+	private Queue<ListVertice<V, U, H>> extractMin(Queue<ListVertice<V, U, H>> queue, ArrayList<Integer> dist, ArrayList<ListVertice<V, U, H>> reference ,int cont) {
 
 		for (int i = 0; i < dist.size(); i++) {
 			int min = dist.get(i);
-			ListVertice<V, U, H> minim = values.get(i);
+			ListVertice<V, U, H> minim = reference.get(i);
 
 			for (int j = i + 1; j < dist.size(); j++) {
 
 				if (dist.get(j) < min) {
 					int temp = dist.get(j);
-					ListVertice<V, U, H> temporal = values.get(j);
+					ListVertice<V, U, H> temporal = reference.get(j);
 					dist.set(j, min);
-					values.set(j, minim);
+					reference.set(j, minim);
 					min = temp;
 					minim = temporal;
 				}
 			}
 			dist.set(i, min);
-			values.set(i, minim);
+			reference.set(i, minim);
 		}
 		
 		queue.clear();
 
-		for (int i = 0; i < values.size(); i++) {
-			queue.add(values.get(i));
+		for (int i = cont; i < reference.size(); i++) {
+			queue.add(reference.get(i));
 		}
 		return queue;
 	}
@@ -581,13 +573,6 @@ implements IListGraph<U, V, H> {
 			NodeK<V, U, H> nodeTwo = findNode(priority.getFinalVertice().getValue());
 			
 			if (findSet(nodeOne) != findSet(nodeTwo)) {
-				System.out.println(priority.getInitVertice().getValue());
-				System.out.println(priority.getFinalVertice().getValue());
-				System.out.println("Contador = "+contVertice);
-				System.out.println("Inicial = "+findSet(nodeOne).getVertice().getValue());
-				System.out.println("Final = "+findSet(nodeTwo).getVertice().getValue());
-				System.out.println(contT+(Integer) priority.getHeight());
-				System.out.println("--------------------------------------");
 				union(nodeOne, nodeTwo);
 				priorityQueue = secondPriority(priorityQueue);
 				return kruskalOperation(priorityQueue, contVertice+1, contT+(Integer) priority.getHeight());
