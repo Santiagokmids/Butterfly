@@ -102,6 +102,7 @@ class MatrixGraphTest<V extends Comparable <V>, U, H extends Comparable<H>>{
 		assertEquals("Dubai", matrixGraph.bfs("Colombia").get(7).getValue());
 		assertEquals("Portugal", matrixGraph.bfs("Colombia").get(8).getValue());
 		assertEquals("Madagascar", matrixGraph.bfs("Colombia").get(9).getValue());
+		
 	}
 	@Test
 	void dfsTestScenary4() {
