@@ -1,6 +1,6 @@
 package dataStructure;
 
-public class NodeM <V, U, H> {
+public class NodeM <V extends Comparable<V> , U, H> {
 	
 	private NodeM <V, U, H> parent;
 	private Vertice<V, U, H> vertice;

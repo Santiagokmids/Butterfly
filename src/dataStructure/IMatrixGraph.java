@@ -2,10 +2,11 @@ package dataStructure;
 
 import java.util.ArrayList;
 
-public interface IMatrixGraph<U, V, H> {
+public interface IMatrixGraph<U, V extends Comparable<V>, H> {
 	public void createGraph();
 	public boolean addVertice(V value);
 	public boolean addEdge(V valueIni, V valueEnd, H height);
+	public H searchEdge(V verticeInit, V verticeEnd);
 	public boolean deleteVertice();
 	public boolean deleteEdge();
 	public boolean setEdge();
