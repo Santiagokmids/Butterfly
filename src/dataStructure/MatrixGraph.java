@@ -81,7 +81,7 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 				createMatrix(dynamicV.getDown(),dynamicV.getDown(), current, 0, contV++);
 			}
 		}else{
-			if(cont < (vertice.size()-1)) {
+			if(cont < (vertice.size())) {
 				cont++;
 				createMatrix(dynamicV,dynamic.getNext(), current, cont,contV);
 			}
