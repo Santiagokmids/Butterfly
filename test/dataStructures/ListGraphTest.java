@@ -143,7 +143,7 @@ class ListGraphTest {
 		values.add(8350);
 		
 		for (int i = 0; i < dijkstra.size(); i++) {
-			System.out.println(dijkstra.get(i));
+		//	System.out.println(dijkstra.get(i));
 		}
 	}
 

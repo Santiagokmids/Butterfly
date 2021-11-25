@@ -267,7 +267,6 @@ implements IListGraph<U, V, H> {
 		}
 		vertic.add(listVertice.get(position));
 		dfs(vertic, listVertice.get(position));
-		System.out.println(vertic.size());
 		return vertic;
 	}
 
@@ -320,7 +319,7 @@ implements IListGraph<U, V, H> {
 			queue = extractMin(queue, (ArrayList<Integer>)dist.clone(), (ArrayList<ListVertice<V, U, H>>)reference.clone(),cont);
 			
 			ListVertice<V, U, H> value = queue.peek();
-			System.out.println(value.getValue());
+			
 			int index = searchReference(value, reference);
 			
 			if(listVertice.get(index).getEdge().size() > 0) {
