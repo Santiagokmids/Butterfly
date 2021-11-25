@@ -7,6 +7,7 @@ import java.util.Queue;
 public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> implements IMatrixGraph<U, V, H>{
 
 	public ArrayList<Vertice<V, U, H>> vertice;
+	public ArrayList<Edge<U, V, H>> edges;
 	public Vertice<V, U, H> first;
 	private ArrayList<NodeM<V, U, H>> ensembleArrayList = new ArrayList<NodeM<V, U, H>>();
 	private int distance[][];
@@ -24,9 +25,30 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 		V zero = null;
 		Vertice<V, U, H> vertix = new Vertice<V, U, H>(zero);
 		createMatrix(vertix);
+		reloadEdges();
 		return true;
 	}
 	
+	private void reloadEdges() {
+		if(!edges.isEmpty()) {
+			for (int i = 0; i < edges.size(); i++) {
+				addEdge(findPosition(edges.get(i).getInitVertice()), findPosition(edges.get(i).getFinalVertice()), edges.get(i).getHeight());
+			}
+		}
+	}
+	
+	public int findPosition(Vertice<V, U, H> value) {
+		int position = 0;
+		
+		for (int i = 0; i < vertice.size(); i++) {
+			if (vertice.get(i).getValue().compareTo(value.getValue()) == 0) {
+				 position = i;
+			}
+		}
+		
+		return position;
+	}
+
 	public Vertice<V, U, H> findVertice(){
 		return null;
 	}
@@ -87,7 +109,7 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 				positionB = i;
 			}
 		}
-		
+		edges.add(new Edge<U, V, H>(vertice.get(positionA),vertice.get(positionB), height));
 		verify = addEdge(positionA, positionB, height);
 		
 		return verify;
