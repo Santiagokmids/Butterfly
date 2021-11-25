@@ -1,13 +1,7 @@
 package dataStructures;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.util.ArrayList;
-
 import org.junit.jupiter.api.Test;
-
 import dataStructure.ListGraph;
-
 class ListGraphTest {
 
 	private ListGraph<String,String ,Integer> lg;
@@ -40,6 +34,7 @@ class ListGraphTest {
 		lg.addVertice("Dubai");
 		lg.addVertice("Portugal");
 		lg.addVertice("Madagascar");
+		/*
 		lg.addEdge("Colombia", "España",3000);
 		lg.addEdge("Colombia", "EEUU",700);
 		lg.addEdge("España", "Japon",5000);
@@ -53,6 +48,20 @@ class ListGraphTest {
 		lg.addEdge("Dubai", "Madagascar",5000);
 		lg.addEdge("Madagascar", "Japon",1930);
 		lg.addEdge("Nigeria", "Japon",1000);
+		*/
+		lg.addEdge("Colombia", "España", 3000);
+		lg.addEdge("Colombia", "EEUU", 700);
+		lg.addEdge("España", "Japon", 5000);	
+		lg.addEdge("EEUU", "Australia", 7000);
+		lg.addEdge("Australia", "Nigeria", 3000);
+		lg.addEdge("Australia", "Rusia", 2500);	
+		lg.addEdge("Australia", "Dubai", 1250);
+		lg.addEdge("Nigeria", "EEUU", 4000);
+		lg.addEdge("Nigeria", "Portugal", 920);
+		lg.addEdge("Portugal", "Australia", 2100);
+		lg.addEdge("Dubai", "Madagascar", 5000);
+		lg.addEdge("Madagascar", "Japon", 1930);
+		lg.addEdge("Nigeria", "Japon", 1000);
 	}
 	
 	@Test
@@ -186,7 +195,20 @@ class ListGraphTest {
 			}
 		}
 	}
-	
+	@Test
+	void dfs() {
+		setupScenary3();
+		assertEquals("Colombia", lg.dfs("Colombia").get(0).getValue());
+		assertEquals("España", lg.dfs("Colombia").get(1).getValue());
+		assertEquals("Japon", lg.dfs("Colombia").get(2).getValue());
+		assertEquals("EEUU", lg.dfs("Colombia").get(3).getValue());
+		assertEquals("Australia", lg.dfs("Colombia").get(4).getValue());
+		assertEquals("Nigeria", lg.dfs("Colombia").get(5).getValue());
+		assertEquals("Portugal", lg.dfs("Colombia").get(6).getValue());
+		assertEquals("Rusia", lg.dfs("Colombia").get(7).getValue());
+		assertEquals("Dubai", lg.dfs("Colombia").get(8).getValue());
+		assertEquals("Madagascar", lg.dfs("Colombia").get(9).getValue());
+	}
 	@Test
 	public void kruskalTest1() {
 		setupScenary3();

@@ -252,9 +252,35 @@ implements IListGraph<U, V, H> {
 	}
 
 	@Override
-	public ArrayList<ListVertice<V, U, H>> dfs() {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<ListVertice<V, U, H>> dfs(V v) {
+		boolean found = false;
+		int position = 0;
+		ArrayList<ListVertice<V, U, H>>vertic = new ArrayList<ListVertice<V, U, H>>();
+		for(int i=0;i< listVertice.size() ;i++) {
+			listVertice.get(i).setVisited(false);
+		}
+		for(int i=0;i< listVertice.size() && found ==false;i++) {
+			if(listVertice.get(i).getValue().compareTo(v)==0) {
+				position = i;
+				found = true;
+			}
+		}
+		vertic.add(listVertice.get(position));
+		dfs(vertic, listVertice.get(position));
+		System.out.println(vertic.size());
+		return vertic;
+	}
+
+	public void dfs(ArrayList<ListVertice<V, U, H>> vertic,ListVertice<V, U, H> e) {
+		ArrayList<ListEdge<U, V, H>> verticeO = e.getEdge();
+		for(int i =0;i<verticeO.size();i++) {
+			if(verticeO.get(i).getFinalVertice().isVisited() == false) {			
+				vertic.add(verticeO.get(i).getFinalVertice());
+				verticeO.get(i).getFinalVertice().setVisited(true);
+				dfs(vertic, verticeO.get(i).getFinalVertice());
+			}
+		}
+
 	}
 
 	public int makeDijkstra(ListVertice<V, U, H> start, ListVertice<V, U, H> end) {
