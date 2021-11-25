@@ -1,6 +1,9 @@
 package dataStructures;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Test;
 
 import dataStructure.ListGraph;
@@ -24,12 +27,10 @@ class ListGraphTest {
 		lg.addEdge("Portugal", "Madagascar", 2750);
 		lg.addEdge("Madagascar", "Dubai", 590);
 		lg.addEdge("Colombia", "Dubai", 1200);
-
 	}
 
 	public void setupScenary3() {
 		setupScenary1();
-		lg.addVertice("Colombia");
 		lg.addVertice("España");
 		lg.addVertice("Japon");
 		lg.addVertice("EEUU");
@@ -57,19 +58,19 @@ class ListGraphTest {
 	@Test
 	public void addVerticeTest() {
 		setupScenary1();
-		lg.addVertice("Japon");
-		lg.addVertice("Portugal");
-		assertEquals("Japon", lg.getListVertice().get(1).getValue());
-		assertEquals("Portugal", lg.getListVertice().get(2).getValue());
+		lg.addVertice("Nigeria");
+		lg.addVertice("Madagascar");
+		assertEquals("Nigeria", lg.getListVertice().get(1).getValue());
+		assertEquals("Madagascar", lg.getListVertice().get(2).getValue());
 	}
 	
 	@Test
 	public void addEdgeTest() {
 		setupScenary2();
-		lg.addEdge("Portugal", "Colombia",1600);
-		lg.addEdge("Madagascar", "Colombia",-200);
-		assertEquals(1600, lg.searchEdge("Portugal", "Colombia"));
-		assertEquals(null, lg.searchEdge("Madagascar", "Colombia"));
+		lg.addEdge("Colombia", "Portugal",1600);
+		lg.addEdge("Dubai", "Nigeria",-780);
+		assertEquals(1600, lg.searchEdge("Colombia", "Portugal"));
+		assertEquals(null, lg.searchEdge("Dubai", "Nigeria"));
 	}
 	
 	@Test
@@ -94,10 +95,10 @@ class ListGraphTest {
 	@Test
 	public void modifyEdgeTest() {
 		setupScenary2();
-		lg.setEdge("Dubai","Portugal",2130);
-		lg.setEdge("Colombia","Dubai",3000);
-		assertEquals(2130, lg.searchEdge("Dubai","Portugal"));
-		assertEquals(3000, lg.searchEdge("Colombia", "Dubai"));
+		lg.setEdge("Portugal","Madagascar",1320);
+		lg.setEdge("Madagascar","Dubai",3000);
+		assertEquals(1320, lg.searchEdge("Portugal","Madagascar"));
+		assertEquals(3000, lg.searchEdge("Madagascar", "Dubai"));
 	}
 
 	@Test
@@ -108,9 +109,34 @@ class ListGraphTest {
 		assertEquals("Portugal", lg.bfs("Colombia").get(2).getValue());
 		assertEquals("Madagascar", lg.bfs("Colombia").get(3).getValue());
 	}
+	
+	@Test
+	public void dijkstraTest() {
+		setupScenary3();
+		int value = 0;
+		value = lg.makeDijkstra(lg.getVertice().get(8), lg.getVertice().get(2));
+		assertEquals(value, 6100);
+		/*ArrayList<Integer> dijkstra = lg.dijkstra(lg.getVertice().get(8));
+		
+		ArrayList<Integer> values = new ArrayList<>();
+		values.add(Integer.MAX_VALUE);
+		values.add(Integer.MAX_VALUE);
+		values.add(6100);
+		values.add(9100);
+		values.add(4600);
+		values.add(2100);
+		values.add(5100);
+		values.add(0);
+		values.add(3350);
+		values.add(8350);
+		
+		for (int i = 0; i < dijkstra.size(); i++) {
+			System.out.println(dijkstra.get(i));
+		}*/
+	}
 
 	@Test
-	public void floydWarshallTest() {
+	public void floydWarshallTest1() {
 		setupScenary3();
 		lg.floyd();
 		Integer infinite = Integer.MAX_VALUE;
@@ -132,5 +158,54 @@ class ListGraphTest {
 				assertEquals(matrix[i][j], lg.getDistance()[i][j]);
 			}
 		}
+	}
+	
+	
+	@Test
+	public void floydWarshallTest2() {
+		setupScenary1();
+		lg.deleteVertice("Colombia");
+		assertEquals(true, lg.getDistance() == null);
+	}
+	
+	@Test
+	public void floydWarshallTest3() {
+		setupScenary2();
+		lg.floyd();
+		Integer infinite = Integer.MAX_VALUE;
+		
+		int[][] matrix = {
+				{0,1200,4200,6950},
+				{infinite,0,3000,5750},
+				{infinite,3340,0,2750},
+				{infinite,590,3590,0}};
+		
+		for (int i = 0; i < matrix.length; i++) {
+			for (int j = 0; j < matrix.length; j++) {
+				assertEquals(matrix[i][j], lg.getDistance()[i][j]);
+			}
+		}
+	}
+	
+	@Test
+	public void kruskalTest1() {
+		setupScenary3();
+		int kruskal = lg.kruskal();
+		assertEquals(17400, kruskal);
+	}
+	
+	@Test
+	public void kruskalTest2() {
+		setupScenary1();
+		lg.deleteVertice("Colombia");
+		int kruskal = lg.kruskal();
+		assertEquals(0, kruskal);
+	}
+	
+	@Test
+	public void kruskalTest3() {
+		setupScenary2();
+		int kruskal = lg.kruskal();
+		assertEquals(4540, kruskal);
 	}
 }

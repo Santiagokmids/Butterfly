@@ -20,6 +20,7 @@ implements IListGraph<U, V, H> {
 	@Override
 	public boolean addVertice(V value) {
 		boolean noFound = true;
+		
 		for (int i = 0; i < listVertice.size() && noFound; i++) {
 			if (listVertice.get(i).getValue().compareTo(value) == 0) {
 				noFound = false;
@@ -274,35 +275,57 @@ implements IListGraph<U, V, H> {
 	public ArrayList<H> dijkstra(ListVertice<V, U, H> start) {
 
 		ArrayList<Integer> dist = new ArrayList<>();
+		ArrayList<Integer> distances = new ArrayList<>();
+		
+		for (int i = 0; i < listVertice.size(); i++) {
+			distances.add(null);
+		}
+		
 		ArrayList<ListVertice<V, U, H>> prev = new ArrayList<>();
 		Queue<ListVertice<V, U, H>> queue = new LinkedList<>();
 		ArrayList<ListVertice<V, U, H>> reference = new ArrayList<>();
-
+		
 		dist = assignSource(start, dist);
 		prev = assignPrev(prev);
 		queue = assignQueue(queue);
 		reference = assignRef();
-
+		
 		while (!queue.isEmpty()) {
 
 			int weight = 0;
-			queue = extractMin(queue, dist);
+
+			queue = extractMin(queue, (ArrayList<Integer>)dist.clone());
+			
 			ListVertice<V, U, H> value = queue.peek();
+			
 			int index = searchReference(value, reference);
+			
+			if(listVertice.get(index).getEdge().size() > 0) {
+				
+				for (int i = 0; i < listVertice.get(index).getEdge().size(); i++) {
 
-			for (int i = 0; i < value.getEdge().size(); i++) {
-				int finalVertice = searchReference(value.getEdge().get(i).getFinalVertice(), reference);
-				weight += dist.get(index) + (Integer) value.getEdge().get(index).getHeight();
+					int finalVertice = searchReference(value.getEdge().get(i).getFinalVertice(), reference);
+					
+					if(finalVertice != -1 && dist.get(index) != Integer.MAX_VALUE) {
+						
+						weight += dist.get(index) + (Integer) value.getEdge().get(i).getHeight();
 
-				if (weight < dist.get(finalVertice)) {
-					dist.set(finalVertice, weight);
-					prev.set(finalVertice, value);
-					queue.poll();
+						if (weight < dist.get(finalVertice)) {
+							dist.set(finalVertice, weight);
+							prev.set(finalVertice, value);
+							distances.set(index, dist.get(index));
+							queue.poll();
+						}
+					}else {
+						queue.poll();
+					}
 				}
+			}else {
+				queue.clear();
 			}
 		}
 
-		return (ArrayList<H>) dist;
+		return (ArrayList<H>) distances;
 	}
 
 	private ArrayList<Integer> assignSource(ListVertice<V, U, H> start, ArrayList<Integer> dist) {
@@ -311,7 +334,7 @@ implements IListGraph<U, V, H> {
 
 			if (start.getValue().compareTo(listVertice.get(i).getValue()) == 0) {
 				dist.add(i, 0);
-
+				
 			} else {
 				dist.add(Integer.MAX_VALUE);
 			}
@@ -363,7 +386,7 @@ implements IListGraph<U, V, H> {
 			dist.set(i, min);
 			values.set(i, minim);
 		}
-
+		
 		queue.clear();
 
 		for (int i = 0; i < values.size(); i++) {
@@ -539,27 +562,34 @@ implements IListGraph<U, V, H> {
 
 			Queue<ListEdge<U, V, H>> priorityQueue = priority();
 
-			for (int i = 0; i < 9; i++) {
+			for (int i = 0; i < listVertice.size(); i++) {
 				makeset(listVertice.get(i));
 			}
-
-			for (int i = 0; i < priorityQueue.size() - 1; i++) {
-
-				ListEdge<U, V, H> priority = priorityQueue.poll();
-
-				NodeK<V, U, H> nodeOne = findNode(priority.getInitVertice().getValue());
-				NodeK<V, U, H> nodeTwo = findNode(priority.getFinalVertice().getValue());
-
-				if (findSet(nodeOne) == findSet(nodeTwo)) {
-					cont += (Integer) priority.getHeight();
-					union(nodeOne, nodeTwo);
-				}
-
-				priorityQueue = secondPriority(priorityQueue);
-			}
+			cont = kruskalOperation(priorityQueue, 0, 0);
 		}
 
 		return cont;
+	}
+
+	private int kruskalOperation(Queue<ListEdge<U, V, H>> priorityQueue, int contVertice, int contT) {
+		
+		if(!priorityQueue.isEmpty() && contVertice < listVertice.size()-1) {
+
+			ListEdge<U, V, H> priority = priorityQueue.poll();
+			
+			NodeK<V, U, H> nodeOne = findNode(priority.getInitVertice().getValue());
+			NodeK<V, U, H> nodeTwo = findNode(priority.getFinalVertice().getValue());
+			
+			if (findSet(nodeOne) != findSet(nodeTwo)) {
+				union(nodeOne, nodeTwo);
+				priorityQueue = secondPriority(priorityQueue);
+				return kruskalOperation(priorityQueue, contVertice+1, contT+(Integer) priority.getHeight());
+			}else {
+				priorityQueue = secondPriority(priorityQueue);
+				return kruskalOperation(priorityQueue, contVertice, contT);
+			}
+		}
+		return contT;
 	}
 
 	private Queue<ListEdge<U, V, H>> secondPriority(Queue<ListEdge<U, V, H>> priorityQueue) {
@@ -582,7 +612,7 @@ implements IListGraph<U, V, H> {
 		ArrayList<ListEdge<U, V, H>> newArrayList = arrayList;
 		Queue<ListEdge<U, V, H>> newQueue = new LinkedList<>();
 
-		for (int i = 0; i < newArrayList.size() - 1; i++) {
+		for (int i = 0; i < newArrayList.size(); i++) {
 			newQueue.add(newArrayList.get(i));
 		}
 
@@ -590,16 +620,14 @@ implements IListGraph<U, V, H> {
 	}
 
 	private void union(NodeK<V, U, H> nodeOne, NodeK<V, U, H> nodeTwo) {
-		if (nodeOne.getVertice().getValue().compareTo(nodeTwo.getVertice().getValue()) < 0) {
-			nodeTwo.setParent(nodeOne);
-		}
+		nodeTwo.setParent(nodeOne);
 	}
 
 	private NodeK<V, U, H> findNode(V value) {
 
 		boolean verify = false;
 
-		for (int i = 0; i < ensembleArrayList.size() - 1 && !verify; i++) {
+		for (int i = 0; i < ensembleArrayList.size() && !verify; i++) {
 			if (ensembleArrayList.get(i).getVertice().getValue().compareTo(value) == 0) {
 				verify = true;
 				return ensembleArrayList.get(i);
@@ -612,7 +640,7 @@ implements IListGraph<U, V, H> {
 
 		NodeK<V, U, H> newNode = toFind;
 
-		if (toFind.getParent() != null) {
+		if (toFind != null && toFind.getParent() != null) {
 			return newNode = findSet(toFind.getParent());
 		}
 
@@ -625,8 +653,8 @@ implements IListGraph<U, V, H> {
 		ArrayList<ListEdge<U, V, H>> toOrganize = new ArrayList<>();
 		Queue<ListEdge<U, V, H>> priorityQueue = new LinkedList<>();
 
-		for (int i = 0; i < newArrayList.size() - 1; i++) {
-			for (int j = 0; j < newArrayList.get(i).getEdge().size() - 1; j++) {
+		for (int i = 0; i < newArrayList.size(); i++) {
+			for (int j = 0; j < newArrayList.get(i).getEdge().size(); j++) {
 				toOrganize.add(newArrayList.get(i).getEdge().get(j));
 			}
 		}
