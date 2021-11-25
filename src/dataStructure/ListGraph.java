@@ -581,13 +581,6 @@ implements IListGraph<U, V, H> {
 			NodeK<V, U, H> nodeTwo = findNode(priority.getFinalVertice().getValue());
 			
 			if (findSet(nodeOne) != findSet(nodeTwo)) {
-				System.out.println(priority.getInitVertice().getValue());
-				System.out.println(priority.getFinalVertice().getValue());
-				System.out.println("Contador = "+contVertice);
-				System.out.println("Inicial = "+findSet(nodeOne).getVertice().getValue());
-				System.out.println("Final = "+findSet(nodeTwo).getVertice().getValue());
-				System.out.println(contT+(Integer) priority.getHeight());
-				System.out.println("--------------------------------------");
 				union(nodeOne, nodeTwo);
 				priorityQueue = secondPriority(priorityQueue);
 				return kruskalOperation(priorityQueue, contVertice+1, contT+(Integer) priority.getHeight());
