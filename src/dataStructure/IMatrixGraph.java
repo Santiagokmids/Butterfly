@@ -7,9 +7,9 @@ public interface IMatrixGraph<U, V extends Comparable<V>, H> {
 	public boolean addVertice(V value);
 	public boolean addEdge(V valueIni, V valueEnd, H height);
 	public H searchEdge(V verticeInit, V verticeEnd);
-	public boolean deleteVertice();
-	public boolean deleteEdge();
-	public boolean setEdge();
+	public boolean deleteVertice(V value);
+	public boolean deleteEdge(V initial, V end, H ewight);
+	public boolean modifyEdge(V initial, V end, H ewight, H newWeight);
 	public ArrayList<Vertice<V, U, H>> getVertice();
 	public Edge<U, V, H> getEdges();
 	public ArrayList<Vertice<V, U, H>> bfs(V v);

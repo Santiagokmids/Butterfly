@@ -69,16 +69,21 @@ class MatrixGraphTest<V extends Comparable <V>, U, H extends Comparable<H>>{
 	@Test
 	public void deleteVerticeTest() {
 		setupScenary2();
+		assertEquals(true, matrixGraph.deleteVertice("Dubai"));
 	}
 	
 	@Test
 	public void deleteEdgeTest() {
 		setupScenary2();
+		assertEquals(true, matrixGraph.deleteEdge("Portugal", "Madagascar", 2750));
 	}
 	
 	@Test
 	public void modifyEdgeTest() {
 		setupScenary2();
+		matrixGraph.modifyEdge("Madagascar", "Dubai", 590, 750);
+		//assertEquals(750, matrixGraph.searchEdge("Madagascar", "Dubai"));
+		assertEquals(750, matrixGraph.searchEdge("Colombia", "Dubai"));
 	}
 
 	@Test
