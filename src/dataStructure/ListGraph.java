@@ -20,6 +20,7 @@ implements IListGraph<U, V, H> {
 	@Override
 	public boolean addVertice(V value) {
 		boolean noFound = true;
+		
 		for (int i = 0; i < listVertice.size() && noFound; i++) {
 			if (listVertice.get(i).getValue().compareTo(value) == 0) {
 				noFound = false;
@@ -274,35 +275,57 @@ implements IListGraph<U, V, H> {
 	public ArrayList<H> dijkstra(ListVertice<V, U, H> start) {
 
 		ArrayList<Integer> dist = new ArrayList<>();
+		ArrayList<Integer> distances = new ArrayList<>();
+		
+		for (int i = 0; i < listVertice.size(); i++) {
+			distances.add(null);
+		}
+		
 		ArrayList<ListVertice<V, U, H>> prev = new ArrayList<>();
 		Queue<ListVertice<V, U, H>> queue = new LinkedList<>();
 		ArrayList<ListVertice<V, U, H>> reference = new ArrayList<>();
-
+		
 		dist = assignSource(start, dist);
 		prev = assignPrev(prev);
 		queue = assignQueue(queue);
 		reference = assignRef();
-
+		
 		while (!queue.isEmpty()) {
 
 			int weight = 0;
-			queue = extractMin(queue, dist);
+
+			queue = extractMin(queue, (ArrayList<Integer>)dist.clone());
+			
 			ListVertice<V, U, H> value = queue.peek();
+			
 			int index = searchReference(value, reference);
+			
+			if(listVertice.get(index).getEdge().size() > 0) {
+				
+				for (int i = 0; i < listVertice.get(index).getEdge().size(); i++) {
 
-			for (int i = 0; i < value.getEdge().size(); i++) {
-				int finalVertice = searchReference(value.getEdge().get(i).getFinalVertice(), reference);
-				weight += dist.get(index) + (Integer) value.getEdge().get(index).getHeight();
+					int finalVertice = searchReference(value.getEdge().get(i).getFinalVertice(), reference);
+					
+					if(finalVertice != -1 && dist.get(index) != Integer.MAX_VALUE) {
+						
+						weight += dist.get(index) + (Integer) value.getEdge().get(i).getHeight();
 
-				if (weight < dist.get(finalVertice)) {
-					dist.set(finalVertice, weight);
-					prev.set(finalVertice, value);
-					queue.poll();
+						if (weight < dist.get(finalVertice)) {
+							dist.set(finalVertice, weight);
+							prev.set(finalVertice, value);
+							distances.set(index, dist.get(index));
+							queue.poll();
+						}
+					}else {
+						queue.poll();
+					}
 				}
+			}else {
+				queue.clear();
 			}
 		}
 
-		return (ArrayList<H>) dist;
+		return (ArrayList<H>) distances;
 	}
 
 	private ArrayList<Integer> assignSource(ListVertice<V, U, H> start, ArrayList<Integer> dist) {
@@ -311,7 +334,7 @@ implements IListGraph<U, V, H> {
 
 			if (start.getValue().compareTo(listVertice.get(i).getValue()) == 0) {
 				dist.add(i, 0);
-
+				
 			} else {
 				dist.add(Integer.MAX_VALUE);
 			}
@@ -363,7 +386,7 @@ implements IListGraph<U, V, H> {
 			dist.set(i, min);
 			values.set(i, minim);
 		}
-
+		
 		queue.clear();
 
 		for (int i = 0; i < values.size(); i++) {
