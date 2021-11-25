@@ -42,8 +42,8 @@ public class ListVertice<V extends Comparable<V>, U, H>{
 	public ArrayList<ListEdge<U, V, H>> getEdge() {
 		return edge;
 	}
-	public void setEdge(ArrayList<ListEdge<U, V, H>> edge) {
-		this.edge = edge;
+	public void setEdge(ListEdge<U, V, H> ed) {
+		edge.add(ed);
 	}
 
 	public boolean isVisited() {

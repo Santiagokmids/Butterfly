@@ -185,10 +185,10 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 		boolean found = false;
 		int position = 0;
 		ArrayList<Vertice<V, U, H>> vertic = new ArrayList<Vertice<V, U, H>>();
-		for(int i=0;i< vertice.size()-1 ;i++) {
+		for(int i=0;i< vertice.size() ;i++) {
 			vertice.get(i).setVisited(false);
 		}
-		for(int i=0;i< vertice.size()-1 && found ==false;i++) {
+		for(int i=0;i< vertice.size() && found ==false;i++) {
 			if(vertice.get(i).getValue().compareTo(v)==0) {
 				position = i;
 				found = true;
