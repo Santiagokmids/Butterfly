@@ -1,6 +1,6 @@
 package dataStructure;
 
-public class Edge<U, V, H> {
+public class Edge<U, V extends Comparable<V>, H> {
 	
 	private Vertice<V, U, H> initVertice;
 	private Vertice<V, U, H> finalVertice;

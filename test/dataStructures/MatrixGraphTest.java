@@ -57,12 +57,13 @@ class MatrixGraphTest<V extends Comparable <V>, U, H extends Comparable<H>>{
 		setupScenary1();
 		matrixGraph.addVertice("Nigeria");
 		matrixGraph.addVertice("Madagascar");
-		assertEquals(2, matrixGraph.getVertice().size());
+		assertEquals(2, matrixGraph.getVertice().size() - 1);
 	}
 	
 	@Test
 	public void addEdgeTest() {
 		setupScenary2();
+		assertEquals(3000, matrixGraph.searchEdge("Dubai", "Portugal"));
 	}
 	
 	@Test

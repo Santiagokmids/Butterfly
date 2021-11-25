@@ -72,51 +72,96 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 		int positionB = 0;
 		boolean foundA = false;
 		boolean foundB = false;
-		boolean veryfy = false;
+		boolean verify = false;
 
 		for (int i = 0; i < vertice.size() && !foundA; i++) {
-			if(vertice.get(i).compareTo(valueIni) == 0) {
+			if(vertice.get(i).getValue().compareTo(valueIni) == 0) {
 				foundA = true;
 				positionA = i;
 			}
 		}
 		
 		for (int i = 0; i < vertice.size() && !foundB; i++) {
-			if(vertice.get(i).compareTo(valueEnd) == 0) {
+			if(vertice.get(i).getValue().compareTo(valueEnd) == 0) {
 				foundB = true;
 				positionB = i;
 			}
 		}
 		
-		addEdge(positionA, positionB, height);
+		verify = addEdge(positionA, positionB, height);
 		
-		if(foundA && foundB) {
-			veryfy = true;
-		}
-		return veryfy;
+		return verify;
 	}
 
-	private void addEdge(int positionA, int positionB, H height) {
+	private boolean addEdge(int positionA, int positionB, H height) {
+		
+		boolean verify = false;
 		
 		if (first != null) {
 			
 			Vertice<V, U, H> newVertice = first;
 			
-			
-			for (int i = 0; i < distance.length; i++) {
+			for (int i = 0; i < vertice.size(); i++) {
 				if (newVertice.getDown() != null) {
 					newVertice = newVertice.getDown();
 				}
 			}
 			
-			for (int i = 0; i < distance.length; i++) {
+			for (int i = 0; i < vertice.size(); i++) {
 				if (newVertice.getNext() != null) {
 					newVertice = newVertice.getNext();
 				}
 			}
-			
-			newVertice.addEdge(vertice.get(positionA), vertice.get(positionB), height);
+			verify = newVertice.addEdge(vertice.get(positionA), vertice.get(positionB), height);
 		}
+		
+		return verify;
+	}
+	
+	@Override
+	public H searchEdge(V verticeInit, V verticeEnd) {
+
+		int positionA = 0;
+		int positionB = 0;
+		boolean foundA = false;
+		boolean foundB = false;
+		H weight = null; 
+		
+		if (first != null) {
+			
+			Vertice<V, U, H> newVertice = first;
+			Vertice<V, U, H> current = newVertice;
+			
+			for (int i = 0; i < vertice.size() && !foundA; i++) {
+				if(vertice.get(i).getValue().compareTo(verticeInit) == 0) {
+					foundA = true;
+					positionA = i;
+				}
+			}
+			
+			for (int i = 0; i < vertice.size() && !foundB; i++) {
+				if (vertice.get(i).getValue().compareTo(verticeEnd) == 0) {
+					foundB = true;
+					positionB = i;
+				}
+			}
+			
+			for (int i = 0; i < positionA; i++) {
+				if (current.getDown() != null) {
+					current = current.getDown();
+				}
+			}
+			
+			for (int i = 0; i < positionB; i++) {
+				if (current.getNext() != null) {
+					current = current.getNext();
+				}
+			}
+			
+			weight = current.getEdge().get(0).getHeight();
+		}
+		
+		return weight;
 	}
 
 	@Override

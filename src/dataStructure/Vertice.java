@@ -2,7 +2,7 @@ package dataStructure;
 
 import java.util.ArrayList;
 
-public class Vertice<V, U, H> implements Comparable<V>{
+public class Vertice<V extends Comparable<V>, U, H> {
 	
 	private V value;
 	private ArrayList<Edge<U, V, H>> edge;
@@ -71,10 +71,4 @@ public class Vertice<V, U, H> implements Comparable<V>{
 	public void setDown(Vertice<V, U, H> down) {
 		this.down = down;
 	}
-
-	@Override
-	public int compareTo(V o) {
-		return compareTo(o);
-	}
-	
 }
