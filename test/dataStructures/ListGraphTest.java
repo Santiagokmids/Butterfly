@@ -1,6 +1,9 @@
 package dataStructures;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Test;
 
 import dataStructure.ListGraph;
@@ -29,7 +32,6 @@ class ListGraphTest {
 
 	public void setupScenary3() {
 		setupScenary1();
-		lg.addVertice("Colombia");
 		lg.addVertice("España");
 		lg.addVertice("Japon");
 		lg.addVertice("EEUU");
@@ -57,19 +59,19 @@ class ListGraphTest {
 	@Test
 	public void addVerticeTest() {
 		setupScenary1();
-		lg.addVertice("Japon");
-		lg.addVertice("Portugal");
-		assertEquals("Japon", lg.getListVertice().get(1).getValue());
-		assertEquals("Portugal", lg.getListVertice().get(2).getValue());
+		lg.addVertice("Nigeria");
+		lg.addVertice("Madagascar");
+		assertEquals("Nigeria", lg.getListVertice().get(1).getValue());
+		assertEquals("Madagascar", lg.getListVertice().get(2).getValue());
 	}
 	
 	@Test
 	public void addEdgeTest() {
 		setupScenary2();
-		lg.addEdge("Portugal", "Colombia",1600);
-		lg.addEdge("Madagascar", "Colombia",-200);
-		assertEquals(1600, lg.searchEdge("Portugal", "Colombia"));
-		assertEquals(null, lg.searchEdge("Madagascar", "Colombia"));
+		lg.addEdge("Colombia", "Portugal",1600);
+		lg.addEdge("Dubai", "Nigeria",-780);
+		assertEquals(1600, lg.searchEdge("Colombia", "Portugal"));
+		assertEquals(null, lg.searchEdge("Dubai", "Nigeria"));
 	}
 	
 	@Test
@@ -94,10 +96,10 @@ class ListGraphTest {
 	@Test
 	public void modifyEdgeTest() {
 		setupScenary2();
-		lg.setEdge("Dubai","Portugal",2130);
-		lg.setEdge("Colombia","Dubai",3000);
-		assertEquals(2130, lg.searchEdge("Dubai","Portugal"));
-		assertEquals(3000, lg.searchEdge("Colombia", "Dubai"));
+		lg.setEdge("Portugal","Madagascar",1320);
+		lg.setEdge("Madagascar","Dubai",3000);
+		assertEquals(1320, lg.searchEdge("Portugal","Madagascar"));
+		assertEquals(3000, lg.searchEdge("Madagascar", "Dubai"));
 	}
 
 	@Test
@@ -107,6 +109,31 @@ class ListGraphTest {
 		assertEquals("Dubai", lg.bfs("Colombia").get(1).getValue());
 		assertEquals("Portugal", lg.bfs("Colombia").get(2).getValue());
 		assertEquals("Madagascar", lg.bfs("Colombia").get(3).getValue());
+	}
+	
+	@Test
+	public void dijkstraTest() {
+		setupScenary3();
+		int value = 0;
+		value = lg.makeDijkstra(lg.getVertice().get(8), lg.getVertice().get(2));
+		assertEquals(value, 6100);
+		/*ArrayList<Integer> dijkstra = lg.dijkstra(lg.getVertice().get(8));
+		
+		ArrayList<Integer> values = new ArrayList<>();
+		values.add(Integer.MAX_VALUE);
+		values.add(Integer.MAX_VALUE);
+		values.add(6100);
+		values.add(9100);
+		values.add(4600);
+		values.add(2100);
+		values.add(5100);
+		values.add(0);
+		values.add(3350);
+		values.add(8350);
+		
+		for (int i = 0; i < dijkstra.size(); i++) {
+			System.out.println(dijkstra.get(i));
+		}*/
 	}
 
 	@Test
