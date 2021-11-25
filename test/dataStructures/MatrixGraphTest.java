@@ -1,9 +1,7 @@
 package dataStructures;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
-
 import dataStructure.MatrixGraph;
 
 class MatrixGraphTest<V extends Comparable <V>, U, H extends Comparable<H>>{
@@ -25,7 +23,6 @@ class MatrixGraphTest<V extends Comparable <V>, U, H extends Comparable<H>>{
 		matrixGraph.addEdge("Portugal", "Madagascar", 2750);
 		matrixGraph.addEdge("Madagascar", "Dubai", 590);
 		matrixGraph.addEdge("Colombia", "Dubai", 1200);
-
 	}
 
 	public void setupScenary3() {
@@ -54,6 +51,34 @@ class MatrixGraphTest<V extends Comparable <V>, U, H extends Comparable<H>>{
 		matrixGraph.addEdge("Madagascar", "Japon", 1930);
 		matrixGraph.addEdge("Nigeria", "Japon", 1000);
 	}
+	
+	@Test
+	public void addVerticeTest() {
+		setupScenary1();
+		matrixGraph.addVertice("Nigeria");
+		matrixGraph.addVertice("Madagascar");
+		assertEquals(2, matrixGraph.getVertice().size());
+	}
+	
+	@Test
+	public void addEdgeTest() {
+		setupScenary2();
+	}
+	
+	@Test
+	public void deleteVerticeTest() {
+		setupScenary2();
+	}
+	
+	@Test
+	public void deleteEdgeTest() {
+		setupScenary2();
+	}
+	
+	@Test
+	public void modifyEdgeTest() {
+		setupScenary2();
+	}
 
 	@Test
 	public void bfsTest() {
@@ -80,9 +105,6 @@ class MatrixGraphTest<V extends Comparable <V>, U, H extends Comparable<H>>{
 	@Test
 	void dfsTestScenary4() {
 		setupScenary3();
-		for(int i =0;i<=9;i++) {
-			//System.out.println(matrixGraph.dfs("Colombia").get(i).getValue());
-		}
 		assertEquals("Colombia", matrixGraph.dfs("Colombia").get(0).getValue());
 		assertEquals("España", matrixGraph.dfs("Colombia").get(1).getValue());
 		assertEquals("Japon", matrixGraph.dfs("Colombia").get(2).getValue());
@@ -100,5 +122,5 @@ class MatrixGraphTest<V extends Comparable <V>, U, H extends Comparable<H>>{
 		setupScenary1();
 		assertEquals("Colombia", matrixGraph.getVertice().get(0).getValue());
 	}
-
 }
+

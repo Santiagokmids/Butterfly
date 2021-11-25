@@ -2,7 +2,7 @@ package dataStructure;
 
 import java.util.ArrayList;
 
-public class Vertice<V, U, H>{
+public class Vertice<V, U, H> implements Comparable<V>{
 	
 	private V value;
 	private ArrayList<Edge<U, V, H>> edge;
@@ -18,8 +18,8 @@ public class Vertice<V, U, H>{
 		color = 0;
 	}
 	
-	public boolean addEdge(Edge<U, V, H> ed) {
-		edge.add(ed);
+	public boolean addEdge(Vertice<V, U, H> initial, Vertice<V, U, H> end, H weight) {
+		edge.add(new Edge<U, V, H>(initial,end,weight));
 		return true;
 	}
 	
@@ -70,6 +70,11 @@ public class Vertice<V, U, H>{
 
 	public void setDown(Vertice<V, U, H> down) {
 		this.down = down;
+	}
+
+	@Override
+	public int compareTo(V o) {
+		return compareTo(o);
 	}
 	
 }

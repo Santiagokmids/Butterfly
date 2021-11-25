@@ -26,13 +26,15 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 		createMatrix(vertix);
 		return true;
 	}
+	
+	public Vertice<V, U, H> findVertice(){
+		return null;
+	}
 
 	private void createMatrix(Vertice<V,U,H> current) {
 
 		if(first == null && !vertice.isEmpty()) {
 			first = vertice.get(0);
-			
-			
 		}else {
 			createMatrix(first,first,current, 0,0);
 		}
@@ -42,14 +44,14 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 
 		if(dynamic.getNext() == null) {
 			
-			if(cont < (vertice.size()-1)) {
+			if(cont < (vertice.size())) {
 				dynamic.setNext(current);
 				cont++;
 				createMatrix(dynamicV,dynamic.getNext(), current, cont,contV);
 				
 			}else if(dynamicV.getDown() == null){
 				
-				if(contV < (vertice.size()-1)) {
+				if(contV < (vertice.size())) {
 					dynamicV.setDown(current);
 					createMatrix(dynamicV.getDown(),dynamicV.getDown(), current, 0, contV++);
 				}
@@ -70,25 +72,51 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 		int positionB = 0;
 		boolean foundA = false;
 		boolean foundB = false;
+		boolean veryfy = false;
 
-		for (int i = 0; i < vertice.size(); i++) {
-			if (vertice.get(i).getValue().compareTo(valueIni) == 0) {
+		for (int i = 0; i < vertice.size() && !foundA; i++) {
+			if(vertice.get(i).compareTo(valueIni) == 0) {
 				foundA = true;
 				positionA = i;
 			}
-			if (vertice.get(i).getValue().compareTo(valueEnd) == 0) {
+		}
+		
+		for (int i = 0; i < vertice.size() && !foundB; i++) {
+			if(vertice.get(i).compareTo(valueEnd) == 0) {
 				foundB = true;
 				positionB = i;
 			}
-			if (foundA == true && foundB == true) {
-				i = vertice.size();
+		}
+		
+		addEdge(positionA, positionB, height);
+		
+		if(foundA && foundB) {
+			veryfy = true;
+		}
+		return veryfy;
+	}
+
+	private void addEdge(int positionA, int positionB, H height) {
+		
+		if (first != null) {
+			
+			Vertice<V, U, H> newVertice = first;
+			
+			
+			for (int i = 0; i < distance.length; i++) {
+				if (newVertice.getDown() != null) {
+					newVertice = newVertice.getDown();
+				}
 			}
+			
+			for (int i = 0; i < distance.length; i++) {
+				if (newVertice.getNext() != null) {
+					newVertice = newVertice.getNext();
+				}
+			}
+			
+			newVertice.addEdge(vertice.get(positionA), vertice.get(positionB), height);
 		}
-		if (foundA == true && foundB == true && (int)height >= 0) {
-			Edge<U, V, H> list = new Edge<U,V,H>(vertice.get(positionA),vertice.get(positionB),height);
-			return vertice.get(positionA).addEdge(list);
-		}
-		return false;
 	}
 
 	@Override
@@ -157,10 +185,10 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 		boolean found = false;
 		int position = 0;
 		ArrayList<Vertice<V, U, H>> vertic = new ArrayList<Vertice<V, U, H>>();
-		for(int i=0;i< vertice.size()-1 ;i++) {
+		for(int i=0;i< vertice.size() ;i++) {
 			vertice.get(i).setVisited(false);
 		}
-		for(int i=0;i< vertice.size()-1 && found ==false;i++) {
+		for(int i=0;i< vertice.size() && found ==false;i++) {
 			if(vertice.get(i).getValue().compareTo(v)==0) {
 				position = i;
 				found = true;

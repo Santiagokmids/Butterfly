@@ -13,7 +13,7 @@ public interface IListGraph<U, V extends Comparable<V>, H> {
 	public Edge<U, V, H> getEdge();
 	public boolean setEdge(V verticeInit, V verticeEnd, H weight);
 	public ArrayList<ListVertice<V, U, H>> bfs(V v);
-	public ArrayList<ListVertice<V, U, H>> dfs();
+	public ArrayList<ListVertice<V, U, H>> dfs(V v);
 	public ArrayList<H> dijkstra(ListVertice<V, U, H> start);
 	public void floyd();
 	public int prim(ListVertice<V, U, H> start);
