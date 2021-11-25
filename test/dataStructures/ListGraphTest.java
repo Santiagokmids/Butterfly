@@ -27,7 +27,6 @@ class ListGraphTest {
 		lg.addEdge("Portugal", "Madagascar", 2750);
 		lg.addEdge("Madagascar", "Dubai", 590);
 		lg.addEdge("Colombia", "Dubai", 1200);
-
 	}
 
 	public void setupScenary3() {
@@ -137,7 +136,7 @@ class ListGraphTest {
 	}
 
 	@Test
-	public void floydWarshallTest() {
+	public void floydWarshallTest1() {
 		setupScenary3();
 		lg.floyd();
 		Integer infinite = Integer.MAX_VALUE;
@@ -159,5 +158,54 @@ class ListGraphTest {
 				assertEquals(matrix[i][j], lg.getDistance()[i][j]);
 			}
 		}
+	}
+	
+	
+	@Test
+	public void floydWarshallTest2() {
+		setupScenary1();
+		lg.deleteVertice("Colombia");
+		assertEquals(true, lg.getDistance() == null);
+	}
+	
+	@Test
+	public void floydWarshallTest3() {
+		setupScenary2();
+		lg.floyd();
+		Integer infinite = Integer.MAX_VALUE;
+		
+		int[][] matrix = {
+				{0,1200,4200,6950},
+				{infinite,0,3000,5750},
+				{infinite,3340,0,2750},
+				{infinite,590,3590,0}};
+		
+		for (int i = 0; i < matrix.length; i++) {
+			for (int j = 0; j < matrix.length; j++) {
+				assertEquals(matrix[i][j], lg.getDistance()[i][j]);
+			}
+		}
+	}
+	
+	@Test
+	public void kruskalTest1() {
+		setupScenary3();
+		int kruskal = lg.kruskal();
+		assertEquals(17400, kruskal);
+	}
+	
+	@Test
+	public void kruskalTest2() {
+		setupScenary1();
+		lg.deleteVertice("Colombia");
+		int kruskal = lg.kruskal();
+		assertEquals(0, kruskal);
+	}
+	
+	@Test
+	public void kruskalTest3() {
+		setupScenary2();
+		int kruskal = lg.kruskal();
+		assertEquals(4540, kruskal);
 	}
 }

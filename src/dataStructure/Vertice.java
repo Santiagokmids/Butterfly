@@ -18,7 +18,8 @@ public class Vertice<V, U, H>{
 		color = 0;
 	}
 	
-	public boolean addEdge(Edge<U, V, H> edge) {
+	public boolean addEdge(Edge<U, V, H> ed) {
+		edge.add(ed);
 		return true;
 	}
 	
