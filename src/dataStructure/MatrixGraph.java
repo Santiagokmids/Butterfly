@@ -20,6 +20,7 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 	public boolean addVertice(V value) {
 		Vertice<V, U, H> vertic = new Vertice<V, U, H>(value);
 		vertice.add(vertic);
+		
 		V zero = null;
 		Vertice<V, U, H> vertix = new Vertice<V, U, H>(zero);
 		createMatrix(vertix);
@@ -30,7 +31,8 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 
 		if(first == null && !vertice.isEmpty()) {
 			first = vertice.get(0);
-
+			
+			
 		}else {
 			createMatrix(first,first,current, 0,0);
 		}
@@ -64,6 +66,28 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 	
 	@Override
 	public boolean addEdge(V valueIni, V valueEnd, H height) {
+		int positionA = 0;
+		int positionB = 0;
+		boolean foundA = false;
+		boolean foundB = false;
+
+		for (int i = 0; i < vertice.size(); i++) {
+			if (vertice.get(i).getValue().compareTo(valueIni) == 0) {
+				foundA = true;
+				positionA = i;
+			}
+			if (vertice.get(i).getValue().compareTo(valueEnd) == 0) {
+				foundB = true;
+				positionB = i;
+			}
+			if (foundA == true && foundB == true) {
+				i = vertice.size();
+			}
+		}
+		if (foundA == true && foundB == true && (int)height >= 0) {
+			Edge<U, V, H> list = new Edge<U,V,H>(vertice.get(positionA),vertice.get(positionB),height);
+			return vertice.get(positionA).addEdge(list);
+		}
 		return false;
 	}
 
@@ -102,9 +126,10 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 			vertice.get(i).setColor(0);
 		}
 		if(found ==true) {
+			vertic.add(vertice.get(position).getEdge().get(0).getInitVertice());
 			bfs(vertic,vertice.get(position));
 		}
-		return null;
+		return vertic;
 	}
 
 	public void bfs(ArrayList<Vertice<V, U, H>> vertic,Vertice<V, U, H> e) {	
@@ -141,16 +166,18 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 				found = true;
 			}
 		}
+		vertic.add(vertice.get(position));
 		dfs(vertic, vertice.get(position));
+		System.out.println(vertic.size());
 		return vertic;
 	}
 
 	public void dfs(ArrayList<Vertice<V, U, H>> vertic,Vertice<V, U, H> e) {
 		ArrayList<Edge<U, V, H>> verticeO = e.getEdge();
 		for(int i =0;i<verticeO.size();i++) {
-			if(verticeO.get(i).getFinalVertice().isVisited() == false) {
-				verticeO.get(i).getFinalVertice().setVisited(true);
+			if(verticeO.get(i).getFinalVertice().isVisited() == false) {			
 				vertic.add(verticeO.get(i).getFinalVertice());
+				verticeO.get(i).getFinalVertice().setVisited(true);
 				dfs(vertic, verticeO.get(i).getFinalVertice());
 			}
 		}
