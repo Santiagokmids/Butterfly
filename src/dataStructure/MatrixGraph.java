@@ -155,7 +155,6 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 				if(vertice.get(i).getValue().compareTo(verticeInit) == 0) {
 					foundA = true;
 					positionA = i;
-					System.out.println(positionA);
 				}
 			}
 			
@@ -163,7 +162,6 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 				if (vertice.get(i).getValue().compareTo(verticeEnd) == 0) {
 					foundB = true;
 					positionB = i;
-					System.out.println(positionB);
 				}
 			}
 			
@@ -259,23 +257,21 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 			vertice.get(i).setColor(0);
 		}
 		if(found ==true) {
-			vertic.add(vertice.get(position).getEdge().get(0).getInitVertice());
+			
+			vertic.add(vertice.get(position));
+			
 			bfs(vertic,vertice.get(position),first);
+			return vertic;
 		}
-		return vertic;
+		return null;
 	}
 
 	public void bfs(ArrayList<Vertice<V, U, H>> vertic,Vertice<V, U, H> e,Vertice<V, U, H> firts) {	
-		if(first.getValue().compareTo(e.getValue())==0) {
-			for(int i =0;i<e.getEdge().size();i++) {
-				if(e.getNext() != null && e.getNext().getColor() ==0) {
-					e.getNext().setColor(1);
-					vertic.add(e.getNext());
-					bfs(vertic, e, firts.getNext());
-				}
-			}
+		if(e.getNext()!= null) {
+			
+			vertic.add(e.getNext());
 		}else {
-			bfs(vertic, e, firts.getDown());
+			bfs(vertic, e, first);
 		}
 	}
 

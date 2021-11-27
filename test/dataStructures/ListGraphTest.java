@@ -119,6 +119,7 @@ class ListGraphTest {
 		assertEquals(value, 6100);
 	}
 	
+	
 	@Test
 	public void dijkstraTest2() {
 		setupScenary3();
@@ -137,7 +138,7 @@ class ListGraphTest {
 		values.add(8350);
 		
 		for (int i = 0; i < dijkstra.size(); i++) {
-			assertEquals(dijkstra.get(i), values.get(i));
+			assertEquals(values.get(i), dijkstra.get(i));
 		}
 	}
 	
