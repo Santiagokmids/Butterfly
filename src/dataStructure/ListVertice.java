@@ -10,6 +10,7 @@ public class ListVertice<V extends Comparable<V>, U, H>{
 	private ArrayList<ListEdge<U, V, H>> edge;
 	private boolean visited;
 	private int color;
+	private int distance;
 	
 	public ListVertice(V value) {
 		adjacency = new ArrayList<>();
@@ -17,6 +18,7 @@ public class ListVertice<V extends Comparable<V>, U, H>{
 		edge = new ArrayList<ListEdge<U,V,H>>();
 		setVisited(false);
 		color = 0;
+		setDistance(Integer.MAX_VALUE);
 	}
 	
 	public boolean addEdge(ListEdge<U, V, H> ed) {
@@ -68,6 +70,14 @@ public class ListVertice<V extends Comparable<V>, U, H>{
 
 	public void setAdjacency(ArrayList<V> adjacency) {
 		this.adjacency = adjacency;
+	}
+
+	public int getDistance() {
+		return distance;
+	}
+
+	public void setDistance(int distance) {
+		this.distance = distance;
 	}
 	
 }

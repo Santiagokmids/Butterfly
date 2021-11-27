@@ -159,7 +159,6 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 				if(vertice.get(i).getValue().compareTo(verticeInit) == 0) {
 					foundA = true;
 					positionA = i;
-					System.out.println(positionA);
 				}
 			}
 			
@@ -167,7 +166,6 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 				if (vertice.get(i).getValue().compareTo(verticeEnd) == 0) {
 					foundB = true;
 					positionB = i;
-					System.out.println(positionB);
 				}
 			}
 			
@@ -182,9 +180,7 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 					current = current.getNext();
 				}
 			}
-			System.out.println(current.getValue());
 			weight = current.getEdge().get(0).getHeight();
-			System.out.println(weight);
 		}
 		
 		return weight;
