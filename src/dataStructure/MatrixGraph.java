@@ -18,13 +18,12 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 		edges = new ArrayList<Edge<U,V, H>>();
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean addVertice(V value) {
 		Vertice<V, U, H> vertic = new Vertice<V, U, H>(value);
 		vertice.add(vertic);
 		
-		Vertice<V, U, H> vertix = new Vertice<V, U, H>((V)"f");
+		Vertice<V, U, H> vertix = new Vertice<V, U, H>(null);
 		createMatrix(vertix);
 		reloadEdges();
 		return true;
@@ -34,6 +33,7 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 		if(!edges.isEmpty()) {
 			for (int i = 0; i < edges.size(); i++) {
 				addEdge(findPosition(edges.get(i).getInitVertice()), findPosition(edges.get(i).getFinalVertice()), edges.get(i).getHeight());
+				//System.out.println(findPosition(edges.get(i).getInitVertice())+" init "+findPosition(edges.get(i).getFinalVertice())+" final");
 			}
 		}
 	}
@@ -64,27 +64,19 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 	}
 
 	private void createMatrix(Vertice<V,U,H> dynamicV, Vertice<V,U,H> dynamic, Vertice<V,U,H> current, int cont, int contV) {
-
+		
 		if(dynamic.getNext() == null) {
-			
 			if(cont < (vertice.size())) {
-				dynamic.setNext(current);
-				cont++;
-				createMatrix(dynamicV,dynamic.getNext(), current, cont,contV);
+				Vertice<V, U, H> newVertice = new Vertice<V, U, H>(null);
+				dynamic.setNext(newVertice);
+				createMatrix(dynamicV,dynamic.getNext(), newVertice, ++cont, contV);
 				
 			}else if(dynamicV.getDown() == null){
-				
 				if(contV < (vertice.size())) {
-					dynamicV.setDown(current);
-					createMatrix(dynamicV.getDown(),dynamicV.getDown(), current, 0, contV++);
+					Vertice<V, U, H> newVertice = new Vertice<V, U, H>(null);
+					dynamicV.setDown(newVertice);
+					createMatrix(dynamicV.getDown(),dynamicV.getDown(), newVertice, 0, ++contV);
 				}
-			}else {
-				createMatrix(dynamicV.getDown(),dynamicV.getDown(), current, 0, contV++);
-			}
-		}else{
-			if(cont < (vertice.size())) {
-				cont++;
-				createMatrix(dynamicV,dynamic.getNext(), current, cont,contV);
 			}
 		}
 	}
@@ -118,21 +110,25 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 
 	private boolean addEdge(int positionA, int positionB, H height) {
 		
+		//System.out.println("----------------------------");
+		
 		boolean verify = false;
 		
 		if (first != null) {
 			
 			Vertice<V, U, H> newVertice = first;
 			
-			for (int i = 0; i < vertice.size(); i++) {
+			for (int i = 0; i <= positionA; i++) {
 				if (newVertice.getDown() != null) {
 					newVertice = newVertice.getDown();
+					//System.out.println(i+" "+vertice.get(i).getValue());
 				}
 			}
-			
-			for (int i = 0; i < vertice.size(); i++) {
+			//System.out.println("************************");
+			for (int i = 0; i <= positionB; i++) {
 				if (newVertice.getNext() != null) {
 					newVertice = newVertice.getNext();
+					//System.out.println(i+" "+vertice.get(i).getValue());
 				}
 			}
 			verify = newVertice.addEdge(vertice.get(positionA), vertice.get(positionB), height);
@@ -182,15 +178,12 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 					current = current.getNext();
 				}
 			}
-			System.out.println(current.getValue());
 			weight = current.getEdge().get(0).getHeight();
-			System.out.println(weight);
 		}
 		
 		return weight;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean deleteVertice(V value) {
 		
@@ -204,7 +197,7 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 				
 				removeEdgesFromVertice(value);
 				
-				Vertice<V, U, H> vertix = new Vertice<V, U, H>((V)"f");
+				Vertice<V, U, H> vertix = new Vertice<V, U, H>(null);
 				createMatrix(vertix);
 			}
 		}
@@ -220,7 +213,6 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 		reloadEdges();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean deleteEdge(V initial, V end, H weight) {
 		
@@ -234,7 +226,7 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 		}
 		
 		if (verify) {
-			Vertice<V, U, H> vertix = new Vertice<V, U, H>((V)"f");
+			Vertice<V, U, H> vertix = new Vertice<V, U, H>(null);
 			createMatrix(vertix);
 			reloadEdges();
 		}
@@ -248,8 +240,8 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 	}
 
 	@Override
-	public Edge<U, V, H> getEdges() {
-		return null;
+	public ArrayList<Edge<U, V, H>> getEdges() {
+		return edges;
 	}
 
 	@Override
@@ -692,7 +684,6 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 		return newQueue;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean modifyEdge(V initial, V end, H weight, H newWeight) {
 		
@@ -702,13 +693,8 @@ public class MatrixGraph<V extends Comparable <V>, U, H extends Comparable<H>> i
 			if (edges.get(i).getInitVertice().getValue().compareTo(initial) == 0 && edges.get(i).getFinalVertice().getValue().compareTo(end) == 0 && edges.get(i).getHeight().compareTo(weight) == 0) {
 				verify = true;
 				edges.get(i).setHeight(newWeight);
+				reloadEdges();
 			}
-		}
-		
-		if (verify) {
-			Vertice<V, U, H> vertix = new Vertice<V, U, H>((V)"f");
-			createMatrix(vertix);
-			reloadEdges();
 		}
 		
 		return verify;

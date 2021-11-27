@@ -11,7 +11,7 @@ public interface IMatrixGraph<U, V extends Comparable<V>, H> {
 	public boolean deleteEdge(V initial, V end, H ewight);
 	public boolean modifyEdge(V initial, V end, H ewight, H newWeight);
 	public ArrayList<Vertice<V, U, H>> getVertice();
-	public Edge<U, V, H> getEdges();
+	public ArrayList<Edge<U, V, H>> getEdges();
 	public ArrayList<Vertice<V, U, H>> bfs(V v);
 	public ArrayList<Vertice<V, U, H>> dfs(V v);
 	public ArrayList<H> dijkstra(Vertice<V, U, H> start);
