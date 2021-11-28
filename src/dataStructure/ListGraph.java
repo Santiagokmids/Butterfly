@@ -633,11 +633,11 @@ implements IListGraph<U, V, H> {
 
 			NodeK<V, U, H> nodeOne = findNode(priority.getInitVertice().getValue());
 			NodeK<V, U, H> nodeTwo = findNode(priority.getFinalVertice().getValue());
-
+			
 			if (findSet(nodeOne) != findSet(nodeTwo)) {
 				union(nodeOne, nodeTwo);
 				priorityQueue = secondPriority(priorityQueue);
-				return kruskalOperation(priorityQueue, contVertice+1, contT+(Integer) priority.getHeight());
+				return kruskalOperation(priorityQueue, ++contVertice, contT+(Integer) priority.getHeight());
 			}else {
 				priorityQueue = secondPriority(priorityQueue);
 				return kruskalOperation(priorityQueue, contVertice, contT);
@@ -732,7 +732,7 @@ implements IListGraph<U, V, H> {
 				newArrayList.set(j - 1, newEdge);
 			}
 		}
-
+		
 		return newArrayList;
 	}
 

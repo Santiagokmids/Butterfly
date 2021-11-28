@@ -263,6 +263,7 @@ class ListGraphTest {
 		int kruskal = lg.kruskal();
 		assertEquals(4540, kruskal);
 	}
+	
 	@Test
 	void dfs() {
 		setupScenary3();
@@ -276,8 +277,5 @@ class ListGraphTest {
 		assertEquals("Madagascar", lg.dfs("Colombia").get(7).getValue());
 		assertEquals("Nigeria", lg.dfs("Colombia").get(8).getValue());
 		assertEquals("Portugal", lg.dfs("Colombia").get(9).getValue());
-		
-		
-		
 	}
 }

@@ -226,6 +226,54 @@ class MatrixGraphTest<V extends Comparable <V>, U, H extends Comparable<H>>{
 	}
 	
 	@Test
+	public void floydWarshallTest2() {
+		setupScenary1();
+		matrixGraph.deleteVertice("Colombia");
+		assertEquals(true, matrixGraph.getDistance() == null);
+	}
+	
+	@Test
+	public void floydWarshallTest3() {
+		setupScenary2();
+		matrixGraph.floyd();
+		Integer infinite = Integer.MAX_VALUE;
+		
+		int[][] matrix = {
+				{0,1200,4200,6950},
+				{infinite,0,3000,5750},
+				{infinite,3340,0,2750},
+				{infinite,590,3590,0}};
+		
+		for (int i = 0; i < matrix.length; i++) {
+			for (int j = 0; j < matrix.length; j++) {
+				assertEquals(matrix[i][j], matrixGraph.getDistance()[i][j]);
+			}
+		}
+	}
+	
+	@Test
+	public void kruskalTest1() {
+		setupScenary3();
+		int kruskal = matrixGraph.kruskal();
+		assertEquals(17400, kruskal);
+	}
+	
+	@Test
+	public void kruskalTest2() {
+		setupScenary1();
+		matrixGraph.deleteVertice("Colombia");
+		int kruskal = matrixGraph.kruskal();
+		assertEquals(0, kruskal);
+	}
+	
+	@Test
+	public void kruskalTest3() {
+		setupScenary2();
+		int kruskal = matrixGraph.kruskal();
+		assertEquals(4540, kruskal);
+	}
+	
+	@Test
 	public void prim() {
 		setupScenary3();
 		int value = 0;
@@ -254,32 +302,6 @@ class MatrixGraphTest<V extends Comparable <V>, U, H extends Comparable<H>>{
 		int value = 0;
 		value = matrixGraph.prim(matrixGraph.getVertice().get(6));
 		assertEquals(value, 0);
-	}
-	
-	@Test
-	public void floydWarshallTest2() {
-		setupScenary1();
-		matrixGraph.deleteVertice("Colombia");
-		assertEquals(true, matrixGraph.getDistance() == null);
-	}
-	
-	@Test
-	public void floydWarshallTest3() {
-		setupScenary2();
-		matrixGraph.floyd();
-		Integer infinite = Integer.MAX_VALUE;
-		
-		int[][] matrix = {
-				{0,1200,4200,6950},
-				{infinite,0,3000,5750},
-				{infinite,3340,0,2750},
-				{infinite,590,3590,0}};
-		
-		for (int i = 0; i < matrix.length; i++) {
-			for (int j = 0; j < matrix.length; j++) {
-				assertEquals(matrix[i][j], matrixGraph.getDistance()[i][j]);
-			}
-		}
 	}
 }
 
