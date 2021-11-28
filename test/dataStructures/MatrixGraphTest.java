@@ -104,7 +104,7 @@ class MatrixGraphTest<V extends Comparable <V>, U, H extends Comparable<H>>{
 	}
 	
 	@Test
-	void bfsTestScenary3() {
+	public void bfsTestScenary3() {
 		setupScenary3();
 		assertEquals("Colombia", matrixGraph.bfs("Colombia").get(0).getValue());
 		assertEquals("España", matrixGraph.bfs("Colombia").get(1).getValue());
@@ -120,7 +120,7 @@ class MatrixGraphTest<V extends Comparable <V>, U, H extends Comparable<H>>{
 	}
 
 	@Test
-	void dfsTestScenary4() {
+	public void dfsTestScenary4() {
 		/*
 		setupScenary3();
 		assertEquals("Colombia", matrixGraph.dfs("Colombia").get(0).getValue());
@@ -137,10 +137,24 @@ class MatrixGraphTest<V extends Comparable <V>, U, H extends Comparable<H>>{
 	}
 
 	@Test
-	void test() {
+	public void test() {
 		setupScenary1();
 		assertEquals("Colombia", matrixGraph.getVertice().get(0).getValue());
 	}
 	
+	@Test
+	public void floydWarshallTest1() {
+		
+	}
+	
+	@Test
+	public void floydWarshallTest2() {
+		
+	}
+	
+	@Test
+	public void floydWarshallTest3() {
+		
+	}
 }
 
