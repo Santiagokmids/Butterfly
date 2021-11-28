@@ -65,22 +65,27 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 		}
 	}
 
-	private void createMatrix(Vertice<V, U, H> dynamicV, Vertice<V, U, H> dynamic, Vertice<V, U, H> current, int cont,
-			int contV) {
 
-		if (dynamic.getNext() == null) {
-			if (cont < (vertice.size())) {
+	private void createMatrix(Vertice<V,U,H> dynamicV, Vertice<V,U,H> dynamic, Vertice<V,U,H> current, int cont, int contV) {
+
+		if(dynamic.getNext() == null) {
+			System.out.println("entrs");
+			if(cont < vertice.size()) {
 				Vertice<V, U, H> newVertice = new Vertice<V, U, H>(null);
 				dynamic.setNext(newVertice);
-				createMatrix(dynamicV, dynamic.getNext(), newVertice, ++cont, contV);
-
-			} else if (dynamicV.getDown() == null) {
-				if (contV < (vertice.size())) {
+				createMatrix(dynamicV,dynamic.getNext(), newVertice, ++cont, contV);
+				
+			}else if(dynamicV.getDown() == null){
+				if(contV < vertice.size()) {
 					Vertice<V, U, H> newVertice = new Vertice<V, U, H>(null);
 					dynamicV.setDown(newVertice);
 					createMatrix(dynamicV.getDown(), dynamicV.getDown(), newVertice, 0, ++contV);
 				}
+			}else {
+				createMatrix(dynamicV.getDown(),dynamicV.getDown(), current, 0, ++contV);
 			}
+		}else {
+			createMatrix(dynamicV,dynamic.getNext(), current, ++cont, contV);
 		}
 	}
 
@@ -107,6 +112,7 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 		}
 
 		
+
 		edges.add(new Edge<U, V, H>(vertice.get(positionA),vertice.get(positionB), height));
 		
 		verify = addEdge(positionA, positionB, height);
@@ -169,6 +175,9 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 				}
 			}
 
+			
+			
+
 			for (int i = 0; i < positionA; i++) {
 				if (newVertice.getDown() != null) {
 					newVertice = newVertice.getDown();
@@ -176,13 +185,15 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 			}
 
 			for (int i = 0; i < positionB; i++) {
+				System.out.println("bolete "+i);
 				if (newVertice.getNext() != null) {
 					newVertice = newVertice.getNext();
+					System.out.println(newVertice.getNext());
 				}
 			}
 			
 			weight = newVertice.getEdge().get(0).getHeight();
-			System.out.println(verticeInit+" "+positionA+" "+verticeEnd+" "+positionB+" "+weight);
+			System.out.println(verticeInit+" "+positionA+" "+verticeEnd+" "+positionB+" "+weight+"\n");
 		}
 
 		return weight;
