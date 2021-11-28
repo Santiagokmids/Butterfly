@@ -2,25 +2,28 @@ package ui;
 
 import java.io.IOException;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.shape.Line;
 import model.Butterfly;
 
 public class ButterflyGUI {
-	
-    @FXML
-    private ImageView imgMap;
-	
+
 	@FXML
-    private ImageView imgExit;
+	private ImageView imgMap;
+
+	@FXML
+	private ImageView imgExit;
 
 	@FXML
 	private ImageView imgButtefly;
@@ -36,6 +39,39 @@ public class ButterflyGUI {
 
 	@FXML
 	private Button btnCost;
+
+	@FXML
+	private ImageView eeuuImg;
+
+	@FXML
+	private ImageView colImg;
+
+	@FXML
+	private ImageView rusImg;
+
+	@FXML
+	private ImageView espImg;
+
+	@FXML
+	private ImageView nigImg;
+
+	@FXML
+	private ImageView madImg;
+
+	@FXML
+	private ImageView porImg;
+
+	@FXML
+	private ImageView japImg;
+
+	@FXML
+	private ImageView dubImg;
+
+	@FXML
+	private ImageView ausImg;
+
+	@FXML
+	private Label countryLabel;
 
 	boolean btnConfigVerify = true;
 	boolean btnSearchVerify = true;
@@ -62,8 +98,23 @@ public class ButterflyGUI {
 		Image map = new Image("/images/map.png");
 		imgMap.setImage(map);
 
+		Image ubi = new Image("/images/ubication.png");
+		eeuuImg.setImage(ubi);
+		espImg.setImage(ubi);
+		japImg.setImage(ubi);
+		colImg.setImage(ubi);
+		nigImg.setImage(ubi);
+		porImg.setImage(ubi);
+		madImg.setImage(ubi);
+		rusImg.setImage(ubi);
+		ausImg.setImage(ubi);
+		dubImg.setImage(ubi);
+
 		mainPane.setTop(load);
 
+		Line line = new Line(0,0,20,20);
+	
+		//Line line = new Line(eeuuImg.getLayoutX(),eeuuImg.getLayoutY(),madImg.getLayoutX(),madImg.getLayoutY());
 	}
 
 	@FXML
@@ -171,9 +222,56 @@ public class ButterflyGUI {
 			break;
 		}
 	}
-	
+
 	@FXML
-    public void closeApp(MouseEvent event) {
+	public void emptyLabel(MouseEvent event) {
+		countryLabel.setText("");
+	}
+
+	@FXML
+	public void showLabel(MouseEvent event) {
+		ImageView image = (ImageView) event.getSource();
+		String id = image.getId();
+
+		switch (id) {
+		case "eeuuImg":
+			countryLabel.setText("Estados Unidos");
+			break;
+		case "espImg":
+			countryLabel.setText("España");
+			break;
+		case "colImg":
+			countryLabel.setText("Colombia");
+			break;
+		case "dubImg":
+			countryLabel.setText("Dubai");
+			break;
+		case "ausImg":
+			countryLabel.setText("Australia");
+			break;
+		case "japImg":
+			countryLabel.setText("Japón");
+			break;
+		case "nigImg":
+			countryLabel.setText("Nigeria");
+			break;
+		case "madImg":
+			countryLabel.setText("Madagascar");
+			break;
+		case "porImg":
+			countryLabel.setText("Portugal");
+			break;
+		case "rusImg":
+			countryLabel.setText("Rusia");
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	@FXML
+	public void closeApp(MouseEvent event) {
 		System.exit(0);
-    }
+	}
 }
