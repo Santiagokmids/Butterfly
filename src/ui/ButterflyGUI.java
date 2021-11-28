@@ -164,13 +164,6 @@ public class ButterflyGUI {
 		dubImg.setImage(ubi);
 
 		mainPane.setTop(load);
-
-		Line line = new Line(eeuuImg.getLayoutX() + 35,eeuuImg.getLayoutY() + 45,madImg.getLayoutX() + 10,madImg.getLayoutY()+40);
-		line.setStrokeWidth(3);
-		Line line2 = new Line(colImg.getLayoutX() + 35,colImg.getLayoutY() + 45, rusImg.getLayoutX() + 10,rusImg.getLayoutY()+40);
-		line2.setStrokeWidth(3);
-		mainPane.getChildren().add(line);
-		mainPane.getChildren().add(line2);
 	}
 
 	@FXML
@@ -408,6 +401,91 @@ public class ButterflyGUI {
 		stage.setScene(scene);
 		stage.showAndWait();
     }
+
+	public void addLines(String initVertice, String finalVertice) {
+		
+		switch (initVertice) {
+		
+		case "Estados Unidos":
+			addLine(eeuuImg, finalVertice);
+			break;
+		case "España":
+			addLine(espImg, finalVertice);
+			break;
+		case "Japón":
+			addLine(japImg, finalVertice);
+			break;
+		case "Colombia":
+			addLine(colImg, finalVertice);
+			break;
+		case "Nigeria":
+			addLine(nigImg, finalVertice);
+			break;
+		case "Portugal":
+			addLine(porImg, finalVertice);
+			break;
+		case "Rusia":
+			addLine(rusImg, finalVertice);
+			break;
+		case "Dubai":
+			addLine(dubImg, finalVertice);
+			break;
+		case "Madagascar":
+			addLine(madImg, finalVertice);
+			break;
+		case "Australia":
+			addLine(ausImg, finalVertice);
+			break;
+		default:
+			break;
+		}
+	}
+	
+	public void addLine(ImageView image, String finalVertice) {
+		
+		switch (finalVertice) {
+		
+		case "Estados Unidos":
+			addLine(image, eeuuImg);
+			break;
+		case "España":
+			addLine(image, espImg);
+			break;
+		case "Japón":
+			addLine(image, japImg);
+			break;
+		case "Colombia":
+			addLine(image, colImg);
+			break;
+		case "Nigeria":
+			addLine(image, nigImg);
+			break;
+		case "Portugal":
+			addLine(image, porImg);
+			break;
+		case "Rusia":
+			addLine(image, rusImg);
+			break;
+		case "Dubai":
+			addLine(image, dubImg);
+			break;
+		case "Madagascar":
+			addLine(image, madImg);
+			break;
+		case "Australia":
+			addLine(image, ausImg);
+			break;
+		default:
+			break;
+		}
+	}
+	
+	public void addLine(ImageView image, ImageView image2) {
+		
+		Line line = new Line(image.getLayoutX() + 35,image.getLayoutY() + 45,image2.getLayoutX() + 10,image2.getLayoutY()+40);
+		line.setStrokeWidth(3);
+		mainPane.getChildren().add(line);
+	}
 
 	@FXML
 	public void closeApp(MouseEvent event) {

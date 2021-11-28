@@ -11,6 +11,10 @@ implements IListGraph<U, V, H> {
 	private ArrayList<NodeK<V, U, H>> ensembleArrayList;
 	private int distance[][];
 
+	public ListGraph() {
+		createGraph();
+	}
+
 	@Override
 	public void createGraph() {
 		listVertice = new ArrayList<ListVertice<V, U, H>>();
@@ -54,7 +58,7 @@ implements IListGraph<U, V, H> {
 				i = listVertice.size();
 			}
 		}
-		if (foundA == true && foundB == true && (int)height >= 0) {
+		if (foundA == true && foundB == true && (int)height > 0) {
 			listVertice.get(positionA).getAdjacency().add(listVertice.get(positionB).getValue());
 			ListEdge<U, V, H> list = new ListEdge<U,V,H>(listVertice.get(positionA),listVertice.get(positionB),height);
 			return listVertice.get(positionA).addEdge(list);

@@ -1,6 +1,5 @@
 package dataStructure;
 
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -13,6 +12,11 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 	private ArrayList<NodeM<V, U, H>> ensembleArrayList = new ArrayList<NodeM<V, U, H>>();
 	private int distance[][];
 	ArrayList<Vertice<V, U, H>> verticeArray = new ArrayList<Vertice<V,U,H>>();
+
+	
+	public MatrixGraph() {
+		createGraph();
+	}
 
 	@Override
 	public void createGraph() {
@@ -197,12 +201,10 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 
 		for (int i = 0; i < vertice.size() && !verify; i++) {
 			if (vertice.get(i).getValue().compareTo(value) == 0) {
-				verify = true;
-
 				vertice.remove(i);
-
 				removeEdgesFromVertice(value);
-
+				verify = true;
+				
 				Vertice<V, U, H> vertix = new Vertice<V, U, H>(null);
 				createMatrix(vertix);
 			}
@@ -1003,7 +1005,7 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 		for (int i = 0; i < edges.size() && !verify; i++) {
 			if (edges.get(i).getInitVertice().getValue().compareTo(initial) == 0
 					&& edges.get(i).getFinalVertice().getValue().compareTo(end) == 0
-					&& edges.get(i).getHeight().compareTo(weight) == 0) {
+					&& edges.get(i).getHeight().compareTo(weight) == 0 && (int)newWeight > 0) {
 				verify = true;
 				edges.get(i).setHeight(newWeight);
 				modifyEdgeInVertice(initial, end, weight, newWeight);
