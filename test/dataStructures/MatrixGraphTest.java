@@ -1,8 +1,13 @@
 package dataStructures;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Test;
+
 import dataStructure.MatrixGraph;
+import dataStructure.Vertice;
 
 class MatrixGraphTest<V extends Comparable <V>, U, H extends Comparable<H>>{
 	
@@ -146,6 +151,53 @@ class MatrixGraphTest<V extends Comparable <V>, U, H extends Comparable<H>>{
 	public void test() {
 		setupScenary1();
 		assertEquals("Colombia", matrixGraph.getVertice().get(0).getValue());
+	}
+	
+	@Test
+	public void dijkstraTest() {
+		setupScenary3();
+		int value = 0;
+		value = matrixGraph.makeDijkstra(matrixGraph.getVertice().get(7), matrixGraph.getVertice().get(2));
+		assertEquals(value, 6100);
+	}
+	
+	@Test
+	public void dijkstraTest2() {
+		setupScenary3();
+		ArrayList<Integer> dijkstra = matrixGraph.dijkstra(matrixGraph.getVertice().get(7));
+		
+		ArrayList<Integer> values = new ArrayList<>();
+		values.add(Integer.MAX_VALUE);
+		values.add(Integer.MAX_VALUE);
+		values.add(6100);
+		values.add(9100);
+		values.add(2100);
+		values.add(5100);
+		values.add(4600);
+		values.add(0);
+		values.add(3350);
+		values.add(8350);
+		
+		for (int i = 0; i < dijkstra.size(); i++) {
+			assertEquals(values.get(i), dijkstra.get(i));
+		}
+	}
+	
+	@Test
+	public void dijkstraTest3() {
+		setupScenary3();
+		int value = 0;
+		value = matrixGraph.makeDijkstra(matrixGraph.getVertice().get(9), matrixGraph.getVertice().get(8));
+		assertEquals(value, Integer.MAX_VALUE);
+	}
+	
+	@Test
+	public void dijkstraTest4() {
+		setupScenary3();
+		int value = 0;
+		Vertice<String, String, Integer> vertix = new Vertice<String, String, Integer>("Andorra");
+		value = matrixGraph.makeDijkstra(matrixGraph.getVertice().get(9), vertix);
+		assertEquals(value, -1);
 	}
 	
 	@Test

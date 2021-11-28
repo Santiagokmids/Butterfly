@@ -284,11 +284,10 @@ implements IListGraph<U, V, H> {
 
 	public int makeDijkstra(ListVertice<V, U, H> start, ListVertice<V, U, H> end) {
 		ArrayList<H> dijkstra = dijkstra(start);
-		ArrayList<ListVertice<V, U, H>> reference = assignRef();
 		int weight = -1;
 
-		for (int i = 0; i < reference.size(); i++) {
-			if (reference.get(i).getValue().compareTo(end.getValue()) == 0) {
+		for (int i = 0; i < listVertice.size(); i++) {
+			if (listVertice.get(i).getValue().compareTo(end.getValue()) == 0) {
 				weight = (int) dijkstra.get(i);
 			}
 		}

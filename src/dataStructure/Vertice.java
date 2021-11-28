@@ -10,12 +10,14 @@ public class Vertice<V extends Comparable<V>, U, H> {
 	private int color;
 	public Vertice<V, U, H> next;
 	public Vertice<V, U, H> down;
+	private int distance;
 	
 	public Vertice(V value) {
 		this.value = value;
 		edge = new ArrayList<Edge<U, V, H>>();
 		setVisited(false);
 		color = 0;
+		setDistance(Integer.MAX_VALUE);
 	}
 	
 	public boolean addEdge(Vertice<V, U, H> initial, Vertice<V, U, H> end, H weight) {
@@ -70,5 +72,13 @@ public class Vertice<V extends Comparable<V>, U, H> {
 
 	public void setDown(Vertice<V, U, H> down) {
 		this.down = down;
+	}
+
+	public int getDistance() {
+		return distance;
+	}
+
+	public void setDistance(int distance) {
+		this.distance = distance;
 	}
 }
