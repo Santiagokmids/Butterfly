@@ -1,8 +1,12 @@
 package ui;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.awt.*;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -331,6 +335,16 @@ public class ButterflyGUI {
 		Scene scene = new Scene(root);
 		Stage stage = new Stage();
 		stage.initModality(Modality.APPLICATION_MODAL);
+		linkInformation.setText("https://es.wikipedia.org/");
+		linkInformation.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				try {
+					Desktop.getDesktop().browse(new URI("https://es.wikipedia.org/"));
+				} catch (IOException | URISyntaxException e) {
+				}
+			}
+		});
 		
 		switch (id) {
 		case "eeuuImg":
