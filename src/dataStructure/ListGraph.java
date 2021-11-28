@@ -744,5 +744,6 @@ implements IListGraph<U, V, H> {
 	public int[][] getDistance() {
 		return distance;
 	}
+	
 
 }
