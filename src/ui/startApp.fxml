@@ -2,6 +2,7 @@
 
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -13,7 +14,55 @@
    <children>
       <Pane prefHeight="563.0" prefWidth="1045.0" style="-fx-background-color: white;">
          <children>
-            <ImageView fx:id="imgMap" fitHeight="928.0" fitWidth="902.0" layoutX="72.0" layoutY="-31.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="imgMap" fitHeight="570.0" fitWidth="998.0" layoutX="24.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor></ImageView>
+            <ImageView fx:id="eeuuImg" fitHeight="116.0" fitWidth="42.0" layoutX="206.0" layoutY="157.0" onMouseEntered="#showLabel" onMouseExited="#emptyLabel" pickOnBounds="true" preserveRatio="true">
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor></ImageView>
+            <ImageView fx:id="colImg" fitHeight="116.0" fitWidth="42.0" layoutX="287.0" layoutY="357.0" onMouseEntered="#showLabel" onMouseExited="#emptyLabel" pickOnBounds="true" preserveRatio="true">
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor></ImageView>
+            <ImageView fx:id="rusImg" fitHeight="116.0" fitWidth="42.0" layoutX="662.0" layoutY="134.0" onMouseEntered="#showLabel" onMouseExited="#emptyLabel" pickOnBounds="true" preserveRatio="true">
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor></ImageView>
+            <ImageView fx:id="espImg" fitHeight="116.0" fitWidth="42.0" layoutX="474.0" layoutY="242.0" onMouseEntered="#showLabel" onMouseExited="#emptyLabel" pickOnBounds="true" preserveRatio="true">
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor></ImageView>
+            <ImageView fx:id="nigImg" fitHeight="116.0" fitWidth="42.0" layoutX="488.0" layoutY="319.0" onMouseEntered="#showLabel" onMouseExited="#emptyLabel" pickOnBounds="true" preserveRatio="true">
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor></ImageView>
+            <ImageView fx:id="madImg" fitHeight="116.0" fitWidth="42.0" layoutX="590.0" layoutY="395.0" onMouseEntered="#showLabel" onMouseExited="#emptyLabel" pickOnBounds="true" preserveRatio="true">
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor></ImageView>
+            <ImageView fx:id="porImg" fitHeight="116.0" fitWidth="42.0" layoutX="440.0" layoutY="219.0" onMouseEntered="#showLabel" onMouseExited="#emptyLabel" pickOnBounds="true" preserveRatio="true">
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor></ImageView>
+            <ImageView fx:id="japImg" fitHeight="116.0" fitWidth="42.0" layoutX="813.0" layoutY="235.0" onMouseEntered="#showLabel" onMouseExited="#emptyLabel" pickOnBounds="true" preserveRatio="true">
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor></ImageView>
+            <ImageView fx:id="dubImg" fitHeight="116.0" fitWidth="42.0" layoutX="611.0" layoutY="282.0" onMouseEntered="#showLabel" onMouseExited="#emptyLabel" pickOnBounds="true" preserveRatio="true">
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor></ImageView>
+            <ImageView fx:id="ausImg" fitHeight="116.0" fitWidth="42.0" layoutX="813.0" layoutY="418.0" onMouseEntered="#showLabel" onMouseExited="#emptyLabel" pickOnBounds="true" preserveRatio="true">
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor></ImageView>
+            <Label fx:id="countryLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="9.0" layoutY="515.0" prefHeight="31.0" prefWidth="228.0" textAlignment="CENTER">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="25.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
       <ImageView fx:id="imgExit" fitHeight="42.0" fitWidth="42.0" layoutX="996.0" layoutY="14.0" onMouseClicked="#closeApp" opacity="0.79" pickOnBounds="true" preserveRatio="true">

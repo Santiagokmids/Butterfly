@@ -1,5 +1,6 @@
 package dataStructure;
 
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -846,53 +847,81 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 		int cont = 0;
 
 		if (!vertice.isEmpty()) {
+
 			Queue<Edge<U, V, H>> priorityQueue = priority();
 
-			for (int i = 0; i < 9; i++) {
+			for (int i = 0; i < vertice.size(); i++) {
 				makeset(vertice.get(i));
 			}
-
-			for (int i = 0; i < priorityQueue.size() - 1; i++) {
-
-				Edge<U, V, H> priority = priorityQueue.poll();
-
-				NodeM<V, U, H> nodeOne = findNode(priority.getInitVertice().getValue());
-				NodeM<V, U, H> nodeTwo = findNode(priority.getFinalVertice().getValue());
-
-				if (findSet(nodeOne) == findSet(nodeTwo)) {
-					cont += (Integer) priority.getHeight();
-					union(nodeOne, nodeTwo);
-				}
-
-				priorityQueue = secondPriority(priorityQueue);
-			}
+			cont = kruskalOperation(priorityQueue, 0, 0);
 		}
 
 		return cont;
 	}
 
+	private int kruskalOperation(Queue<Edge<U, V, H>> priorityQueue, int contVertice, int contT) {
+
+		if(!priorityQueue.isEmpty() && contVertice < vertice.size()-1) {
+
+			Edge<U, V, H> priority = priorityQueue.poll();
+
+			NodeM<V, U, H> nodeOne = findNode(priority.getInitVertice().getValue());
+			NodeM<V, U, H> nodeTwo = findNode(priority.getFinalVertice().getValue());
+			if (findSet(nodeOne) != findSet(nodeTwo)) {
+				union(nodeOne, nodeTwo);
+				priorityQueue = secondPriority(priorityQueue);
+				return kruskalOperation(priorityQueue, ++contVertice, contT+(Integer) priority.getHeight());
+			}else {
+				priorityQueue = secondPriority(priorityQueue);
+				return kruskalOperation(priorityQueue, contVertice, contT);
+			}
+		}
+		return contT;
+	}
+
 	public Queue<Edge<U, V, H>> priority() {
 
-		ArrayList<Vertice<V, U, H>> newArrayList = vertice;
+		ArrayList<Edge<U, V, H>> newArrayList = findEdges(first);
 		ArrayList<Edge<U, V, H>> toOrganize = new ArrayList<>();
 		Queue<Edge<U, V, H>> priorityQueue = new LinkedList<>();
 
-		for (int i = 0; i < newArrayList.size() - 1; i++) {
-			for (int j = 0; j < newArrayList.get(i).getEdge().size() - 1; j++) {
-				toOrganize.add(newArrayList.get(i).getEdge().get(j));
-			}
+		for (int i = 0; i < newArrayList.size(); i++) {
+			toOrganize.add(newArrayList.get(i));
 		}
-
 		toOrganize = organize(toOrganize);
 		priorityQueue = intoQueue(toOrganize);
 
 		return priorityQueue;
 	}
 
+	private ArrayList<Edge<U, V, H>> findEdges(Vertice<V, U, H> first) {
+		
+		Vertice<V, U, H> currentVertice = first;
+		Vertice<V, U, H> newFirst = first;
+		ArrayList<Edge<U, V, H>> listEdge = new ArrayList<>();
+		
+		for (int i = 0; i < vertice.size(); i++) {
+			for (int j = 0; j < vertice.size(); j++) {
+				if(currentVertice != null && !currentVertice.getEdge().isEmpty()) {
+					listEdge.add(currentVertice.getEdge().get(0));
+				}
+				if (currentVertice.getNext() != null) {
+					currentVertice = currentVertice.getNext();
+				}
+			}
+			if (newFirst.getDown() != null) {
+				currentVertice = newFirst.getDown();
+				newFirst = newFirst.getDown();
+			}
+		}
+		
+		return listEdge;
+	}
+
 	private ArrayList<Edge<U, V, H>> organize(ArrayList<Edge<U, V, H>> toOrganize) {
 
 		ArrayList<Edge<U, V, H>> newArrayList = toOrganize;
-
+		
 		for (int i = 1; i < newArrayList.size(); i++) {
 			for (int j = i; j > 0
 					&& newArrayList.get(j - 1).getHeight().compareTo(newArrayList.get(j).getHeight()) > 0; j--) {
@@ -902,6 +931,7 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 				newArrayList.set(j - 1, newEdge);
 			}
 		}
+		
 
 		return newArrayList;
 	}
@@ -911,7 +941,7 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 		ArrayList<Edge<U, V, H>> newArrayList = arrayList;
 		Queue<Edge<U, V, H>> newQueue = new LinkedList<>();
 
-		for (int i = 0; i < newArrayList.size() - 1; i++) {
+		for (int i = 0; i < newArrayList.size(); i++) {
 			newQueue.add(newArrayList.get(i));
 		}
 
@@ -926,7 +956,7 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 
 		boolean verify = false;
 
-		for (int i = 0; i < ensembleArrayList.size() - 1 && !verify; i++) {
+		for (int i = 0; i < ensembleArrayList.size() && !verify; i++) {
 			if (ensembleArrayList.get(i).getVertice().getValue().compareTo(value) == 0) {
 				verify = true;
 				return ensembleArrayList.get(i);
@@ -939,7 +969,7 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 
 		NodeM<V, U, H> newNode = toFind;
 
-		if (toFind.getParent() != null) {
+		if (toFind != null && toFind.getParent() != null) {
 			return newNode = findSet(toFind.getParent());
 		}
 
@@ -947,9 +977,7 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 	}
 
 	private void union(NodeM<V, U, H> nodeOne, NodeM<V, U, H> nodeTwo) {
-		if (nodeOne.getVertice().getValue().compareTo(nodeTwo.getVertice().getValue()) < 0) {
-			nodeTwo.setParent(nodeOne);
-		}
+		nodeTwo.setParent(nodeOne);
 	}
 
 	private Queue<Edge<U, V, H>> secondPriority(Queue<Edge<U, V, H>> priorityQueue) {
@@ -960,7 +988,7 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 		for (Edge<U, V, H> listEdge : priorityQueue) {
 			newArrayList.add(listEdge);
 		}
-
+		
 		newArrayList = organize(newArrayList);
 		newQueue = intoQueue(newArrayList);
 
