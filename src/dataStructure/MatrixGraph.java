@@ -34,8 +34,6 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 			for (int i = 0; i < edges.size(); i++) {
 				addEdge(findPosition(edges.get(i).getInitVertice()), findPosition(edges.get(i).getFinalVertice()),
 						edges.get(i).getHeight());
-				// System.out.println(findPosition(edges.get(i).getInitVertice())+" init
-				// "+findPosition(edges.get(i).getFinalVertice())+" final");
 			}
 		}
 	}
@@ -65,27 +63,27 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 		}
 	}
 
+	private void createMatrix(Vertice<V, U, H> dynamicV, Vertice<V, U, H> dynamic, Vertice<V, U, H> current, int cont,
+			int contV) {
 
-	private void createMatrix(Vertice<V,U,H> dynamicV, Vertice<V,U,H> dynamic, Vertice<V,U,H> current, int cont, int contV) {
+		if (dynamic.getNext() == null) {
 
-		if(dynamic.getNext() == null) {
-			System.out.println("entrs");
-			if(cont < vertice.size()) {
+			if (cont < vertice.size()) {
 				Vertice<V, U, H> newVertice = new Vertice<V, U, H>(null);
 				dynamic.setNext(newVertice);
-				createMatrix(dynamicV,dynamic.getNext(), newVertice, ++cont, contV);
-				
-			}else if(dynamicV.getDown() == null){
-				if(contV < vertice.size()) {
+				createMatrix(dynamicV, dynamic.getNext(), newVertice, ++cont, contV);
+
+			} else if (dynamicV.getDown() == null) {
+				if (contV < vertice.size()) {
 					Vertice<V, U, H> newVertice = new Vertice<V, U, H>(null);
 					dynamicV.setDown(newVertice);
 					createMatrix(dynamicV.getDown(), dynamicV.getDown(), newVertice, 0, ++contV);
 				}
-			}else {
-				createMatrix(dynamicV.getDown(),dynamicV.getDown(), current, 0, ++contV);
+			} else {
+				createMatrix(dynamicV.getDown(), dynamicV.getDown(), current, 0, ++contV);
 			}
-		}else {
-			createMatrix(dynamicV,dynamic.getNext(), current, ++cont, contV);
+		} else {
+			createMatrix(dynamicV, dynamic.getNext(), current, ++cont, contV);
 		}
 	}
 
@@ -111,10 +109,8 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 			}
 		}
 
-		
+		edges.add(new Edge<U, V, H>(vertice.get(positionA), vertice.get(positionB), height));
 
-		edges.add(new Edge<U, V, H>(vertice.get(positionA),vertice.get(positionB), height));
-		
 		verify = addEdge(positionA, positionB, height);
 
 		return verify;
@@ -133,7 +129,7 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 					newVertice = newVertice.getDown();
 				}
 			}
-			
+
 			for (int i = 0; i < positionB; i++) {
 				if (newVertice.getNext() != null) {
 					newVertice = newVertice.getNext();
@@ -160,7 +156,6 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 
 			Vertice<V, U, H> current = newVertice;
 
-
 			for (int i = 0; i < vertice.size() && !foundA; i++) {
 				if (vertice.get(i).getValue().compareTo(verticeInit) == 0) {
 					foundA = true;
@@ -175,9 +170,6 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 				}
 			}
 
-			
-			
-
 			for (int i = 0; i < positionA; i++) {
 				if (newVertice.getDown() != null) {
 					newVertice = newVertice.getDown();
@@ -185,15 +177,12 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 			}
 
 			for (int i = 0; i < positionB; i++) {
-				System.out.println("bolete "+i);
 				if (newVertice.getNext() != null) {
 					newVertice = newVertice.getNext();
-					System.out.println(newVertice.getNext());
 				}
 			}
-			
+
 			weight = newVertice.getEdge().get(0).getHeight();
-			System.out.println(verticeInit+" "+positionA+" "+verticeEnd+" "+positionB+" "+weight+"\n");
 		}
 
 		return weight;
@@ -277,47 +266,73 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 			vertice.get(i).setColor(0);
 		}
 		if (found == true) {
-			bfs(vertic, first.getNext(),first, position );
+			// vertice.get(position).getValue());
+
+			bfs(vertic, first, first, position);
 			return vertic;
 		}
 		return vertic;
 	}
 
-	public void bfs(ArrayList<Vertice<V, U, H>> vertic, Vertice<V, U, H> e, Vertice<V, U, H> firts,int position ) {
-		if(position == 0) {
-			System.out.println(e.getEdge().get(0).getInitVertice() + "holas");
-			if(e.getNext() != null) {
-				System.out.println("entro a bfs");
-				if(e.getNext().getValue() == null) {
-					System.out.println("holaaaaaaaa");
-					e = e.getNext();
-					bfs(vertic, e.getNext(), firts, position);
-				}else {
-					vertic.add(e.getNext());
-					bfs(vertic, e.getNext(), firts, position);
-				}
-			}
-			System.out.println("null");
-		}else {
-			position--;
-			System.out.println("carajo");
-			bfs(vertic, e.getDown(), firts, position);
-		}
+	public void bfs(ArrayList<Vertice<V, U, H>> vertic, Vertice<V, U, H> e, Vertice<V, U, H> firts, int position) {
 		
+		if (position == 0) {
+		
+			if (e != null) {
+			
+				if (e.getEdge().isEmpty()) {
+					
+					
+					bfs(vertic, e.getNext(), firts, position);
+					
+				} else {
+					// primer");
+
+					if (e.getEdge().get(0).getFinalVertice().getColor() == 0) {
+						if (e.getEdge().get(0).getInitVertice().getColor() == 0) {
+							vertic.add(e.getEdge().get(0).getInitVertice());
+							e.getEdge().get(0).getInitVertice().setColor(2);
+						}
+
+						vertic.add(e.getEdge().get(0).getFinalVertice());
+						bfs(vertic, e.getNext(), firts, position);
+					} else if(e.getNext() != null){
+						
+						bfs(vertic, e.getNext(), firts, position);
+					}
+				}
+			} else {
+				for (int i = 0; i < vertic.size(); i++) {
+					if (vertic.get(i).getColor() != 2) {
+						int pos = validPosition(vertic.get(i).getValue());
+						vertic.get(i).setColor(2);
+						
+						bfs(vertic, first, first, pos);
+					}
+				}
+				
+			}
+			
+			
+
+		} else {
+			position--;
+			bfs(vertic, e.getDown(), e.getDown(), position);
+		}
 
 	}
 
-	public void bfsNext(ArrayList<Vertice<V, U, H>> verti, Vertice<V, U, H> ne) {
-		if (ne.getNext().getValue() != null) {
-			if (ne.getNext().getColor() == 0) {
-				verti.add(ne.getNext());
-				ne.setColor(2);
-				System.out.println("entra a next");
-			}
-			
-			bfsNext(verti, ne.getNext());
-		}
+	private int validPosition(V v) {
+		boolean found = false;
 
+		int position = 0;
+		for (int i = 0; i < vertice.size() && found == false; i++) {
+			if (vertice.get(i).getValue().compareTo(v) == 0) {
+				position = i;
+				found = true;
+			}
+		}
+		return position;
 	}
 
 	@Override
