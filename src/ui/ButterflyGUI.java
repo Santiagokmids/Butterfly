@@ -6,17 +6,41 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.shape.Line;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import model.Butterfly;
 
 public class ButterflyGUI {
+	
+	@FXML
+    private ImageView imgPhoto;
+
+    @FXML
+    private Label lblCountry;
+
+    @FXML
+    private TableView<?> tvFlight;
+
+    @FXML
+    private TableColumn<?, ?> tcCountry;
+
+    @FXML
+    private Label lblInformation;
+
+    @FXML
+    private Hyperlink linkInformation;
 
 	@FXML
 	private ImageView imgMap;
@@ -77,6 +101,36 @@ public class ButterflyGUI {
 	boolean btnCostVerify = true;
 
 	Butterfly butterfly;
+	
+	//Country photos
+	
+	Image colombiaImage = new Image("/images/colombia.jpg");
+	Image espaniaImage = new Image("/images/españa.jpg");
+	Image japonImage = new Image("/images/japon.jpg");
+	Image eeuuImage = new Image("/images/eeuu.jpg");
+	Image rusiaImage = new Image("/images/rusia.jpg");
+	Image australiaImage = new Image("/images/australia.jpg");
+	Image nigeriaImage = new Image("/images/nigeria.jpg");
+	Image dubaiImage = new Image("/images/dubai.jpg");
+	Image portugalImage = new Image("/images/portugal.jpg");
+	Image madagascarImage = new Image("/images/madagascar.jpg"); 
+	
+	//Source of the information
+	
+	String link = "https://es.wikipedia.org/";
+	
+	//Information of the countries
+	
+	String colombiaInformation = "Es un país soberano situado en la región noroccidental de América del Sur, que se constituye en un estado unitario, social y democrático de derecho cuya forma de gobierno es presidencialista.";
+	String espaniaInformation = "Es un país soberano transcontinental, miembro de la Unión Europea, constituido en Estado social y democrático de derecho, cuya forma de gobierno es la monarquía parlamentaria. ";
+	String japonInformation = " Es un país insular de Asia Oriental ubicado en el noroeste del océano Pacífico. Limita con el mar de Japón al oeste y se extiende desde el mar de Ojotsk en el norte hasta el mar de China Oriental y Taiwán en el sur.";
+	String eeuuInformation = "Es un país soberano constituido en una república federal constitucional compuesta por cincuenta estados y un distrito federal.";
+	String rusiaInformation = "Es un país que se extiende sobre Europa del Este y Asia del Norte. Es el país más extenso del mundo, equivalente a la novena parte de la tierra firme del planeta,";
+	String australiaInformation = "Es un país soberano de Oceanía, cuya forma de gobierno es la monarquía constitucional federal parlamentaria.";
+	String nigeriaInformation = "Es un país de África occidental, que limita con Níger al norte, con Chad en el nordeste, con Camerún en el este y con Benín en el oeste.";
+	String dubaiInformation = "Es uno de los siete emiratos que conforman los Emiratos Árabes Unidos, cuya capital es la ciudad homónima. Está situado en la costa del golfo Pérsico, en el desierto de Arabia";
+	String portugalInformation = "Es un país transcontinental. La mayor parte de su territorio, con capital en Lisboa, está ubicado en el suroeste de Europa, en la península ibérica.";
+	String madagascarInformation = "Es un país insular situado en el océano Índico, frente a la costa sureste del continente africano, al este de Mozambique.";
 
 	public ButterflyGUI(Butterfly butterfly) {
 		this.butterfly = butterfly;
@@ -271,6 +325,89 @@ public class ButterflyGUI {
 			break;
 		}
 	}
+	
+	@FXML
+    void btnInformation(MouseEvent event) throws IOException {
+		ImageView image = (ImageView) event.getSource();
+		String id = image.getId();
+		
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("informationPane.fxml"));
+		loader.setController(this);
+		Parent root = loader.load();
+		
+		Scene scene = new Scene(root);
+		Stage stage = new Stage();
+		stage.initModality(Modality.APPLICATION_MODAL);
+		
+		switch (id) {
+		case "eeuuImg":
+			imgPhoto.setImage(eeuuImage);
+			lblCountry.setText("Estados Unidos");
+			lblInformation.setText(eeuuInformation);
+			
+			break;
+		case "espImg":
+			imgPhoto.setImage(espaniaImage);
+			lblCountry.setText("España");
+			lblInformation.setText(espaniaInformation);
+			
+			break;
+		case "colImg":
+			imgPhoto.setImage(colombiaImage);
+			lblCountry.setText("Colombia");
+			lblInformation.setText(colombiaInformation);
+			
+			break;
+		case "dubImg":
+			imgPhoto.setImage(dubaiImage);
+			lblCountry.setText("Dubái");
+			lblInformation.setText(dubaiInformation);
+			
+			break;
+		case "ausImg":
+			imgPhoto.setImage(australiaImage);
+			lblCountry.setText("Australia");
+			lblInformation.setText(australiaInformation);
+			
+			break;
+		case "japImg":
+			imgPhoto.setImage(japonImage);
+			lblCountry.setText("Japón");
+			lblInformation.setText(japonInformation);
+			
+			break;
+		case "nigImg":
+			imgPhoto.setImage(nigeriaImage);
+			lblCountry.setText("Nigeria");
+			lblInformation.setText(nigeriaInformation);
+			
+			break;
+		case "madImg":
+			imgPhoto.setImage(madagascarImage);
+			lblCountry.setText("Madagascar");
+			lblInformation.setText(madagascarInformation);
+			
+			break;
+		case "porImg":
+			imgPhoto.setImage(portugalImage);
+			lblCountry.setText("Portugal");
+			lblInformation.setText(portugalInformation);
+			
+			break;
+		case "rusImg":
+			imgPhoto.setImage(rusiaImage);
+			lblCountry.setText("Rusia");
+			lblInformation.setText(rusiaInformation);
+			
+			break;
+
+		default:
+			break;
+		}
+		
+		stage.setScene(scene);
+		stage.showAndWait();
+    }
 
 	@FXML
 	public void closeApp(MouseEvent event) {

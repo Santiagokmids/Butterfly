@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Pane prefHeight="49.0" prefWidth="600.0" style="-fx-background-color: LIGHTSEAGREEN;">
+         <children>
+            <Label layoutX="42.0" layoutY="8.0" text="Información" textFill="WHITE">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="29.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane layoutX="42.0" layoutY="73.0" prefHeight="119.0" prefWidth="173.0" style="-fx-background-color: LIGHTSEAGREEN;" />
+      <ImageView fx:id="imgPhoto" fitHeight="119.0" fitWidth="166.0" layoutX="45.0" layoutY="77.0" pickOnBounds="true" preserveRatio="true" />
+      <Label fx:id="lblCountry" layoutX="239.0" layoutY="72.0" text="España">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="16.0" />
+         </font>
+      </Label>
+      <TableView fx:id="tvFlight" layoutX="41.0" layoutY="221.0" prefHeight="155.0" prefWidth="520.0">
+        <columns>
+          <TableColumn fx:id="tcCountry" editable="false" prefWidth="519.0" sortable="false" text="Vuelos disponibles" />
+        </columns>
+      </TableView>
+      <Label fx:id="lblInformation" layoutX="239.0" layoutY="82.0" prefHeight="111.0" prefWidth="319.0" text="Es un país soberano transcontinental, miembro de la Unión Europea, constituido en Estado social y democrático de derecho, cuya forma de gobierno es la monarquía parlamentaria. " wrapText="true">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="239.0" layoutY="182.0" prefHeight="20.0" prefWidth="66.0" text="Fuente:" wrapText="true">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="14.0" />
+         </font>
+      </Label>
+      <Hyperlink fx:id="linkInformation" layoutX="290.0" layoutY="182.0" text="Hyperlink" />
+   </children>
+</AnchorPane>

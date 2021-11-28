@@ -18,43 +18,43 @@
                <cursor>
                   <Cursor fx:constant="DEFAULT" />
                </cursor></ImageView>
-            <ImageView fx:id="eeuuImg" fitHeight="116.0" fitWidth="42.0" layoutX="206.0" layoutY="157.0" onMouseEntered="#showLabel" onMouseExited="#emptyLabel" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="eeuuImg" fitHeight="116.0" fitWidth="42.0" layoutX="206.0" layoutY="157.0" onMouseClicked="#btnInformation" onMouseEntered="#showLabel" onMouseExited="#emptyLabel" pickOnBounds="true" preserveRatio="true">
                <cursor>
                   <Cursor fx:constant="OPEN_HAND" />
                </cursor></ImageView>
-            <ImageView fx:id="colImg" fitHeight="116.0" fitWidth="42.0" layoutX="287.0" layoutY="357.0" onMouseEntered="#showLabel" onMouseExited="#emptyLabel" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="colImg" fitHeight="116.0" fitWidth="42.0" layoutX="287.0" layoutY="357.0" onMouseClicked="#btnInformation" onMouseEntered="#showLabel" onMouseExited="#emptyLabel" pickOnBounds="true" preserveRatio="true">
                <cursor>
                   <Cursor fx:constant="OPEN_HAND" />
                </cursor></ImageView>
-            <ImageView fx:id="rusImg" fitHeight="116.0" fitWidth="42.0" layoutX="662.0" layoutY="134.0" onMouseEntered="#showLabel" onMouseExited="#emptyLabel" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="rusImg" fitHeight="116.0" fitWidth="42.0" layoutX="662.0" layoutY="134.0" onMouseClicked="#btnInformation" onMouseEntered="#showLabel" onMouseExited="#emptyLabel" pickOnBounds="true" preserveRatio="true">
                <cursor>
                   <Cursor fx:constant="OPEN_HAND" />
                </cursor></ImageView>
-            <ImageView fx:id="espImg" fitHeight="116.0" fitWidth="42.0" layoutX="474.0" layoutY="242.0" onMouseEntered="#showLabel" onMouseExited="#emptyLabel" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="espImg" fitHeight="116.0" fitWidth="42.0" layoutX="474.0" layoutY="242.0" onMouseClicked="#btnInformation" onMouseEntered="#showLabel" onMouseExited="#emptyLabel" pickOnBounds="true" preserveRatio="true">
                <cursor>
                   <Cursor fx:constant="OPEN_HAND" />
                </cursor></ImageView>
-            <ImageView fx:id="nigImg" fitHeight="116.0" fitWidth="42.0" layoutX="488.0" layoutY="319.0" onMouseEntered="#showLabel" onMouseExited="#emptyLabel" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="nigImg" fitHeight="116.0" fitWidth="42.0" layoutX="488.0" layoutY="319.0" onMouseClicked="#btnInformation" onMouseEntered="#showLabel" onMouseExited="#emptyLabel" pickOnBounds="true" preserveRatio="true">
                <cursor>
                   <Cursor fx:constant="OPEN_HAND" />
                </cursor></ImageView>
-            <ImageView fx:id="madImg" fitHeight="116.0" fitWidth="42.0" layoutX="590.0" layoutY="395.0" onMouseEntered="#showLabel" onMouseExited="#emptyLabel" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="madImg" fitHeight="116.0" fitWidth="42.0" layoutX="590.0" layoutY="395.0" onMouseClicked="#btnInformation" onMouseEntered="#showLabel" onMouseExited="#emptyLabel" pickOnBounds="true" preserveRatio="true">
                <cursor>
                   <Cursor fx:constant="OPEN_HAND" />
                </cursor></ImageView>
-            <ImageView fx:id="porImg" fitHeight="116.0" fitWidth="42.0" layoutX="440.0" layoutY="219.0" onMouseEntered="#showLabel" onMouseExited="#emptyLabel" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="porImg" fitHeight="116.0" fitWidth="42.0" layoutX="440.0" layoutY="219.0" onMouseClicked="#btnInformation" onMouseEntered="#showLabel" onMouseExited="#emptyLabel" pickOnBounds="true" preserveRatio="true">
                <cursor>
                   <Cursor fx:constant="OPEN_HAND" />
                </cursor></ImageView>
-            <ImageView fx:id="japImg" fitHeight="116.0" fitWidth="42.0" layoutX="813.0" layoutY="235.0" onMouseEntered="#showLabel" onMouseExited="#emptyLabel" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="japImg" fitHeight="116.0" fitWidth="42.0" layoutX="813.0" layoutY="235.0" onMouseClicked="#btnInformation" onMouseEntered="#showLabel" onMouseExited="#emptyLabel" pickOnBounds="true" preserveRatio="true">
                <cursor>
                   <Cursor fx:constant="OPEN_HAND" />
                </cursor></ImageView>
-            <ImageView fx:id="dubImg" fitHeight="116.0" fitWidth="42.0" layoutX="611.0" layoutY="282.0" onMouseEntered="#showLabel" onMouseExited="#emptyLabel" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="dubImg" fitHeight="116.0" fitWidth="42.0" layoutX="611.0" layoutY="282.0" onMouseClicked="#btnInformation" onMouseEntered="#showLabel" onMouseExited="#emptyLabel" pickOnBounds="true" preserveRatio="true">
                <cursor>
                   <Cursor fx:constant="OPEN_HAND" />
                </cursor></ImageView>
-            <ImageView fx:id="ausImg" fitHeight="116.0" fitWidth="42.0" layoutX="813.0" layoutY="418.0" onMouseEntered="#showLabel" onMouseExited="#emptyLabel" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="ausImg" fitHeight="116.0" fitWidth="42.0" layoutX="813.0" layoutY="418.0" onMouseClicked="#btnInformation" onMouseEntered="#showLabel" onMouseExited="#emptyLabel" pickOnBounds="true" preserveRatio="true">
                <cursor>
                   <Cursor fx:constant="OPEN_HAND" />
                </cursor></ImageView>
