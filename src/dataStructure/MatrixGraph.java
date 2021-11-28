@@ -32,8 +32,7 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 	private void reloadEdges() {
 		if (!edges.isEmpty()) {
 			for (int i = 0; i < edges.size(); i++) {
-				addEdge(findPosition(edges.get(i).getInitVertice()), findPosition(edges.get(i).getFinalVertice()),
-						edges.get(i).getHeight());
+				addEdge(findPosition(edges.get(i).getInitVertice()), findPosition(edges.get(i).getFinalVertice()),edges.get(i).getHeight());
 			}
 		}
 	}
@@ -68,7 +67,7 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 
 		if (dynamic.getNext() == null) {
 
-			if (cont < vertice.size()) {
+			if(cont < vertice.size()) {
 				Vertice<V, U, H> newVertice = new Vertice<V, U, H>(null);
 				dynamic.setNext(newVertice);
 				createMatrix(dynamicV, dynamic.getNext(), newVertice, ++cont, contV);
@@ -108,10 +107,12 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 				positionB = i;
 			}
 		}
-
-		edges.add(new Edge<U, V, H>(vertice.get(positionA), vertice.get(positionB), height));
-
-		verify = addEdge(positionA, positionB, height);
+		
+		if((int)height > 0) {
+			edges.add(new Edge<U, V, H>(vertice.get(positionA),vertice.get(positionB), height));
+			
+			verify = addEdge(positionA, positionB, height);
+		}
 
 		return verify;
 	}
@@ -153,8 +154,6 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 		if (first != null) {
 
 			Vertice<V, U, H> newVertice = first;
-
-			Vertice<V, U, H> current = newVertice;
 
 			for (int i = 0; i < vertice.size() && !foundA; i++) {
 				if (vertice.get(i).getValue().compareTo(verticeInit) == 0) {
@@ -753,10 +752,60 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 					&& edges.get(i).getHeight().compareTo(weight) == 0) {
 				verify = true;
 				edges.get(i).setHeight(newWeight);
-				reloadEdges();
+				modifyEdgeInVertice(initial, end, weight, newWeight);
+				modifyEdgeInMatrix(initial, end, weight, newWeight);
 			}
 		}
 
 		return verify;
+	}
+	
+	private void modifyEdgeInVertice(V initial, V end, H weight,H newWeight) {
+		
+		for (int i = 0; i < vertice.size(); i++) {
+			if(vertice.get(i).getValue().compareTo(initial) == 0) {
+				
+				for (int j = 0; j < vertice.get(i).getEdge().size(); j++) {
+					
+					if(vertice.get(i).getEdge().get(j).getFinalVertice().getValue().compareTo(end) == 0 && weight.compareTo(vertice.get(i).getEdge().get(j).getHeight()) == 0) {
+						vertice.get(i).getEdge().get(j).setHeight(newWeight);
+					}
+				}
+			}
+		}
+	}
+	
+	private void modifyEdgeInMatrix(V initial, V end, H weight,H newWeight) {
+		
+		int indexA = -1, indexB = -1;
+		
+		for (int i = 0; i < vertice.size(); i++) {
+			if(vertice.get(i).getValue().compareTo(initial) == 0) {
+				indexA = i;
+			}
+		}
+		
+		for (int i = 0; i < vertice.size(); i++) {
+			if(vertice.get(i).getValue().compareTo(end) == 0) {
+				indexB = i;
+			}
+		}
+		
+		Vertice<V, U, H> current = first;
+		
+		for (int i = 0; i < indexA; i++) {
+			if (current.getDown() != null) {
+				current = current.getDown();
+			}
+		}
+		
+		for (int i = 0; i < indexB; i++) {
+			if(current.getNext() != null) {
+				current = current.getNext();
+			}
+		}
+		Edge<U, V, H> edge = new Edge<U, V, H>(vertice.get(indexA), vertice.get(indexB), newWeight);
+
+		current.getEdge().set(0, edge);
 	}
 }
