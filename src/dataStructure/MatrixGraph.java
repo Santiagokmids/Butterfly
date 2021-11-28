@@ -790,7 +790,7 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 
 	public Queue<Edge<U, V, H>> priority() {
 
-		ArrayList<Edge<U, V, H>> newArrayList = edges;
+		ArrayList<Edge<U, V, H>> newArrayList = findEdges(first);
 		ArrayList<Edge<U, V, H>> toOrganize = new ArrayList<>();
 		Queue<Edge<U, V, H>> priorityQueue = new LinkedList<>();
 
@@ -801,6 +801,30 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 		priorityQueue = intoQueue(toOrganize);
 
 		return priorityQueue;
+	}
+
+	private ArrayList<Edge<U, V, H>> findEdges(Vertice<V, U, H> first) {
+		
+		Vertice<V, U, H> currentVertice = first;
+		Vertice<V, U, H> newFirst = first;
+		ArrayList<Edge<U, V, H>> listEdge = new ArrayList<>();
+		
+		for (int i = 0; i < vertice.size(); i++) {
+			for (int j = 0; j < vertice.size(); j++) {
+				if(currentVertice != null && !currentVertice.getEdge().isEmpty()) {
+					listEdge.add(currentVertice.getEdge().get(0));
+				}
+				if (currentVertice.getNext() != null) {
+					currentVertice = currentVertice.getNext();
+				}
+			}
+			if (newFirst.getDown() != null) {
+				currentVertice = newFirst.getDown();
+				newFirst = newFirst.getDown();
+			}
+		}
+		
+		return listEdge;
 	}
 
 	private ArrayList<Edge<U, V, H>> organize(ArrayList<Edge<U, V, H>> toOrganize) {
