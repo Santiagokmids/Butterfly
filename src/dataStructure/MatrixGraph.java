@@ -11,6 +11,8 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 	public Vertice<V, U, H> first;
 	private ArrayList<NodeM<V, U, H>> ensembleArrayList = new ArrayList<NodeM<V, U, H>>();
 	private int distance[][];
+	ArrayList<Vertice<V, U, H>> verticeArray = new ArrayList<Vertice<V,U,H>>();
+
 	
 	public MatrixGraph() {
 		createGraph();
@@ -36,7 +38,8 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 	private void reloadEdges() {
 		if (!edges.isEmpty()) {
 			for (int i = 0; i < edges.size(); i++) {
-				addEdge(findPosition(edges.get(i).getInitVertice()), findPosition(edges.get(i).getFinalVertice()),edges.get(i).getHeight());
+				addEdge(findPosition(edges.get(i).getInitVertice()), findPosition(edges.get(i).getFinalVertice()),
+						edges.get(i).getHeight());
 			}
 		}
 	}
@@ -71,7 +74,7 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 
 		if (dynamic.getNext() == null) {
 
-			if(cont < vertice.size()) {
+			if (cont < vertice.size()) {
 				Vertice<V, U, H> newVertice = new Vertice<V, U, H>(null);
 				dynamic.setNext(newVertice);
 				createMatrix(dynamicV, dynamic.getNext(), newVertice, ++cont, contV);
@@ -112,8 +115,8 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 			}
 		}
 
-		if((int)height > 0) {
-			edges.add(new Edge<U, V, H>(vertice.get(positionA),vertice.get(positionB), height));
+		if ((int) height > 0) {
+			edges.add(new Edge<U, V, H>(vertice.get(positionA), vertice.get(positionB), height));
 
 			verify = addEdge(positionA, positionB, height);
 		}
@@ -283,11 +286,9 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 
 				if (e.getEdge().isEmpty()) {
 
-
 					bfs(vertic, e.getNext(), firts, position);
 
 				} else {
-					// primer");
 
 					if (e.getEdge().get(0).getFinalVertice().getColor() == 0) {
 						if (e.getEdge().get(0).getInitVertice().getColor() == 0) {
@@ -297,7 +298,7 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 
 						vertic.add(e.getEdge().get(0).getFinalVertice());
 						bfs(vertic, e.getNext(), firts, position);
-					} else if(e.getNext() != null){
+					} else if (e.getNext() != null) {
 
 						bfs(vertic, e.getNext(), firts, position);
 					}
@@ -313,12 +314,9 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 				}
 
 			}
-
-
-
 		} else {
 			position--;
-			bfs(vertic, e.getDown(), e.getDown(), position);
+			bfs(vertic, e.getDown(), firts, position);
 		}
 
 	}
@@ -339,31 +337,122 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 	@Override
 	public ArrayList<Vertice<V, U, H>> dfs(V v) {
 		boolean found = false;
-		int position = 0;
 		ArrayList<Vertice<V, U, H>> vertic = new ArrayList<Vertice<V, U, H>>();
-		for (int i = 0; i < vertice.size(); i++) {
-			vertice.get(i).setVisited(false);
-		}
+		int position = 0;
 		for (int i = 0; i < vertice.size() && found == false; i++) {
 			if (vertice.get(i).getValue().compareTo(v) == 0) {
 				position = i;
 				found = true;
 			}
 		}
-		vertic.add(vertice.get(position));
-		dfs(vertic, vertice.get(position));
+		for (int i = 0; i < vertice.size(); i++) {
+			vertice.get(i).setColor(0);
+		}
+		if (found == true) {
 
+			dfs(vertic, first, first, position);
+			return vertic;
+		}
 		return vertic;
 	}
 
-	public void dfs(ArrayList<Vertice<V, U, H>> vertic, Vertice<V, U, H> e) {
-		ArrayList<Edge<U, V, H>> verticeO = e.getEdge();
-		for (int i = 0; i < verticeO.size(); i++) {
-			if (verticeO.get(i).getFinalVertice().isVisited() == false) {
-				vertic.add(verticeO.get(i).getFinalVertice());
-				verticeO.get(i).getFinalVertice().setVisited(true);
-				dfs(vertic, verticeO.get(i).getFinalVertice());
+	public void dfs2() {
+		
+		Vertice<V, U, H> current = first;
+		
+		for (int i = 0; i < vertice.size(); i++) {
+			vertice.get(i).setColor(0);
+		}
+		
+		for (int i = 0; i < vertice.size(); i++) {
+			
+			dfsVisited(current);
+			if (current.getDown() != null) {
+				current = current.getDown();
 			}
+		}
+	}
+	
+	private void dfsVisited(Vertice<V, U, H> vertice2) {
+		vertice2.setColor(1);
+		ArrayList<Vertice<V,U,H>> ad = findAdj(vertice2);
+		for (int i = 0; i < ad.size(); i++) {
+			if (ad.get(i).getColor() == 0) {
+				dfsVisited(ad.get(i));
+			}
+		}
+		vertice2.setColor(2);
+		if(vertice2.getValue() != null) {
+		verticeArray.add(vertice2);
+		}
+	}
+
+	private ArrayList<Vertice<V, U, H>> findAdj(Vertice<V, U, H> vertice2) {
+
+		Vertice<V, U, H> current = vertice2;
+		ArrayList<Vertice<V, U, H>> arrayAd = new ArrayList<Vertice<V,U,H>>();
+		
+		for (int i = 0; i < vertice.size(); i++) {
+			
+			if(current== first) {
+				
+				arrayAd.add(current);
+			}
+			if (!current.getEdge().isEmpty()) {
+				arrayAd.add(current.getEdge().get(0).getFinalVertice());
+			}
+			if (current.getNext() != null) {
+				current = current.getNext();
+			}
+		}
+		return arrayAd;
+	}
+
+	public void dfs(ArrayList<Vertice<V, U, H>> vertic, Vertice<V, U, H> e, Vertice<V, U, H> firt, int position) {
+		if (position == 0) {
+			if (e != null) {
+				if (e.getEdge().isEmpty()) {
+					dfs(vertic, e.getNext(), firt, position);
+				} else {
+					if (e.getEdge().get(0).getFinalVertice().getColor() == 0) {
+						if (e.getEdge().get(0).getInitVertice().getColor() == 0) {
+							vertic.add(e.getEdge().get(0).getInitVertice());
+							e.getEdge().get(0).getInitVertice().setColor(1);
+						}
+						e.getEdge().get(0).getFinalVertice().setColor(1);
+						vertic.add(e.getEdge().get(0).getFinalVertice());
+						position = validPosition(e.getEdge().get(0).getFinalVertice().getValue());
+						firt = e.getEdge().get(0).getInitVertice();
+						dfs(vertic, first, first, position);
+					} else {
+						dfs(vertic, e.getNext(), first, position);
+					}
+				}
+			} else {
+				for (int i = vertic.size(); i >= 0; i--) {
+					if (i >= 1) {
+						if (vertic.get(i - 1).getColor() == 1) {
+							 vertic.get(i - 1).setColor(2);
+							position = validPosition(vertic.get(i - 1).getValue());
+							dfs(vertic, first, first, position);
+						}
+					} else {
+						if (vertic.get(i).getColor() == 1) {
+							vertic.get(i).setColor(2);
+							position = validPosition(vertic.get(i).getValue());
+							int out = 3;
+							while(out >0) {
+							dfs(vertic, first, first, position);
+							out--;
+							}
+
+						}
+					}
+				}
+			}
+		} else {
+			position--;
+			dfs(vertic, e.getDown(), e.getDown(), position);
 		}
 
 	}
@@ -399,48 +488,48 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 			queue = extractMin(queue);
 
 			Vertice<V, U, H> value = queue.peek();
-			
+
 			int index = searchReference(value, reference);
 
 			Vertice<V, U, H> current = first;
 
 			for (int i = 0; i < index; i++) {
-				if(current.getDown() != null) {
+				if (current.getDown() != null) {
 					current = current.getDown();
 				}
 			}
 			int position = 0, weight = 0;
 
-			if(!current.getEdge().isEmpty()) {
+			if (!current.getEdge().isEmpty()) {
 				position = searchReference(current.getEdge().get(0).getFinalVertice(), reference);
-				if(dist.get(index) != Integer.MAX_VALUE && position != -1) {
-					weight = dist.get(index) + (Integer)current.getEdge().get(0).getHeight();
+				if (dist.get(index) != Integer.MAX_VALUE && position != -1) {
+					weight = dist.get(index) + (Integer) current.getEdge().get(0).getHeight();
 
-					if(weight < dist.get(position)) {
-						dist.set(position, weight);	
+					if (weight < dist.get(position)) {
+						dist.set(position, weight);
 						queue = setDistances(queue, position, weight);
 						prev.set(position, value);
 					}
-				}else {
+				} else {
 					queue.poll();
 				}
 			}
 
 			for (int j = 0; j < vertice.size(); j++) {
-				if(current.getNext() != null) {
-					current = current.getNext();	
+				if (current.getNext() != null) {
+					current = current.getNext();
 				}
-				if(!current.getEdge().isEmpty()) {
+				if (!current.getEdge().isEmpty()) {
 					position = searchReference(current.getEdge().get(0).getFinalVertice(), reference);
-					if(dist.get(index) != Integer.MAX_VALUE && position != -1) {
-						weight = dist.get(index) + (Integer)current.getEdge().get(0).getHeight();
+					if (dist.get(index) != Integer.MAX_VALUE && position != -1) {
+						weight = dist.get(index) + (Integer) current.getEdge().get(0).getHeight();
 
-						if(weight < dist.get(position)) {
-							dist.set(position, weight);	
+						if (weight < dist.get(position)) {
+							dist.set(position, weight);
 							queue = setDistances(queue, position, weight);
 							prev.set(position, value);
 						}
-					}else {
+					} else {
 						queue.poll();
 					}
 				}
@@ -477,7 +566,7 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 
 		for (int i = 0; i < vertice.size(); i++) {
 
-			if(vertice.get(i).getValue().compareTo(start.getValue()) == 0) {
+			if (vertice.get(i).getValue().compareTo(start.getValue()) == 0) {
 				vertice.get(i).setDistance(0);
 			}
 			queue.add(vertice.get(i));
@@ -491,7 +580,7 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 		ArrayList<Vertice<V, U, H>> vertix = new ArrayList<>();
 
 		for (int i = 0; i < vertice.size(); i++) {
-			if(!queue.isEmpty()) {
+			if (!queue.isEmpty()) {
 				vertix.add(queue.poll());
 			}
 		}
@@ -517,23 +606,23 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 		return queue;
 	}
 
-	private Queue<Vertice<V, U, H>> setDistances(Queue<Vertice<V, U, H>> queue, int index, int distance){
+	private Queue<Vertice<V, U, H>> setDistances(Queue<Vertice<V, U, H>> queue, int index, int distance) {
 
 		ArrayList<Vertice<V, U, H>> current = new ArrayList<Vertice<V, U, H>>();
 		boolean verify = false;
 
-		while(!verify) {
+		while (!verify) {
 
-			if(queue.isEmpty()) {
+			if (queue.isEmpty()) {
 				verify = true;
 
-			}else {
-				if(queue.peek().getValue().compareTo(vertice.get(index).getValue()) == 0) {
+			} else {
+				if (queue.peek().getValue().compareTo(vertice.get(index).getValue()) == 0) {
 					vertice.get(index).setDistance(distance);
 					queue.poll();
 					current.add(vertice.get(index));
 
-				}else {
+				} else {
 					current.add(queue.poll());
 				}
 			}
@@ -583,7 +672,8 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 			for (int k = 0; k < vertice.size(); k++) {
 				for (int i = 0; i < vertice.size(); i++) {
 					for (int j = 0; j < vertice.size(); j++) {
-						if (distance[i][k] != Integer.MAX_VALUE && distance[k][j] != Integer.MAX_VALUE && distance[i][j] > (distance[i][k] + distance[k][j])) {
+						if (distance[i][k] != Integer.MAX_VALUE && distance[k][j] != Integer.MAX_VALUE
+								&& distance[i][j] > (distance[i][k] + distance[k][j])) {
 							distance[i][j] = distance[i][k] + distance[k][j];
 						}
 					}
@@ -591,10 +681,10 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 			}
 		}
 	}
-	
+
 	private int[][] toWeight(int[][] distance) {
 
-		int[][] newMatrix = distance;	
+		int[][] newMatrix = distance;
 
 		for (int i = 0; i < newMatrix.length; i++) {
 			for (int j = 0; j < newMatrix.length; j++) {
@@ -609,7 +699,7 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 
 	private int[][] toZero(int[][] distance) {
 
-		int[][] newMatrix = distance;	
+		int[][] newMatrix = distance;
 
 		for (int i = 0; i < newMatrix.length; i++) {
 			for (int j = 0; j < newMatrix.length; j++) {
@@ -623,7 +713,7 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 
 	private int[][] toInfinte(int[][] distance) {
 
-		int[][] newMatrix = distance;	
+		int[][] newMatrix = distance;
 
 		for (int i = 0; i < newMatrix.length; i++) {
 			for (int j = 0; j < newMatrix.length; j++) {
@@ -638,23 +728,25 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 		V verticeTwoFind = vertice.get(verticeTwo).getValue();
 		Vertice<V, U, H> currentVertice = first;
 		H weightH = null;
-		
+
 		for (int i = 0; i < verticeOne; i++) {
 			if (currentVertice.getDown() != null) {
 				currentVertice = currentVertice.getDown();
 			}
 		}
-		
+
 		for (int i = 0; i < verticeTwo; i++) {
 			if (currentVertice.getNext() != null) {
 				currentVertice = currentVertice.getNext();
 			}
 		}
-		
-		if (!currentVertice.getEdge().isEmpty() && currentVertice.getEdge().get(0).getInitVertice().getValue().compareTo(verticeOneFind) == 0 && currentVertice.getEdge().get(0).getFinalVertice().getValue().compareTo(verticeTwoFind) == 0) {
+
+		if (!currentVertice.getEdge().isEmpty()
+				&& currentVertice.getEdge().get(0).getInitVertice().getValue().compareTo(verticeOneFind) == 0
+				&& currentVertice.getEdge().get(0).getFinalVertice().getValue().compareTo(verticeTwoFind) == 0) {
 			weightH = currentVertice.getEdge().get(0).getHeight();
 		}
-		
+
 		return weightH;
 	}
 
@@ -670,7 +762,7 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 		prev = assignPrev(prev);
 		queue = assignQueue(queue, start);
 		reference = assignRef();
-		
+
 		ArrayList<Boolean> colors = assignColors();
 
 		while (!queue.isEmpty()) {
@@ -678,49 +770,49 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 			queue = extractMin(queue);
 
 			Vertice<V, U, H> value = queue.peek();
-			
+
 			int index = searchReference(value, reference);
 
 			Vertice<V, U, H> current = first;
 
 			for (int i = 0; i < index; i++) {
-				if(current.getDown() != null) {
+				if (current.getDown() != null) {
 					current = current.getDown();
 				}
 			}
 			int position = 0, weight = 0;
 
-			if(!current.getEdge().isEmpty()) {
+			if (!current.getEdge().isEmpty()) {
 				position = searchReference(current.getEdge().get(0).getFinalVertice(), reference);
-				
-				if(dist.get(index) != Integer.MAX_VALUE && position != -1) {
-					weight = (Integer)current.getEdge().get(0).getHeight();
 
-					if(weight < dist.get(position) && !colors.get(position)) {
-						dist.set(position, weight);	
+				if (dist.get(index) != Integer.MAX_VALUE && position != -1) {
+					weight = (Integer) current.getEdge().get(0).getHeight();
+
+					if (weight < dist.get(position) && !colors.get(position)) {
+						dist.set(position, weight);
 						queue = setDistances(queue, position, weight);
 						prev.set(position, value);
 					}
-				}else {
+				} else {
 					queue.poll();
 				}
 			}
 
 			for (int j = 0; j < vertice.size(); j++) {
-				if(current.getNext() != null) {
-					current = current.getNext();	
+				if (current.getNext() != null) {
+					current = current.getNext();
 				}
-				if(!current.getEdge().isEmpty()) {
+				if (!current.getEdge().isEmpty()) {
 					position = searchReference(current.getEdge().get(0).getFinalVertice(), reference);
-					if(dist.get(index) != Integer.MAX_VALUE && position != -1) {
-						weight = (Integer)current.getEdge().get(0).getHeight();
+					if (dist.get(index) != Integer.MAX_VALUE && position != -1) {
+						weight = (Integer) current.getEdge().get(0).getHeight();
 
-						if(weight < dist.get(position) && !colors.get(position)) {
-							dist.set(position, weight);	
+						if (weight < dist.get(position) && !colors.get(position)) {
+							dist.set(position, weight);
 							queue = setDistances(queue, position, weight);
 							prev.set(position, value);
 						}
-					}else {
+					} else {
 						queue.poll();
 					}
 				}
@@ -728,15 +820,15 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 			queue.poll();
 			colors.set(index, true);
 		}
-		
+
 		int amount = 0;
-		
+
 		for (int i = 0; i < dist.size(); i++) {
-			if(dist.get(i) != Integer.MAX_VALUE) {
+			if (dist.get(i) != Integer.MAX_VALUE) {
 				amount += dist.get(i);
 			}
 		}
-		
+
 		return amount;
 	}
 
@@ -924,14 +1016,15 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 		return verify;
 	}
 
-	private void modifyEdgeInVertice(V initial, V end, H weight,H newWeight) {
+	private void modifyEdgeInVertice(V initial, V end, H weight, H newWeight) {
 
 		for (int i = 0; i < vertice.size(); i++) {
-			if(vertice.get(i).getValue().compareTo(initial) == 0) {
+			if (vertice.get(i).getValue().compareTo(initial) == 0) {
 
 				for (int j = 0; j < vertice.get(i).getEdge().size(); j++) {
 
-					if(vertice.get(i).getEdge().get(j).getFinalVertice().getValue().compareTo(end) == 0 && weight.compareTo(vertice.get(i).getEdge().get(j).getHeight()) == 0) {
+					if (vertice.get(i).getEdge().get(j).getFinalVertice().getValue().compareTo(end) == 0
+							&& weight.compareTo(vertice.get(i).getEdge().get(j).getHeight()) == 0) {
 						vertice.get(i).getEdge().get(j).setHeight(newWeight);
 					}
 				}
@@ -939,18 +1032,18 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 		}
 	}
 
-	private void modifyEdgeInMatrix(V initial, V end, H weight,H newWeight) {
+	private void modifyEdgeInMatrix(V initial, V end, H weight, H newWeight) {
 
 		int indexA = -1, indexB = -1;
 
 		for (int i = 0; i < vertice.size(); i++) {
-			if(vertice.get(i).getValue().compareTo(initial) == 0) {
+			if (vertice.get(i).getValue().compareTo(initial) == 0) {
 				indexA = i;
 			}
 		}
 
 		for (int i = 0; i < vertice.size(); i++) {
-			if(vertice.get(i).getValue().compareTo(end) == 0) {
+			if (vertice.get(i).getValue().compareTo(end) == 0) {
 				indexB = i;
 			}
 		}
@@ -964,7 +1057,7 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 		}
 
 		for (int i = 0; i < indexB; i++) {
-			if(current.getNext() != null) {
+			if (current.getNext() != null) {
 				current = current.getNext();
 			}
 		}
@@ -972,8 +1065,12 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 
 		current.getEdge().set(0, edge);
 	}
-	
+
 	public int[][] getDistance() {
 		return distance;
+	}
+
+	public ArrayList<Vertice<V, U, H>> getVerticeArray() {
+		return verticeArray;
 	}
 }
