@@ -59,7 +59,7 @@ public class ButterflyGUI {
 		imgButtefly.setImage(tittle);
 		Image exit = new Image("/images/end.png");
 		imgExit.setImage(exit);
-		Image map = new Image("/images/map.jpg");
+		Image map = new Image("/images/map.png");
 		imgMap.setImage(map);
 
 		mainPane.setTop(load);
