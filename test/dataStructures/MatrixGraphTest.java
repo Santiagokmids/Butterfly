@@ -40,8 +40,7 @@ class MatrixGraphTest<V extends Comparable <V>, U, H extends Comparable<H>>{
 		matrixGraph.addVertice("Rusia");
 		matrixGraph.addVertice("Portugal");
 		matrixGraph.addVertice("Dubai");
-		matrixGraph.addVertice("Madagascar");
-		
+		matrixGraph.addVertice("Madagascar");		
 		matrixGraph.addEdge("Colombia", "España", 3000);
 		matrixGraph.addEdge("Colombia", "EEUU", 700);
 		matrixGraph.addEdge("España", "Japon", 5000);	
@@ -132,8 +131,15 @@ class MatrixGraphTest<V extends Comparable <V>, U, H extends Comparable<H>>{
 
 	@Test
 	public void dfsTestScenary4() {
-		/*
+		
 		setupScenary3();
+	
+		matrixGraph.dfs2();
+		
+	
+		assertEquals(10, matrixGraph.getVerticeArray().size());
+		
+		/*
 		assertEquals("Colombia", matrixGraph.dfs("Colombia").get(0).getValue());
 		assertEquals("España", matrixGraph.dfs("Colombia").get(1).getValue());
 		assertEquals("Japon", matrixGraph.dfs("Colombia").get(2).getValue());
@@ -143,10 +149,11 @@ class MatrixGraphTest<V extends Comparable <V>, U, H extends Comparable<H>>{
 		assertEquals("Portugal", matrixGraph.dfs("Colombia").get(6).getValue());
 		assertEquals("Rusia", matrixGraph.dfs("Colombia").get(7).getValue());
 		assertEquals("Dubai", matrixGraph.dfs("Colombia").get(8).getValue());
+		
 		assertEquals("Madagascar", matrixGraph.dfs("Colombia").get(9).getValue());
 		*/
 	}
-
+	
 	@Test
 	public void test() {
 		setupScenary1();
