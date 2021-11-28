@@ -567,9 +567,9 @@ implements IListGraph<U, V, H> {
 					int weight = 0;
 					int finalVertice = searchReference(value.getEdge().get(i).getFinalVertice(), reference);
 					
-					if(finalVertice != -1) {
+					if(dist.get(index) != Integer.MAX_VALUE && finalVertice != -1) {
 						
-						weight = (Integer) value.getEdge().get(i).getHeight();
+						weight = (Integer)value.getEdge().get(i).getHeight();
 						
 						if (weight < dist.get(finalVertice) && !colors.get(finalVertice)) {
 							dist.set(finalVertice, weight);

@@ -662,43 +662,79 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 		ArrayList<Integer> dist = new ArrayList<>();
 		ArrayList<Vertice<V, U, H>> prev = new ArrayList<>();
 		Queue<Vertice<V, U, H>> queue = new LinkedList<>();
+		ArrayList<Vertice<V, U, H>> reference = new ArrayList<>();
 
 		dist = assignSource(start, dist);
 		prev = assignPrev(prev);
 		queue = assignQueue(queue, start);
-
+		reference = assignRef();
+		
 		ArrayList<Boolean> colors = assignColors();
-		ArrayList<Vertice<V, U, H>> reference = assignRef();
 
 		while (!queue.isEmpty()) {
 
-			int weight = 0;
 			queue = extractMin(queue);
+
 			Vertice<V, U, H> value = queue.peek();
+			
 			int index = searchReference(value, reference);
 
-			for (int i = 0; i < value.getEdge().size(); i++) {
-				int finalVertice = searchReference(value.getEdge().get(i).getFinalVertice(), reference);
+			Vertice<V, U, H> current = first;
 
-				if (finalVertice != -1) {
-					weight += dist.get(index) + (Integer) value.getEdge().get(index).getHeight();
+			for (int i = 0; i < index; i++) {
+				if(current.getDown() != null) {
+					current = current.getDown();
+				}
+			}
+			int position = 0, weight = 0;
 
-					if (weight < dist.get(finalVertice) && !colors.get(i)) {
-						dist.set(finalVertice, weight);
-						prev.set(finalVertice, value);
+			if(!current.getEdge().isEmpty()) {
+				position = searchReference(current.getEdge().get(0).getFinalVertice(), reference);
+				
+				if(dist.get(index) != Integer.MAX_VALUE && position != -1) {
+					weight = (Integer)current.getEdge().get(0).getHeight();
+
+					if(weight < dist.get(position) && !colors.get(position)) {
+						dist.set(position, weight);	
+						queue = setDistances(queue, position, weight);
+						prev.set(position, value);
+					}
+				}else {
+					queue.poll();
+				}
+			}
+
+			for (int j = 0; j < vertice.size(); j++) {
+				if(current.getNext() != null) {
+					current = current.getNext();	
+				}
+				if(!current.getEdge().isEmpty()) {
+					position = searchReference(current.getEdge().get(0).getFinalVertice(), reference);
+					if(dist.get(index) != Integer.MAX_VALUE && position != -1) {
+						weight = (Integer)current.getEdge().get(0).getHeight();
+
+						if(weight < dist.get(position) && !colors.get(position)) {
+							dist.set(position, weight);	
+							queue = setDistances(queue, position, weight);
+							prev.set(position, value);
+						}
+					}else {
 						queue.poll();
 					}
 				}
 			}
+			queue.poll();
 			colors.set(index, true);
 		}
-
+		
 		int amount = 0;
-
+		
 		for (int i = 0; i < dist.size(); i++) {
-			amount += dist.get(i);
+			if(dist.get(i) != Integer.MAX_VALUE) {
+				amount += dist.get(i);
+			}
 		}
-
+		
 		return amount;
 	}
 

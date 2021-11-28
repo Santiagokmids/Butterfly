@@ -226,6 +226,37 @@ class MatrixGraphTest<V extends Comparable <V>, U, H extends Comparable<H>>{
 	}
 	
 	@Test
+	public void prim() {
+		setupScenary3();
+		int value = 0;
+		value = matrixGraph.prim(matrixGraph.getVertice().get(0));
+		assertEquals(value, 28370);
+	}
+	
+	@Test
+	public void prim2() {
+		setupScenary2();
+		int value = matrixGraph.prim(matrixGraph.getVertice().get(0));
+		assertEquals(value, 6950);
+	}
+	
+	@Test
+	public void prim3() {
+		setupScenary3();
+		int value = 0;
+		value = matrixGraph.prim(matrixGraph.getVertice().get(9));
+		assertEquals(value, 1930);
+	}
+	
+	@Test
+	public void prim4() {
+		setupScenary3();
+		int value = 0;
+		value = matrixGraph.prim(matrixGraph.getVertice().get(6));
+		assertEquals(value, 0);
+	}
+	
+	@Test
 	public void floydWarshallTest2() {
 		setupScenary1();
 		matrixGraph.deleteVertice("Colombia");

@@ -173,6 +173,22 @@ class ListGraphTest {
 		int value = lg.prim(lg.getVertice().get(0));
 		assertEquals(value, 6950);
 	}
+	
+	@Test
+	public void prim3() {
+		setupScenary3();
+		int value = 0;
+		value = lg.prim(lg.getVertice().get(9));
+		assertEquals(value, 1930);
+	}
+	
+	@Test
+	public void prim4() {
+		setupScenary3();
+		int value = 0;
+		value = lg.prim(lg.getVertice().get(4));
+		assertEquals(value, 0);
+	}
 
 	@Test
 	public void floydWarshallTest1() {
