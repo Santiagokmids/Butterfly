@@ -247,4 +247,21 @@ class ListGraphTest {
 		int kruskal = lg.kruskal();
 		assertEquals(4540, kruskal);
 	}
+	@Test
+	void dfs() {
+		setupScenary3();
+		assertEquals("Colombia", lg.dfs("Colombia").get(0).getValue());
+		assertEquals("España", lg.dfs("Colombia").get(1).getValue());
+		assertEquals("Japon", lg.dfs("Colombia").get(2).getValue());
+		assertEquals("EEUU", lg.dfs("Colombia").get(3).getValue());
+		assertEquals("Australia", lg.dfs("Colombia").get(4).getValue());
+		assertEquals("Rusia", lg.dfs("Colombia").get(5).getValue());
+		assertEquals("Dubai", lg.dfs("Colombia").get(6).getValue());
+		assertEquals("Madagascar", lg.dfs("Colombia").get(7).getValue());
+		assertEquals("Nigeria", lg.dfs("Colombia").get(8).getValue());
+		assertEquals("Portugal", lg.dfs("Colombia").get(9).getValue());
+		
+		
+		
+	}
 }

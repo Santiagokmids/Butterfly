@@ -95,10 +95,10 @@ class MatrixGraphTest<V extends Comparable <V>, U, H extends Comparable<H>>{
 	public void bfsTest() {
 		
 		setupScenary2();
-	//	assertEquals("Colombia", matrixGraph.bfs("Colombia").get(0).getValue());
-		//assertEquals("Dubai", matrixGraph.bfs("Colombia").get(1).getValue());
-		//assertEquals("Portugal", matrixGraph.bfs("Colombia").get(2).getValue());
-		//assertEquals("Madagascar", matrixGraph.bfs("Colombia").get(3).getValue());
+		assertEquals("Colombia", matrixGraph.bfs("Colombia").get(0).getValue());
+		assertEquals("Dubai", matrixGraph.bfs("Colombia").get(1).getValue());
+		assertEquals("Portugal", matrixGraph.bfs("Colombia").get(2).getValue());
+		assertEquals("Madagascar", matrixGraph.bfs("Colombia").get(3).getValue());
 		 
 		
 	}
