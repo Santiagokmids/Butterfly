@@ -112,9 +112,12 @@ public class ButterflyGUI {
 
 		mainPane.setTop(load);
 
-		Line line = new Line(0,0,20,20);
-	
-		//Line line = new Line(eeuuImg.getLayoutX(),eeuuImg.getLayoutY(),madImg.getLayoutX(),madImg.getLayoutY());
+		Line line = new Line(eeuuImg.getLayoutX() + 35,eeuuImg.getLayoutY() + 45,madImg.getLayoutX() + 10,madImg.getLayoutY()+40);
+		line.setStrokeWidth(3);
+		Line line2 = new Line(colImg.getLayoutX() + 35,colImg.getLayoutY() + 45, rusImg.getLayoutX() + 10,rusImg.getLayoutY()+40);
+		line2.setStrokeWidth(3);
+		mainPane.getChildren().add(line);
+		mainPane.getChildren().add(line2);
 	}
 
 	@FXML
