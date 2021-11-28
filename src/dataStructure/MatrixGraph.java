@@ -519,22 +519,16 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 
 			distance = new int[vertice.size()][vertice.size()];
 
-			for (int i = 0; i < 9; i++) {
-				for (int j = 0; j < 9; j++) {
-					if (j == i) {
-						distance[i][j] = 0;
-					} else if (checkWeight(i, j) != null) {
-						distance[i][j] = (int) checkWeight(i, j);
-					} else {
-						distance[i][j] = Integer.MAX_VALUE;
-					}
-				}
-			}
+			distance = toInfinte(distance);
 
-			for (int k = 0; k < 9; k++) {
-				for (int i = 0; i < 9; i++) {
-					for (int j = 0; j < distance.length; j++) {
-						if (distance[i][j] > distance[i][k] + distance[k][j]) {
+			distance = toZero(distance);
+
+			distance = toWeight(distance);
+
+			for (int k = 0; k < vertice.size(); k++) {
+				for (int i = 0; i < vertice.size(); i++) {
+					for (int j = 0; j < vertice.size(); j++) {
+						if (distance[i][k] != Integer.MAX_VALUE && distance[k][j] != Integer.MAX_VALUE && distance[i][j] > (distance[i][k] + distance[k][j])) {
 							distance[i][j] = distance[i][k] + distance[k][j];
 						}
 					}
@@ -542,19 +536,71 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 			}
 		}
 	}
+	
+	private int[][] toWeight(int[][] distance) {
+
+		int[][] newMatrix = distance;	
+
+		for (int i = 0; i < newMatrix.length; i++) {
+			for (int j = 0; j < newMatrix.length; j++) {
+				if (checkWeight(i, j) != null) {
+					newMatrix[i][j] = (int) checkWeight(i, j);
+				}
+			}
+		}
+
+		return newMatrix;
+	}
+
+	private int[][] toZero(int[][] distance) {
+
+		int[][] newMatrix = distance;	
+
+		for (int i = 0; i < newMatrix.length; i++) {
+			for (int j = 0; j < newMatrix.length; j++) {
+				if (i == j) {
+					newMatrix[i][j] = 0;
+				}
+			}
+		}
+		return newMatrix;
+	}
+
+	private int[][] toInfinte(int[][] distance) {
+
+		int[][] newMatrix = distance;	
+
+		for (int i = 0; i < newMatrix.length; i++) {
+			for (int j = 0; j < newMatrix.length; j++) {
+				newMatrix[i][j] = Integer.MAX_VALUE;
+			}
+		}
+		return newMatrix;
+	}
 
 	public H checkWeight(int verticeOne, int verticeTwo) {
 		V verticeOneFind = vertice.get(verticeOne).getValue();
 		V verticeTwoFind = vertice.get(verticeTwo).getValue();
-
-		for (int i = 0; i < vertice.get(verticeOne).getEdge().size() - 1; i++) {
-			if (vertice.get(verticeOne).getEdge().get(i).getInitVertice().getValue().compareTo(verticeOneFind) == 0
-					&& vertice.get(verticeOne).getEdge().get(i).getFinalVertice().getValue()
-							.compareTo(verticeTwoFind) == 0) {
-				return vertice.get(verticeOne).getEdge().get(i).getHeight();
+		Vertice<V, U, H> currentVertice = first;
+		H weightH = null;
+		
+		for (int i = 0; i < verticeOne; i++) {
+			if (currentVertice.getDown() != null) {
+				currentVertice = currentVertice.getDown();
 			}
 		}
-		return null;
+		
+		for (int i = 0; i < verticeTwo; i++) {
+			if (currentVertice.getNext() != null) {
+				currentVertice = currentVertice.getNext();
+			}
+		}
+		
+		if (currentVertice.getEdge().get(0).getInitVertice().getValue().compareTo(verticeOneFind) == 0 && currentVertice.getEdge().get(0).getFinalVertice().getValue().compareTo(verticeTwoFind) == 0) {
+			weightH = currentVertice.getEdge().get(0).getHeight();
+		}
+		
+		return weightH;
 	}
 
 	@Override
