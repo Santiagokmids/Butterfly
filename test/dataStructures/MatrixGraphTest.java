@@ -150,17 +150,53 @@ class MatrixGraphTest<V extends Comparable <V>, U, H extends Comparable<H>>{
 	
 	@Test
 	public void floydWarshallTest1() {
+		setupScenary3();
+		matrixGraph.floyd();
+		Integer infinite = Integer.MAX_VALUE;
 		
+		int matrix[][] = {
+				{0,3000,8000,700,7700,10700,10200,11620,8950,13950},
+				{infinite,0,5000,infinite,infinite,infinite,infinite,infinite,infinite,infinite},
+				{infinite,infinite,0,infinite,infinite,infinite,infinite,infinite,infinite,infinite},
+				{infinite,infinite,11000,0,7000,10000,9500,10920,8250,13250},
+				{infinite,infinite,4000,7000,0,3000,2500,3920,1250,6250},
+				{infinite,infinite,1000,4000,3020,0,5520,920,4270,9270},
+				{infinite,infinite,infinite,infinite,infinite,infinite,0,infinite,infinite,infinite},
+				{infinite,infinite,6100,9100,2100,5100,4600,0,3350,8350},
+				{infinite,infinite,6930,infinite,infinite,infinite,infinite,infinite, 0, 5000},
+				{infinite,infinite,1930,infinite,infinite,infinite,infinite,infinite,infinite,0}};
+		
+		for (int i = 0; i < matrix.length; i++) {
+			for (int j = 0; j < matrix.length; j++) {
+				assertEquals(matrix[i][j], matrixGraph.getDistance()[i][j]);
+			}
+		}
 	}
 	
 	@Test
 	public void floydWarshallTest2() {
-		
+		setupScenary1();
+		matrixGraph.deleteVertice("Colombia");
+		assertEquals(true, matrixGraph.getDistance() == null);
 	}
 	
 	@Test
 	public void floydWarshallTest3() {
+		setupScenary2();
+		matrixGraph.floyd();
+		Integer infinite = Integer.MAX_VALUE;
 		
+		int[][] matrix = {
+				{0,1200,4200,6950},
+				{infinite,0,3000,5750},
+				{infinite,3340,0,2750},
+				{infinite,590,3590,0}};
+		
+		for (int i = 0; i < matrix.length; i++) {
+			for (int j = 0; j < matrix.length; j++) {
+				assertEquals(matrix[i][j], matrixGraph.getDistance()[i][j]);
+			}
+		}
 	}
 }
 

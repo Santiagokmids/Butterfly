@@ -596,7 +596,7 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 			}
 		}
 		
-		if (currentVertice.getEdge().get(0).getInitVertice().getValue().compareTo(verticeOneFind) == 0 && currentVertice.getEdge().get(0).getFinalVertice().getValue().compareTo(verticeTwoFind) == 0) {
+		if (!currentVertice.getEdge().isEmpty() && currentVertice.getEdge().get(0).getInitVertice().getValue().compareTo(verticeOneFind) == 0 && currentVertice.getEdge().get(0).getFinalVertice().getValue().compareTo(verticeTwoFind) == 0) {
 			weightH = currentVertice.getEdge().get(0).getHeight();
 		}
 		
@@ -853,5 +853,9 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 		Edge<U, V, H> edge = new Edge<U, V, H>(vertice.get(indexA), vertice.get(indexB), newWeight);
 
 		current.getEdge().set(0, edge);
+	}
+	
+	public int[][] getDistance() {
+		return distance;
 	}
 }
