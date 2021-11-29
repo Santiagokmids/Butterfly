@@ -5,6 +5,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import dataStructure.ListVertice;
 import dataStructure.Vertice;
 
@@ -38,6 +40,12 @@ public class ButterflyGUI {
 
 	@FXML
 	private ImageView imgPhoto;
+
+	@FXML
+	private ComboBox<String> countryIniMin;
+
+	@FXML
+	private ComboBox<String> countryFinalMin;
 
 	@FXML
 	private Label lblCountry;
@@ -113,15 +121,15 @@ public class ButterflyGUI {
 
 	@FXML
 	private Label countryLabel;
-	
-	boolean typeGraph = false; //If is false = listGraph. If is true = matrixGraph
+
+	boolean typeGraph = false; // If is false = listGraph. If is true = matrixGraph
 	boolean btnConfigVerify = true;
 	boolean btnSearchVerify = true;
 	boolean btnCostVerify = true;
 
 	Butterfly butterfly;
 
-	//Country photos
+	// Country photos
 
 	Image colombiaImage = new Image("/images/colombia.jpg");
 	Image espaniaImage = new Image("/images/españa.jpg");
@@ -132,13 +140,13 @@ public class ButterflyGUI {
 	Image nigeriaImage = new Image("/images/nigeria.jpg");
 	Image dubaiImage = new Image("/images/dubai.jpg");
 	Image portugalImage = new Image("/images/portugal.jpg");
-	Image madagascarImage = new Image("/images/madagascar.jpg"); 
+	Image madagascarImage = new Image("/images/madagascar.jpg");
 
-	//Source of the information
+	// Source of the information
 
 	String link = "https://es.wikipedia.org/";
 
-	//Information of the countries
+	// Information of the countries
 
 	String colombiaInformation = "Es un país soberano situado en la región noroccidental de América del Sur, que se constituye en un estado unitario, social y democrático de derecho cuya forma de gobierno es presidencialista.";
 	String espaniaInformation = "Es un país soberano transcontinental, miembro de la Unión Europea, constituido en Estado social y democrático de derecho, cuya forma de gobierno es la monarquía parlamentaria. ";
@@ -211,6 +219,7 @@ public class ButterflyGUI {
 			btnCost.setStyle(styleString);
 			btnCost.setEffect(dropShadow);
 			btnCostVerify = false;
+			loadMin();
 			break;
 		default:
 			break;
@@ -225,9 +234,11 @@ public class ButterflyGUI {
 
 		Scene scene = new Scene(root);
 		Stage stage = new Stage();
-		
-		searchCountryOrigin.getItems().addAll("Colombia","Japón","Estados Unidos","España","Nigeria","Australia","Rusia","Dubái","Madagascar");
-		searchCountryDestiny.getItems().addAll("Colombia","Japón","Estados Unidos","España","Nigeria","Australia","Rusia","Dubái","Madagascar");
+
+		searchCountryOrigin.getItems().addAll("Colombia", "Japón", "Estados Unidos", "España", "Nigeria", "Australia",
+				"Rusia", "Dubái", "Madagascar");
+		searchCountryDestiny.getItems().addAll("Colombia", "Japón", "Estados Unidos", "España", "Nigeria", "Australia",
+				"Rusia", "Dubái", "Madagascar");
 		stage.setScene(scene);
 		stage.showAndWait();
 	}
@@ -237,25 +248,25 @@ public class ButterflyGUI {
 		String origin = searchCountryOrigin.getValue();
 		String destiny = searchCountryDestiny.getValue();
 		String country = "";
-		
-		if(typeGraph) {
+
+		if (typeGraph) {
 			ArrayList<ListVertice<String, String, Integer>> countries = butterfly.dfsInList(origin);
 			for (int i = 0; i < countries.size(); i++) {
-				if(destiny.equalsIgnoreCase(countries.get(i).getValue())) {
+				if (destiny.equalsIgnoreCase(countries.get(i).getValue())) {
 					country = destiny;
 				}
 			}
-		}else {
+		} else {
 			ArrayList<Vertice<String, String, Integer>> countries = butterfly.dfsInMatrix(origin);
 			for (int i = 0; i < countries.size(); i++) {
-				if(destiny.equalsIgnoreCase(countries.get(i).getValue())) {
+				if (destiny.equalsIgnoreCase(countries.get(i).getValue())) {
 					country = destiny;
 				}
 			}
 		}
-		
-		if(!country.equals("")) {
-			
+
+		if (!country.equals("")) {
+
 		}
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("ERROR");
@@ -281,7 +292,7 @@ public class ButterflyGUI {
 			if (btnConfigVerify) {
 				btnConfig.setStyle(style);
 				btnConfig.setEffect(null);
-			}			
+			}
 			break;
 		case "Buscar Vuelo":
 			if (btnSearchVerify) {
@@ -320,7 +331,7 @@ public class ButterflyGUI {
 			if (btnConfigVerify) {
 				btnConfig.setStyle(style);
 				btnConfig.setEffect(dropShadow);
-			}	
+			}
 			break;
 		case "Buscar Vuelo":
 			if (btnSearchVerify) {
@@ -559,7 +570,8 @@ public class ButterflyGUI {
 
 	public void addLine(ImageView image, ImageView image2) {
 
-		Line line = new Line(image.getLayoutX() + 35,image.getLayoutY() + 45,image2.getLayoutX() + 10,image2.getLayoutY()+40);
+		Line line = new Line(image.getLayoutX() + 35, image.getLayoutY() + 45, image2.getLayoutX() + 10,
+				image2.getLayoutY() + 40);
 		line.setStrokeWidth(3);
 		mainPane.getChildren().add(line);
 	}
@@ -568,4 +580,73 @@ public class ButterflyGUI {
 	public void closeApp(MouseEvent event) {
 		System.exit(0);
 	}
+
+	public void loadMin() throws IOException {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("searchTrip2.fxml"));
+		loader.setController(this);
+		Parent root = loader.load();
+		countryIniMin.getItems().addAll("Colombia", "Japón", "Estados Unidos", "España", "Nigeria", "Australia",
+				"Rusia", "Dubái", "Madagascar");
+		countryIniMin.setValue("Colombia");
+		countryFinalMin.getItems().addAll("Colombia", "Japón", "Estados Unidos", "España", "Nigeria", "Australia",
+				"Rusia", "Dubái", "Madagascar", "Todos");
+		countryFinalMin.setValue("Colombia");
+		Scene scene = new Scene(root);
+		Stage stage = new Stage();
+		stage.setScene(scene);
+		stage.showAndWait();
+
+	}
+
+	@FXML
+	void buttonCostMini(ActionEvent event) {
+		String ini = countryFinalMin.getValue();
+		String fin = countryFinalMin.getValue();
+		String out ="";
+		int  minimum=0;
+		if (fin.equals("Todos")) {
+			if (!typeGraph) {
+				 out = "Estos son los costos mínimos \n";
+			ArrayList<Integer> inte=	butterfly.dijkstraInList(ini);
+				ArrayList<ListVertice<String, String, Integer>> list = butterfly.listGraph.getListVertice();
+				for (int i = 0; i < list.size(); i++) {
+						
+						if(inte.get(i)!= Integer.MAX_VALUE) {
+							out += list.get(i).getValue()+" con costo: "+ inte.get(i)+"\n";
+						}else {
+							out += "No se puede viajar desde " +ini +" hasta "+ list.get(i).getValue();
+						}
+						
+				}
+				
+			} else {
+				 out = "Estos son los costos mínimos \n";
+				ArrayList<Integer> inte=	butterfly.dijkstraInMatrix(ini);
+				ArrayList<Vertice<String, String, Integer>> list =butterfly.matrixGraph.getVertice();
+				for (int i = 0; i < list.size(); i++) {
+					
+					if(inte.get(i)!= Integer.MAX_VALUE) {
+						out += list.get(i).getValue()+" con costo: "+ inte.get(i)+"\n";
+					}else {
+						out += "No se puede viajar desde " +ini +" hasta "+ list.get(i).getValue();
+					}
+			}
+				
+			}
+			
+		} else {
+			if (!typeGraph) {
+				 out = "Este es el costo mínimo \n";
+				minimum = butterfly.dijkstraInList(ini, fin);	
+				
+			} else {
+				 out = "Este es el costo mínimo \n";
+				minimum=	butterfly.dijkstraInMatrix(ini, fin);
+			}
+		}
+		JOptionPane.showMessageDialog(null, out, "Costo",
+				JOptionPane.WARNING_MESSAGE);
+
+	}
+
 }
