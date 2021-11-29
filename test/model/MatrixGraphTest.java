@@ -1,16 +1,15 @@
-package dataStructures;
+package model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
 import dataStructure.MatrixGraph;
-import dataStructure.Vertice;
 
-class MatrixGraphTest<V extends Comparable <V>, U, H extends Comparable<H>>{
-	
+class MatrixGraphTest {
+
 	private MatrixGraph<String, String, Integer> matrixGraph;
 
 	public void setupScenary1() {
@@ -68,8 +67,8 @@ class MatrixGraphTest<V extends Comparable <V>, U, H extends Comparable<H>>{
 	public void addEdgeTest() {
 		setupScenary2();
 
-		matrixGraph.addEdge("Colombia", "Portugal", 1600);
-		assertEquals(1600, matrixGraph.searchEdge("Colombia", "Portugal"));
+		matrixGraph.addEdge("Colombia", "Portugal", 6450);
+		assertEquals(6450, matrixGraph.searchEdge("Colombia", "Portugal"));
 		assertEquals(false, matrixGraph.addEdge("Madagascar", "Colombia", -200));
 
 	}
@@ -97,10 +96,10 @@ class MatrixGraphTest<V extends Comparable <V>, U, H extends Comparable<H>>{
 	@Test
 	public void modifyEdgeTest() {
 		setupScenary2();
-		matrixGraph.modifyEdge("Dubai", "Portugal", 2130);
-		assertEquals(2130, matrixGraph.searchEdge("Dubai", "Portugal"));
-		matrixGraph.modifyEdge("Colombia", "Dubai", 3000);
-		assertEquals(3000, matrixGraph.searchEdge("Colombia", "Dubai"));
+		matrixGraph.modifyEdge("Dubai", "Portugal", 1320);
+		assertEquals(1320, matrixGraph.searchEdge("Dubai", "Portugal"));
+		matrixGraph.modifyEdge("Colombia", "Dubai", 6200);
+		assertEquals(6200, matrixGraph.searchEdge("Colombia", "Dubai"));
 	}
 
 	@Test
@@ -114,7 +113,7 @@ class MatrixGraphTest<V extends Comparable <V>, U, H extends Comparable<H>>{
 	}
 	
 	@Test
-	public void bfsTestScenary3() {
+	public void bfsTestScenary2() {
 		setupScenary3();
 		assertEquals("Colombia", matrixGraph.bfs("Colombia").get(0).getValue());
 		assertEquals("España", matrixGraph.bfs("Colombia").get(1).getValue());
@@ -129,18 +128,6 @@ class MatrixGraphTest<V extends Comparable <V>, U, H extends Comparable<H>>{
 
 	}
 
-	@Test
-	public void dfsTestScenary4() {
-		setupScenary3();
-		matrixGraph.dfs();
-		assertEquals(9, matrixGraph.getVerticeArray().size());
-	}
-	
-	@Test
-	public void test() {
-		setupScenary1();
-		assertEquals("Colombia", matrixGraph.getVertice().get(0).getValue());
-	}
 	
 	@Test
 	public void dijkstraTest() {
@@ -171,126 +158,5 @@ class MatrixGraphTest<V extends Comparable <V>, U, H extends Comparable<H>>{
 			assertEquals(values.get(i), dijkstra.get(i));
 		}
 	}
-	
-	@Test
-	public void dijkstraTest3() {
-		setupScenary3();
-		int value = 0;
-		value = matrixGraph.makeDijkstra(matrixGraph.getVertice().get(9), matrixGraph.getVertice().get(8));
-		assertEquals(value, Integer.MAX_VALUE);
-	}
-	
-	@Test
-	public void dijkstraTest4() {
-		setupScenary3();
-		int value = 0;
-		Vertice<String, String, Integer> vertix = new Vertice<String, String, Integer>("Andorra");
-		value = matrixGraph.makeDijkstra(matrixGraph.getVertice().get(9), vertix);
-		assertEquals(value, -1);
-	}
-	
-	@Test
-	public void floydWarshallTest1() {
-		setupScenary3();
-		matrixGraph.floyd();
-		Integer infinite = Integer.MAX_VALUE;
-		
-		int matrix[][] = {
-				{0,3000,8000,700,7700,10700,10200,11620,8950,13950},
-				{infinite,0,5000,infinite,infinite,infinite,infinite,infinite,infinite,infinite},
-				{infinite,infinite,0,infinite,infinite,infinite,infinite,infinite,infinite,infinite},
-				{infinite,infinite,11000,0,7000,10000,9500,10920,8250,13250},
-				{infinite,infinite,4000,7000,0,3000,2500,3920,1250,6250},
-				{infinite,infinite,1000,4000,3020,0,5520,920,4270,9270},
-				{infinite,infinite,infinite,infinite,infinite,infinite,0,infinite,infinite,infinite},
-				{infinite,infinite,6100,9100,2100,5100,4600,0,3350,8350},
-				{infinite,infinite,6930,infinite,infinite,infinite,infinite,infinite, 0, 5000},
-				{infinite,infinite,1930,infinite,infinite,infinite,infinite,infinite,infinite,0}};
-		
-		for (int i = 0; i < matrix.length; i++) {
-			for (int j = 0; j < matrix.length; j++) {
-				assertEquals(matrix[i][j], matrixGraph.getDistance()[i][j]);
-			}
-		}
-	}
-	
-	@Test
-	public void floydWarshallTest2() {
-		setupScenary1();
-		matrixGraph.deleteVertice("Colombia");
-		assertEquals(true, matrixGraph.getDistance() == null);
-	}
-	
-	@Test
-	public void floydWarshallTest3() {
-		setupScenary2();
-		matrixGraph.floyd();
-		Integer infinite = Integer.MAX_VALUE;
-		
-		int[][] matrix = {
-				{0,1200,4200,6950},
-				{infinite,0,3000,5750},
-				{infinite,3340,0,2750},
-				{infinite,590,3590,0}};
-		
-		for (int i = 0; i < matrix.length; i++) {
-			for (int j = 0; j < matrix.length; j++) {
-				assertEquals(matrix[i][j], matrixGraph.getDistance()[i][j]);
-			}
-		}
-	}
-	
-	@Test
-	public void kruskalTest1() {
-		setupScenary3();
-		int kruskal = matrixGraph.kruskal();
-		assertEquals(17400, kruskal);
-	}
-	
-	@Test
-	public void kruskalTest2() {
-		setupScenary1();
-		matrixGraph.deleteVertice("Colombia");
-		int kruskal = matrixGraph.kruskal();
-		assertEquals(0, kruskal);
-	}
-	
-	@Test
-	public void kruskalTest3() {
-		setupScenary2();
-		int kruskal = matrixGraph.kruskal();
-		assertEquals(4540, kruskal);
-	}
-	
-	@Test
-	public void prim() {
-		setupScenary3();
-		int value = 0;
-		value = matrixGraph.prim(matrixGraph.getVertice().get(0));
-		assertEquals(value, 28370);
-	}
-	
-	@Test
-	public void prim2() {
-		setupScenary2();
-		int value = matrixGraph.prim(matrixGraph.getVertice().get(0));
-		assertEquals(value, 6950);
-	}
-	
-	@Test
-	public void prim3() {
-		setupScenary3();
-		int value = 0;
-		value = matrixGraph.prim(matrixGraph.getVertice().get(9));
-		assertEquals(value, 1930);
-	}
-	
-	@Test
-	public void prim4() {
-		setupScenary3();
-		int value = 0;
-		value = matrixGraph.prim(matrixGraph.getVertice().get(6));
-		assertEquals(value, 0);
-	}
-}
 
+}
