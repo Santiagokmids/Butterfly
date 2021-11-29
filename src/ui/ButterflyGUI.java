@@ -238,7 +238,7 @@ public class ButterflyGUI {
 		String destiny = searchCountryDestiny.getValue();
 		String country = "";
 		
-		if(typeGraph) {
+		if(!typeGraph) {
 			ArrayList<ListVertice<String, String, Integer>> countries = butterfly.dfsInList(origin);
 			for (int i = 0; i < countries.size(); i++) {
 				if(destiny.equalsIgnoreCase(countries.get(i).getValue())) {
@@ -253,15 +253,20 @@ public class ButterflyGUI {
 				}
 			}
 		}
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Búsqueda realizada");
 		
-		if(!country.equals("")) {
+		if(country.equals("")) {
+			alert.setHeaderText("No encontrado");
+			alert.setContentText("No exite un vuelo entre "+origin+" y "+destiny);
+			alert.showAndWait();
 			
+		}else {
+			alert.setHeaderText("Se ha encontrado");
+			alert.setContentText("Sí existe un vuelo entre "+origin+" y "+destiny);
+			alert.showAndWait();
 		}
-		Alert alert = new Alert(AlertType.ERROR);
-		alert.setTitle("ERROR");
-		alert.setHeaderText("Método Inválido");
-		alert.setContentText("El método de búsqueda elegido NO está disponible para este dato estadístico");
-		alert.showAndWait();
+		
 	}
 
 	private void changeAllButton() {
