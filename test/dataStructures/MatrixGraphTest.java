@@ -97,9 +97,9 @@ class MatrixGraphTest<V extends Comparable <V>, U, H extends Comparable<H>>{
 	@Test
 	public void modifyEdgeTest() {
 		setupScenary2();
-		matrixGraph.modifyEdge("Dubai", "Portugal", 3000, 2130);
+		matrixGraph.modifyEdge("Dubai", "Portugal", 2130);
 		assertEquals(2130, matrixGraph.searchEdge("Dubai", "Portugal"));
-		matrixGraph.modifyEdge("Colombia", "Dubai", 1200, 3000);
+		matrixGraph.modifyEdge("Colombia", "Dubai", 3000);
 		assertEquals(3000, matrixGraph.searchEdge("Colombia", "Dubai"));
 	}
 
