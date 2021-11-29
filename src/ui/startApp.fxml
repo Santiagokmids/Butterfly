@@ -63,6 +63,22 @@
                   <Font name="Arial Rounded MT Bold" size="25.0" />
                </font>
             </Label>
+            <Label fx:id="graphLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="3.0" layoutY="9.0" prefHeight="31.0" prefWidth="274.0" text="Grafo representado por matriz de adjacencia" textAlignment="CENTER">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="12.0" />
+               </font>
+            </Label>
+            <Button alignment="CENTER" layoutX="80.0" layoutY="40.0" mnemonicParsing="false" onAction="#changeGraph" prefHeight="17.0" prefWidth="101.0" style="-fx-background-color: LIGHTSEAGREEN;" text="Cambiar" textAlignment="CENTER">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="12.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor>
+               <effect>
+                  <DropShadow />
+               </effect>
+            </Button>
          </children>
       </Pane>
       <ImageView fx:id="imgExit" fitHeight="42.0" fitWidth="42.0" layoutX="996.0" layoutY="14.0" onMouseClicked="#closeApp" opacity="0.79" pickOnBounds="true" preserveRatio="true">
