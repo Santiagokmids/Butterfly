@@ -147,7 +147,9 @@ public class ButterflyGUI {
 	@FXML
 	private Label graphLabel;
 	
-	public ObservableList<Vertice<String, String, Integer>> vertice;
+	public ObservableList<Vertice<String,String,Integer>> vertice;
+	
+	public ArrayList<Line> lines = new ArrayList<Line>();
 
 	boolean typeGraph = true; //If is false = listGraph. If is true = matrixGraph
 	boolean btnConfigVerify = true;
@@ -253,9 +255,9 @@ public class ButterflyGUI {
 				cbOrigin.getItems().clear();
 				cbDestination.getItems().clear();
 
-				cbOrigin.getItems().addAll("Colombia", "Japón", "Estados Unidos", "España", "Nigeria", "Australia",
+				cbOrigin.getItems().addAll("Colombia", "Japón", "Estados Unidos", "España", "Nigeria", "Australia", "Portugal",
 						"Rusia", "Dubái", "Madagascar");
-				cbDestination.getItems().addAll("Colombia", "Japón", "Estados Unidos", "España", "Nigeria", "Australia",
+				cbDestination.getItems().addAll("Colombia", "Japón", "Estados Unidos", "España", "Nigeria", "Australia", "Portugal",
 						"Rusia", "Dubái", "Madagascar");
 
 				stage.setScene(scene);
@@ -352,6 +354,7 @@ public class ButterflyGUI {
 							
 							if (deleted) {
 								Alert alert = new Alert(AlertType.INFORMATION);
+								addLines(cbOrigin.getValue(), cbDestination.getValue(), 1);
 								alert.setTitle("Felicidades");
 								alert.setHeaderText("Vuelo agregado");
 								alert.setContentText("El vuelo entre los dos países fue eliminado correctamente.");
@@ -425,11 +428,13 @@ public class ButterflyGUI {
 							boolean added = butterfly.add(cbOrigin.getValue(), cbDestination.getValue(), newInteger);
 							
 							if (added) {
+								addLines(cbOrigin.getValue(), cbDestination.getValue(), 0);
 								Alert alert = new Alert(AlertType.INFORMATION);
 								alert.setTitle("Felicidades");
 								alert.setHeaderText("Vuelo agregado");
 								alert.setContentText("El vuelo entre los dos países fue agregado correctamente.");
 								alert.showAndWait();
+								
 							}else {
 								Alert alert = new Alert(AlertType.ERROR);
 								alert.setTitle("ERROR");
@@ -484,13 +489,9 @@ public class ButterflyGUI {
 		Scene scene = new Scene(root);
 		Stage stage = new Stage();
 
-		searchCountryOrigin.getItems().addAll("Colombia", "Japón", "Estados Unidos", "España", "Nigeria", "Australia",
+		searchCountryOrigin.getItems().addAll("Colombia", "Japón", "Estados Unidos", "España", "Nigeria", "Australia","Portugal",
 				"Rusia", "Dubái", "Madagascar");
-		searchCountryDestiny.getItems().addAll("Colombia", "Japón", "Estados Unidos", "España", "Nigeria", "Australia",
-				"Rusia", "Dubái", "Madagascar");
-		searchCountryOrigin.getItems().addAll("Colombia", "Japón", "Estados Unidos", "España", "Nigeria", "Australia",
-				"Rusia", "Dubái", "Madagascar");
-		searchCountryDestiny.getItems().addAll("Colombia", "Japón", "Estados Unidos", "España", "Nigeria", "Australia",
+		searchCountryOrigin.getItems().addAll("Colombia", "Japón", "Estados Unidos", "España", "Nigeria", "Australia","Portugal",
 				"Rusia", "Dubái", "Madagascar");
 		stage.setScene(scene);
 		stage.showAndWait();
@@ -504,14 +505,14 @@ public class ButterflyGUI {
 
 		if (typeGraph) {
 			if (!typeGraph) {
-				ArrayList<ListVertice<String, String, Integer>> countries = butterfly.dfsInList(origin);
+				ArrayList<ListVertice<String, String, Integer>> countries = butterfly.bfsInList(origin);
 				for (int i = 0; i < countries.size(); i++) {
 					if (destiny.equalsIgnoreCase(countries.get(i).getValue())) {
 						country = destiny;
 					}
 				}
 			} else {
-				ArrayList<Vertice<String, String, Integer>> countries = butterfly.dfsInMatrix(origin);
+				ArrayList<Vertice<String, String, Integer>> countries = butterfly.bfsInMatrix(origin);
 				for (int i = 0; i < countries.size(); i++) {
 					if (destiny.equalsIgnoreCase(countries.get(i).getValue())) {
 						country = destiny;
@@ -794,6 +795,7 @@ public class ButterflyGUI {
 		default:
 			break;
 		}
+		
 		inicializateTableView(lblCountry.getText());
 		
 		stage.setScene(scene);
@@ -801,84 +803,138 @@ public class ButterflyGUI {
 	}
 	
 	public void inicializateTableView(String lbl) {
-
-		vertice = FXCollections.observableArrayList(butterfly.dfsInMatrix("lbl"));
+		
+		vertice = FXCollections.observableArrayList(butterfly.bfsInMatrix(lbl));
+		for (int i = 0; i < vertice.size(); i++) {
+			if(vertice.get(i).getValue().equals(lbl)) {
+				vertice.remove(i);
+			}
+		}
 		tvFlight.setItems(vertice);
 		tcCountry.setCellValueFactory(new PropertyValueFactory<Vertice<String, String, Integer>, String>("value"));
+		
 	}
 
-	public void addLines(String initVertice, String finalVertice) {
+	public void addLines(String initVertice, String finalVertice, int number) {
 
 		switch (initVertice) {
 
 		case "Estados Unidos":
-			addLine(eeuuImg, finalVertice);
+			addLine(eeuuImg, finalVertice, number);
 			break;
 		case "España":
-			addLine(espImg, finalVertice);
+			addLine(espImg, finalVertice,number);
 			break;
 		case "Japón":
-			addLine(japImg, finalVertice);
+			addLine(japImg, finalVertice, number);
 			break;
 		case "Colombia":
-			addLine(colImg, finalVertice);
+			addLine(colImg, finalVertice, number);
 			break;
 		case "Nigeria":
-			addLine(nigImg, finalVertice);
+			addLine(nigImg, finalVertice, number);
 			break;
 		case "Portugal":
-			addLine(porImg, finalVertice);
+			addLine(porImg, finalVertice, number);
 			break;
 		case "Rusia":
-			addLine(rusImg, finalVertice);
+			addLine(rusImg, finalVertice, number);
 			break;
-		case "Dubai":
-			addLine(dubImg, finalVertice);
+		case "Dubái":
+			addLine(dubImg, finalVertice, number);
 			break;
 		case "Madagascar":
-			addLine(madImg, finalVertice);
+			addLine(madImg, finalVertice, number);
 			break;
 		case "Australia":
-			addLine(ausImg, finalVertice);
+			addLine(ausImg, finalVertice, number);
 			break;
 		default:
 			break;
 		}
 	}
 
-	public void addLine(ImageView image, String finalVertice) {
+	public void addLine(ImageView image, String finalVertice, int number) {
 
 		switch (finalVertice) {
 
 		case "Estados Unidos":
-			addLine(image, eeuuImg);
+			if(number == 0) {
+				addLine(image, eeuuImg);
+			}else {
+				deleteLine(image, eeuuImg);
+			}
 			break;
 		case "España":
-			addLine(image, espImg);
+			if(number == 0) {
+				addLine(image, espImg);
+			}else {
+				deleteLine(image, espImg);
+			}
+			
 			break;
 		case "Japón":
-			addLine(image, japImg);
+			if(number == 0) {
+				addLine(image, japImg);
+			}else {
+				deleteLine(image, japImg);
+			}
+			
 			break;
 		case "Colombia":
-			addLine(image, colImg);
+			if(number == 0) {
+				addLine(image, colImg);
+			}else {
+				deleteLine(image, colImg);
+			}
+			
 			break;
 		case "Nigeria":
-			addLine(image, nigImg);
+			if(number == 0) {
+				addLine(image, nigImg);
+			}else {
+				deleteLine(image, nigImg);
+			}
+			
 			break;
 		case "Portugal":
-			addLine(image, porImg);
+			if(number == 0) {
+				addLine(image, porImg);
+			}else {
+				deleteLine(image, porImg);
+			}
+			
 			break;
 		case "Rusia":
-			addLine(image, rusImg);
+			if(number == 0) {
+				addLine(image, rusImg);
+			}else {
+				deleteLine(image, rusImg);
+			}
+			
 			break;
-		case "Dubai":
-			addLine(image, dubImg);
+		case "Dubái":
+			if(number == 0) {
+				addLine(image, dubImg);
+			}else {
+				deleteLine(image, dubImg);
+			}
+				
 			break;
 		case "Madagascar":
-			addLine(image, madImg);
+			if(number == 0) {
+				addLine(image, madImg);
+			}else {
+				deleteLine(image, madImg);
+			}
 			break;
 		case "Australia":
-			addLine(image, ausImg);
+			if(number == 0) {
+				addLine(image, ausImg);
+			}else {
+				deleteLine(image, ausImg);
+			}
+			
 			break;
 		default:
 			break;
@@ -889,7 +945,21 @@ public class ButterflyGUI {
 
 		Line line = new Line(image.getLayoutX() + 35,image.getLayoutY() + 45,image2.getLayoutX() + 10,image2.getLayoutY()+40);
 		line.setStrokeWidth(3);
+		lines.add(line);
 		mainPane.getChildren().add(line);
+	}
+	
+	public void deleteLine(ImageView image, ImageView image2) {
+		
+		Line line = new Line(image.getLayoutX() + 35,image.getLayoutY() + 45,image2.getLayoutX() + 10,image2.getLayoutY()+40);
+		line.setStrokeWidth(3);
+		
+		for (int i = 0; i < lines.size(); i++) {
+			if(lines.get(i).getStartX() == line.getStartX() && lines.get(i).getEndY() == line.getEndY()) {
+				lines.remove(i);
+				mainPane.getChildren().remove(i+1);
+			}
+		}
 	}
 
 	@FXML
@@ -903,11 +973,11 @@ public class ButterflyGUI {
 		loader.setController(this);
 		Parent root = loader.load();
 		
-		countryIniMin.getItems().addAll("Colombia", "Japón", "Estados Unidos", "España", "Nigeria", "Australia",
+		countryIniMin.getItems().addAll("Colombia", "Japón", "Estados Unidos", "España", "Nigeria", "Australia", "Portugal",
 				"Rusia", "Dubái", "Madagascar");
 		
 		countryIniMin.setValue("Colombia");
-		countryFinalMin.getItems().addAll("Colombia", "Japón", "Estados Unidos", "España", "Nigeria", "Australia",
+		countryFinalMin.getItems().addAll("Colombia", "Japón", "Estados Unidos", "España", "Nigeria", "Australia","Portugal",
 				"Rusia", "Dubái", "Madagascar", "Todos");
 		countryFinalMin.setValue("Colombia");
 		Scene scene = new Scene(root);

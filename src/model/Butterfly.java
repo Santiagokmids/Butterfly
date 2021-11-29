@@ -23,7 +23,7 @@ public class Butterfly {
 		matrixGraph.addVertice("Colombia");
 		matrixGraph.addVertice("España");
 		matrixGraph.addVertice("Japón");
-		matrixGraph.addVertice("EEUU");
+		matrixGraph.addVertice("Estados Unidos");
 		matrixGraph.addVertice("Australia");
 		matrixGraph.addVertice("Nigeria");
 		matrixGraph.addVertice("Rusia");
@@ -36,7 +36,7 @@ public class Butterfly {
 		listGraph.addVertice("Colombia");
 		listGraph.addVertice("España");
 		listGraph.addVertice("Japón");
-		listGraph.addVertice("EEUU");
+		listGraph.addVertice("Estados Unidos");
 		listGraph.addVertice("Australia");
 		listGraph.addVertice("Nigeria");
 		listGraph.addVertice("Rusia");
@@ -77,12 +77,12 @@ public class Butterfly {
 		return listGraph.deleteEdge(valueInit, valueEnd, weight);
 	}
 	
-	public ArrayList<Vertice<String, String, Integer>> dfsInMatrix(String value){
-		ArrayList<Vertice<String, String, Integer>> array = matrixGraph.dfs(value);
+	public ArrayList<Vertice<String, String, Integer>> bfsInMatrix(String value){
+		ArrayList<Vertice<String, String, Integer>> array = matrixGraph.bfs(value);
 		return array;
 	}
 	
-	public ArrayList<ListVertice<String, String, Integer>> dfsInList(String value){
+	public ArrayList<ListVertice<String, String, Integer>> bfsInList(String value){
 		return listGraph.dfs(value);
 	}
 	
@@ -136,4 +136,5 @@ public class Butterfly {
 		verify = deleteEdgeInMatrix(origin, destinatio, weight);
 		return verify;
 	}
+	
 }

@@ -13,7 +13,7 @@ public interface IMatrixGraph<U, V extends Comparable<V>, H> {
 	public ArrayList<Vertice<V, U, H>> getVertice();
 	public ArrayList<Edge<U, V, H>> getEdges();
 	public ArrayList<Vertice<V, U, H>> bfs(V v);
-	public ArrayList<Vertice<V, U, H>> dfs(V v);
+	public void dfs();
 	public ArrayList<H> dijkstra(Vertice<V, U, H> start);
 	public void floyd();
 	public int prim(Vertice<V, U, H> start);

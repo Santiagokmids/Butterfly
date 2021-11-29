@@ -262,7 +262,8 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 		boolean found = false;
 		ArrayList<Vertice<V, U, H>> vertic = new ArrayList<Vertice<V, U, H>>();
 		int position = 0;
-		for (int i = 0; i < vertice.size() && found == false; i++) {
+		
+		for (int i = 0; i < vertice.size() && !found; i++) {
 			if (vertice.get(i).getValue().compareTo(v) == 0) {
 				position = i;
 				found = true;
@@ -272,11 +273,10 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 			vertice.get(i).setColor(0);
 		}
 		if (found == true) {
-			// vertice.get(position).getValue());
-
 			bfs(vertic, first, first, position);
 			return vertic;
 		}
+		
 		return vertic;
 	}
 
@@ -337,28 +337,7 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 	}
 
 	@Override
-	public ArrayList<Vertice<V, U, H>> dfs(V v) {
-		boolean found = false;
-		ArrayList<Vertice<V, U, H>> vertic = new ArrayList<Vertice<V, U, H>>();
-		int position = 0;
-		for (int i = 0; i < vertice.size() && found == false; i++) {
-			if (vertice.get(i).getValue().compareTo(v) == 0) {
-				position = i;
-				found = true;
-			}
-		}
-		for (int i = 0; i < vertice.size(); i++) {
-			vertice.get(i).setColor(0);
-		}
-		if (found == true) {
-
-			dfs(vertic, first, first, position);
-			return vertic;
-		}
-		return vertic;
-	}
-
-	public void dfs2() {
+	public void dfs() {
 		
 		Vertice<V, U, H> current = first;
 		
@@ -408,55 +387,6 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 			}
 		}
 		return arrayAd;
-	}
-
-	public void dfs(ArrayList<Vertice<V, U, H>> vertic, Vertice<V, U, H> e, Vertice<V, U, H> firt, int position) {
-		if (position == 0) {
-			if (e != null) {
-				if (e.getEdge().isEmpty()) {
-					dfs(vertic, e.getNext(), firt, position);
-				} else {
-					if (e.getEdge().get(0).getFinalVertice().getColor() == 0) {
-						if (e.getEdge().get(0).getInitVertice().getColor() == 0) {
-							vertic.add(e.getEdge().get(0).getInitVertice());
-							e.getEdge().get(0).getInitVertice().setColor(1);
-						}
-						e.getEdge().get(0).getFinalVertice().setColor(1);
-						vertic.add(e.getEdge().get(0).getFinalVertice());
-						position = validPosition(e.getEdge().get(0).getFinalVertice().getValue());
-						firt = e.getEdge().get(0).getInitVertice();
-						dfs(vertic, first, first, position);
-					} else {
-						dfs(vertic, e.getNext(), first, position);
-					}
-				}
-			} else {
-				for (int i = vertic.size(); i >= 0; i--) {
-					if (i >= 1) {
-						if (vertic.get(i - 1).getColor() == 1) {
-							 vertic.get(i - 1).setColor(2);
-							position = validPosition(vertic.get(i - 1).getValue());
-							dfs(vertic, first, first, position);
-						}
-					} else {
-						if (vertic.get(i).getColor() == 1) {
-							vertic.get(i).setColor(2);
-							position = validPosition(vertic.get(i).getValue());
-							int out = 3;
-							while(out >0) {
-							dfs(vertic, first, first, position);
-							out--;
-							}
-
-						}
-					}
-				}
-			}
-		} else {
-			position--;
-			dfs(vertic, e.getDown(), e.getDown(), position);
-		}
-
 	}
 
 	public int makeDijkstra(Vertice<V, U, H> start, Vertice<V, U, H> end) {
