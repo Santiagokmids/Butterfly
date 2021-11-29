@@ -5,14 +5,19 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import dataStructure.ListVertice;
 import dataStructure.Vertice;
 
 import java.awt.*;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -38,34 +43,40 @@ import model.Butterfly;
 public class ButterflyGUI {
 
 	@FXML
-    private ComboBox<String> cbOrigin;
+	private ComboBox<String> cbOrigin;
 
-    @FXML
-    private ComboBox<String> cbDestination;
-
-    @FXML
-    private TextField tfCost;
-
-    @FXML
-    private Button btnAdd;
-
-    @FXML
-    private Button btnDelete;
-
-    @FXML
-    private Button btnModify;
-	
 	@FXML
-    private ImageView imgPhoto;
+	private ComboBox<String> cbDestination;
+
+	@FXML
+	private TextField tfCost;
+
+	@FXML
+	private Button btnAdd;
+
+	@FXML
+	private Button btnDelete;
+
+	@FXML
+	private Button btnModify;
+
+	@FXML
+	private ImageView imgPhoto;
+
+	@FXML
+	private ComboBox<String> countryIniMin;
+
+	@FXML
+	private ComboBox<String> countryFinalMin;
 
 	@FXML
 	private Label lblCountry;
 
 	@FXML
-	private TableView<?> tvFlight;
+	private TableView<Vertice<String, String, Integer>> tvFlight;
 
 	@FXML
-	private TableColumn<?, ?> tcCountry;
+	private TableColumn<Vertice<String, String, Integer>, String> tcCountry;
 
 	@FXML
 	private ComboBox<String> searchCountryOrigin;
@@ -132,9 +143,11 @@ public class ButterflyGUI {
 
 	@FXML
 	private Label countryLabel;
+
+	@FXML
+	private Label graphLabel;
 	
-    @FXML
-    private Label graphLabel;
+	public ObservableList<Vertice<String, String, Integer>> vertice;
 
 	boolean typeGraph = true; //If is false = listGraph. If is true = matrixGraph
 	boolean btnConfigVerify = true;
@@ -146,7 +159,7 @@ public class ButterflyGUI {
 
 	Butterfly butterfly;
 
-	//Country photos
+	// Country photos
 
 	Image colombiaImage = new Image("/images/colombia.jpg");
 	Image espaniaImage = new Image("/images/españa.jpg");
@@ -157,9 +170,13 @@ public class ButterflyGUI {
 	Image nigeriaImage = new Image("/images/nigeria.jpg");
 	Image dubaiImage = new Image("/images/dubai.jpg");
 	Image portugalImage = new Image("/images/portugal.jpg");
-	Image madagascarImage = new Image("/images/madagascar.jpg"); 
-	
-	//Information of the countries
+	Image madagascarImage = new Image("/images/madagascar.jpg");
+
+	// Source of the information
+
+	String link = "https://es.wikipedia.org/";
+
+	// Information of the countries
 
 	String colombiaInformation = "Es un país soberano situado en la región noroccidental de América del Sur, que se constituye en un estado unitario, social y democrático de derecho cuya forma de gobierno es presidencialista.";
 	String espaniaInformation = "Es un país soberano transcontinental, miembro de la Unión Europea, constituido en Estado social y democrático de derecho, cuya forma de gobierno es la monarquía parlamentaria. ";
@@ -221,32 +238,32 @@ public class ButterflyGUI {
 			btnConfig.setStyle(styleString);
 			btnConfig.setEffect(dropShadow);
 			btnConfigVerify = false;
-			
-			
+
 			try {
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("addFlight.fxml"));
 				loader.setController(this);
 				Parent root;
-				
+
 				root = loader.load();
-				
+
 				Scene scene = new Scene(root);
 				Stage stage = new Stage();
 				stage.initModality(Modality.APPLICATION_MODAL);
-				
+
 				cbOrigin.getItems().clear();
 				cbDestination.getItems().clear();
-				
-				cbOrigin.getItems().addAll("Colombia","Japón","Estados Unidos","España","Nigeria","Australia","Rusia","Dubái","Madagascar");
-				cbDestination.getItems().addAll("Colombia","Japón","Estados Unidos","España","Nigeria","Australia","Rusia","Dubái","Madagascar");
-				
+
+				cbOrigin.getItems().addAll("Colombia", "Japón", "Estados Unidos", "España", "Nigeria", "Australia",
+						"Rusia", "Dubái", "Madagascar");
+				cbDestination.getItems().addAll("Colombia", "Japón", "Estados Unidos", "España", "Nigeria", "Australia",
+						"Rusia", "Dubái", "Madagascar");
+
 				stage.setScene(scene);
 				stage.showAndWait();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
-			
+
 			break;
 		case "Buscar Vuelo":
 			btnSearch.setStyle(styleString);
@@ -258,12 +275,13 @@ public class ButterflyGUI {
 			btnCost.setStyle(styleString);
 			btnCost.setEffect(dropShadow);
 			btnCostVerify = false;
+			loadMin();
 			break;
 		default:
 			break;
 		}
 	}
-	
+
 	@FXML
 	public void handleClicksTwo(ActionEvent event) {
 		Button button = (Button) event.getSource();
@@ -272,15 +290,15 @@ public class ButterflyGUI {
 		DropShadow dropShadow = new DropShadow();
 
 		changeAllButtonTwo();
-		
+
 		switch (optionString) {
 		case "Agregar":
 			btnAdd.setStyle(styleString);
 			btnAdd.setEffect(dropShadow);
 			btnAddVerify = false;
-			
+
 			addFlight();
-			
+
 			break;
 		case "Eliminar":
 			btnDelete.setStyle(styleString);
@@ -375,10 +393,10 @@ public class ButterflyGUI {
 	}
 
 	private void addFlight() {
-		
+
 		try {
 			Integer newInteger = Integer.parseInt(tfCost.getText());
-			
+
 			if (newInteger > 0) {
 				
 				if (cbOrigin.getValue() == null || cbDestination.getValue() == null) {
@@ -429,29 +447,29 @@ public class ButterflyGUI {
 					}
 				}
 				
-			}else {
+			} else {
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("ERROR");
 				alert.setHeaderText("Error de formato");
 				alert.setContentText("El costo debe ser un valor numérico positivo.");
 				alert.showAndWait();
 			}
-			
+
 		} catch (NumberFormatException e) {
-			
+
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("ERROR");
 			alert.setHeaderText("Error de formato");
 			alert.setContentText("El costo debe ser un valor numérico.");
 			alert.showAndWait();
 		}
-		
+
 	}
 
 	private void changeAllButtonTwo() {
-		
+
 		btnAddVerify = btnDeleteVerify = btnModifyVerify = true;
-		
+
 		changeStyle(btnAdd.getText());
 		changeStyle(btnDelete.getText());
 		changeStyle(btnModify.getText());
@@ -466,8 +484,14 @@ public class ButterflyGUI {
 		Scene scene = new Scene(root);
 		Stage stage = new Stage();
 
-		searchCountryOrigin.getItems().addAll("Colombia","Japón","Estados Unidos","España","Nigeria","Australia","Rusia","Dubái","Madagascar");
-		searchCountryDestiny.getItems().addAll("Colombia","Japón","Estados Unidos","España","Nigeria","Australia","Rusia","Dubái","Madagascar");
+		searchCountryOrigin.getItems().addAll("Colombia", "Japón", "Estados Unidos", "España", "Nigeria", "Australia",
+				"Rusia", "Dubái", "Madagascar");
+		searchCountryDestiny.getItems().addAll("Colombia", "Japón", "Estados Unidos", "España", "Nigeria", "Australia",
+				"Rusia", "Dubái", "Madagascar");
+		searchCountryOrigin.getItems().addAll("Colombia", "Japón", "Estados Unidos", "España", "Nigeria", "Australia",
+				"Rusia", "Dubái", "Madagascar");
+		searchCountryDestiny.getItems().addAll("Colombia", "Japón", "Estados Unidos", "España", "Nigeria", "Australia",
+				"Rusia", "Dubái", "Madagascar");
 		stage.setScene(scene);
 		stage.showAndWait();
 	}
@@ -478,35 +502,37 @@ public class ButterflyGUI {
 		String destiny = searchCountryDestiny.getValue();
 		String country = "";
 
-		if(!typeGraph) {
-			ArrayList<ListVertice<String, String, Integer>> countries = butterfly.dfsInList(origin);
-			for (int i = 0; i < countries.size(); i++) {
-				if(destiny.equalsIgnoreCase(countries.get(i).getValue())) {
-					country = destiny;
+		if (typeGraph) {
+			if (!typeGraph) {
+				ArrayList<ListVertice<String, String, Integer>> countries = butterfly.dfsInList(origin);
+				for (int i = 0; i < countries.size(); i++) {
+					if (destiny.equalsIgnoreCase(countries.get(i).getValue())) {
+						country = destiny;
+					}
+				}
+			} else {
+				ArrayList<Vertice<String, String, Integer>> countries = butterfly.dfsInMatrix(origin);
+				for (int i = 0; i < countries.size(); i++) {
+					if (destiny.equalsIgnoreCase(countries.get(i).getValue())) {
+						country = destiny;
+					}
 				}
 			}
-		}else {
-			ArrayList<Vertice<String, String, Integer>> countries = butterfly.dfsInMatrix(origin);
-			for (int i = 0; i < countries.size(); i++) {
-				if(destiny.equalsIgnoreCase(countries.get(i).getValue())) {
-					country = destiny;
-				}
+
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Búsqueda realizada");
+
+			if (country.equals("")) {
+				alert.setHeaderText("No encontrado");
+				alert.setContentText("No existe un vuelo entre " + origin + " y " + destiny);
+				alert.showAndWait();
+
+			} else {
+				alert.setHeaderText("Se ha encontrado");
+				alert.setContentText("Sí existe un vuelo entre " + origin + " y " + destiny);
+				alert.showAndWait();
 			}
 		}
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Búsqueda realizada");
-
-		if(country.equals("")) {
-			alert.setHeaderText("No encontrado");
-			alert.setContentText("No existe un vuelo entre "+origin+" y "+destiny);
-			alert.showAndWait();
-
-		}else {
-			alert.setHeaderText("Se ha encontrado");
-			alert.setContentText("Sí existe un vuelo entre "+origin+" y "+destiny);
-			alert.showAndWait();
-		}
-
 	}
 
 	@FXML
@@ -522,7 +548,7 @@ public class ButterflyGUI {
 	}
 
 	private void changeAllButton() {
-		
+
 		btnConfigVerify = btnSearchVerify = btnCostVerify = true;
 
 		changeStyle(btnConfig.getText());
@@ -539,7 +565,7 @@ public class ButterflyGUI {
 			if (btnConfigVerify) {
 				btnConfig.setStyle(style);
 				btnConfig.setEffect(null);
-			}			
+			}
 			break;
 		case "Buscar Vuelo":
 			if (btnSearchVerify) {
@@ -596,7 +622,7 @@ public class ButterflyGUI {
 			if (btnConfigVerify) {
 				btnConfig.setStyle(style);
 				btnConfig.setEffect(dropShadow);
-			}	
+			}
 			break;
 		case "Buscar Vuelo":
 			if (btnSearchVerify) {
@@ -768,9 +794,17 @@ public class ButterflyGUI {
 		default:
 			break;
 		}
-
+		inicializateTableView(lblCountry.getText());
+		
 		stage.setScene(scene);
 		stage.showAndWait();
+	}
+	
+	public void inicializateTableView(String lbl) {
+
+		vertice = FXCollections.observableArrayList(butterfly.dfsInMatrix("lbl"));
+		tvFlight.setItems(vertice);
+		tcCountry.setCellValueFactory(new PropertyValueFactory<Vertice<String, String, Integer>, String>("value"));
 	}
 
 	public void addLines(String initVertice, String finalVertice) {
@@ -852,6 +886,7 @@ public class ButterflyGUI {
 	}
 
 	public void addLine(ImageView image, ImageView image2) {
+
 		Line line = new Line(image.getLayoutX() + 35,image.getLayoutY() + 45,image2.getLayoutX() + 10,image2.getLayoutY()+40);
 		line.setStrokeWidth(3);
 		mainPane.getChildren().add(line);
@@ -861,4 +896,74 @@ public class ButterflyGUI {
 	public void closeApp(MouseEvent event) {
 		System.exit(0);
 	}
+
+	public void loadMin() throws IOException {
+		
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("searchCost.fxml"));
+		loader.setController(this);
+		Parent root = loader.load();
+		
+		countryIniMin.getItems().addAll("Colombia", "Japón", "Estados Unidos", "España", "Nigeria", "Australia",
+				"Rusia", "Dubái", "Madagascar");
+		
+		countryIniMin.setValue("Colombia");
+		countryFinalMin.getItems().addAll("Colombia", "Japón", "Estados Unidos", "España", "Nigeria", "Australia",
+				"Rusia", "Dubái", "Madagascar", "Todos");
+		countryFinalMin.setValue("Colombia");
+		Scene scene = new Scene(root);
+		Stage stage = new Stage();
+		stage.setScene(scene);
+		stage.showAndWait();
+
+	}
+
+	@FXML
+	void buttonCostMini(ActionEvent event) {
+		String ini = countryFinalMin.getValue();
+		String fin = countryFinalMin.getValue();
+		String out = "";
+		if (fin.equals("Todos")) {
+			if (!typeGraph) {
+				out = "Estos son los costos mínimos \n";
+				ArrayList<Integer> inte = butterfly.dijkstraInList(ini);
+				ArrayList<ListVertice<String, String, Integer>> list = butterfly.listGraph.getListVertice();
+				for (int i = 0; i < list.size(); i++) {
+
+					if (inte.get(i) != Integer.MAX_VALUE) {
+						out += list.get(i).getValue() + " con costo: " + inte.get(i) + "\n";
+					} else {
+						out += "No se puede viajar desde " + ini + " hasta " + list.get(i).getValue();
+					}
+
+				}
+
+			} else {
+				out = "Estos son los costos mínimos \n";
+				ArrayList<Integer> inte = butterfly.dijkstraInMatrix(ini);
+				ArrayList<Vertice<String, String, Integer>> list = butterfly.matrixGraph.getVertice();
+				for (int i = 0; i < list.size(); i++) {
+
+					if (inte.get(i) != Integer.MAX_VALUE) {
+						out += list.get(i).getValue() + " con costo: " + inte.get(i) + "\n";
+					} else {
+						out += "No se puede viajar desde " + ini + " hasta " + list.get(i).getValue();
+					}
+				}
+
+			}
+
+		} else {
+			if (!typeGraph) {
+				out += "Este es el costo mínimo \n";
+				out+= butterfly.dijkstraInList(ini, fin);
+
+			} else {
+				out = "Este es el costo mínimo \n";
+				out += butterfly.dijkstraInMatrix(ini, fin);
+			}
+		}
+		JOptionPane.showMessageDialog(null, out, "Costo", JOptionPane.WARNING_MESSAGE);
+
+	}
+
 }
