@@ -3,6 +3,11 @@ package ui;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+
+import dataStructure.ListVertice;
+import dataStructure.Vertice;
+
 import java.awt.*;
 
 import javafx.event.ActionEvent;
@@ -31,7 +36,7 @@ import javafx.stage.Stage;
 import model.Butterfly;
 
 public class ButterflyGUI {
-	
+
 	@FXML
     private ComboBox<String> cbOrigin;
 
@@ -53,20 +58,26 @@ public class ButterflyGUI {
 	@FXML
     private ImageView imgPhoto;
 
-    @FXML
-    private Label lblCountry;
+	@FXML
+	private Label lblCountry;
 
-    @FXML
-    private TableView<?> tvFlight;
+	@FXML
+	private TableView<?> tvFlight;
 
-    @FXML
-    private TableColumn<?, ?> tcCountry;
+	@FXML
+	private TableColumn<?, ?> tcCountry;
 
-    @FXML
-    private Label lblInformation;
+	@FXML
+	private ComboBox<String> searchCountryOrigin;
 
-    @FXML
-    private Hyperlink linkInformation;
+	@FXML
+	private ComboBox<String> searchCountryDestiny;
+
+	@FXML
+	private Label lblInformation;
+
+	@FXML
+	private Hyperlink linkInformation;
 
 	@FXML
 	private ImageView imgMap;
@@ -121,7 +132,11 @@ public class ButterflyGUI {
 
 	@FXML
 	private Label countryLabel;
+	
+    @FXML
+    private Label graphLabel;
 
+	boolean typeGraph = false; //If is false = listGraph. If is true = matrixGraph
 	boolean btnConfigVerify = true;
 	boolean btnSearchVerify = true;
 	boolean btnCostVerify = true;
@@ -130,9 +145,9 @@ public class ButterflyGUI {
 	boolean btnModifyVerify = true;
 
 	Butterfly butterfly;
-	
+
 	//Country photos
-	
+
 	Image colombiaImage = new Image("/images/colombia.jpg");
 	Image espaniaImage = new Image("/images/españa.jpg");
 	Image japonImage = new Image("/images/japon.jpg");
@@ -145,7 +160,7 @@ public class ButterflyGUI {
 	Image madagascarImage = new Image("/images/madagascar.jpg"); 
 	
 	//Information of the countries
-	
+
 	String colombiaInformation = "Es un país soberano situado en la región noroccidental de América del Sur, que se constituye en un estado unitario, social y democrático de derecho cuya forma de gobierno es presidencialista.";
 	String espaniaInformation = "Es un país soberano transcontinental, miembro de la Unión Europea, constituido en Estado social y democrático de derecho, cuya forma de gobierno es la monarquía parlamentaria. ";
 	String japonInformation = " Es un país insular de Asia Oriental ubicado en el noroeste del océano Pacífico. Limita con el mar de Japón al oeste y se extiende desde el mar de Ojotsk en el norte hasta el mar de China Oriental y Taiwán en el sur.";
@@ -192,7 +207,7 @@ public class ButterflyGUI {
 	}
 
 	@FXML
-	public void handleClicks(ActionEvent event) {
+	public void handleClicks(ActionEvent event) throws IOException {
 
 		Button button = (Button) event.getSource();
 		String optionString = button.getText();
@@ -237,6 +252,7 @@ public class ButterflyGUI {
 			btnSearch.setStyle(styleString);
 			btnSearch.setEffect(dropShadow);
 			btnSearchVerify = false;
+			searchTrip();
 			break;
 		case "Costo Mínimo":
 			btnCost.setStyle(styleString);
@@ -322,6 +338,70 @@ public class ButterflyGUI {
 		changeStyle(btnAdd.getText());
 		changeStyle(btnDelete.getText());
 		changeStyle(btnModify.getText());
+	}
+
+	public void searchTrip() throws IOException {
+
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("searchTrip.fxml"));
+		loader.setController(this);
+		Parent root = loader.load();
+
+		Scene scene = new Scene(root);
+		Stage stage = new Stage();
+
+		searchCountryOrigin.getItems().addAll("Colombia","Japón","Estados Unidos","España","Nigeria","Australia","Rusia","Dubái","Madagascar");
+		searchCountryDestiny.getItems().addAll("Colombia","Japón","Estados Unidos","España","Nigeria","Australia","Rusia","Dubái","Madagascar");
+		stage.setScene(scene);
+		stage.showAndWait();
+	}
+
+	@FXML
+	public void searchTrip(ActionEvent event) {
+		String origin = searchCountryOrigin.getValue();
+		String destiny = searchCountryDestiny.getValue();
+		String country = "";
+
+		if(!typeGraph) {
+			ArrayList<ListVertice<String, String, Integer>> countries = butterfly.dfsInList(origin);
+			for (int i = 0; i < countries.size(); i++) {
+				if(destiny.equalsIgnoreCase(countries.get(i).getValue())) {
+					country = destiny;
+				}
+			}
+		}else {
+			ArrayList<Vertice<String, String, Integer>> countries = butterfly.dfsInMatrix(origin);
+			for (int i = 0; i < countries.size(); i++) {
+				if(destiny.equalsIgnoreCase(countries.get(i).getValue())) {
+					country = destiny;
+				}
+			}
+		}
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Búsqueda realizada");
+
+		if(country.equals("")) {
+			alert.setHeaderText("No encontrado");
+			alert.setContentText("No existe un vuelo entre "+origin+" y "+destiny);
+			alert.showAndWait();
+
+		}else {
+			alert.setHeaderText("Se ha encontrado");
+			alert.setContentText("Sí existe un vuelo entre "+origin+" y "+destiny);
+			alert.showAndWait();
+		}
+
+	}
+
+	@FXML
+	public void changeGraph(ActionEvent event) {
+		if(!typeGraph) {
+			graphLabel.setText("Grafo representado por matriz de adjacencia");
+			typeGraph = true;
+			
+		}else {
+			graphLabel.setText("Grafo representado por lista de adjacencia");
+			typeGraph = false;
+		}
 	}
 
 	private void changeAllButton() {
@@ -482,16 +562,16 @@ public class ButterflyGUI {
 			break;
 		}
 	}
-	
+
 	@FXML
-    void btnInformation(MouseEvent event) throws IOException {
+	void btnInformation(MouseEvent event) throws IOException {
 		ImageView image = (ImageView) event.getSource();
 		String id = image.getId();
-		
+
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("informationPane.fxml"));
 		loader.setController(this);
 		Parent root = loader.load();
-		
+
 		Scene scene = new Scene(root);
 		Stage stage = new Stage();
 		stage.initModality(Modality.APPLICATION_MODAL);
@@ -505,81 +585,81 @@ public class ButterflyGUI {
 				}
 			}
 		});
-		
+
 		switch (id) {
 		case "eeuuImg":
 			imgPhoto.setImage(eeuuImage);
 			lblCountry.setText("Estados Unidos");
 			lblInformation.setText(eeuuInformation);
-			
+
 			break;
 		case "espImg":
 			imgPhoto.setImage(espaniaImage);
 			lblCountry.setText("España");
 			lblInformation.setText(espaniaInformation);
-			
+
 			break;
 		case "colImg":
 			imgPhoto.setImage(colombiaImage);
 			lblCountry.setText("Colombia");
 			lblInformation.setText(colombiaInformation);
-			
+
 			break;
 		case "dubImg":
 			imgPhoto.setImage(dubaiImage);
 			lblCountry.setText("Dubái");
 			lblInformation.setText(dubaiInformation);
-			
+
 			break;
 		case "ausImg":
 			imgPhoto.setImage(australiaImage);
 			lblCountry.setText("Australia");
 			lblInformation.setText(australiaInformation);
-			
+
 			break;
 		case "japImg":
 			imgPhoto.setImage(japonImage);
 			lblCountry.setText("Japón");
 			lblInformation.setText(japonInformation);
-			
+
 			break;
 		case "nigImg":
 			imgPhoto.setImage(nigeriaImage);
 			lblCountry.setText("Nigeria");
 			lblInformation.setText(nigeriaInformation);
-			
+
 			break;
 		case "madImg":
 			imgPhoto.setImage(madagascarImage);
 			lblCountry.setText("Madagascar");
 			lblInformation.setText(madagascarInformation);
-			
+
 			break;
 		case "porImg":
 			imgPhoto.setImage(portugalImage);
 			lblCountry.setText("Portugal");
 			lblInformation.setText(portugalInformation);
-			
+
 			break;
 		case "rusImg":
 			imgPhoto.setImage(rusiaImage);
 			lblCountry.setText("Rusia");
 			lblInformation.setText(rusiaInformation);
-			
+
 			break;
 
 		default:
 			break;
 		}
-		
+
 		stage.setScene(scene);
 		stage.showAndWait();
-    }
+	}
 
 	public void addLines(String initVertice, String finalVertice) {
-		
+
 		switch (initVertice) {
-		
+
 		case "Estados Unidos":
 			addLine(eeuuImg, finalVertice);
 			break;
@@ -614,11 +694,11 @@ public class ButterflyGUI {
 			break;
 		}
 	}
-	
+
 	public void addLine(ImageView image, String finalVertice) {
-		
+
 		switch (finalVertice) {
-		
+
 		case "Estados Unidos":
 			addLine(image, eeuuImg);
 			break;
@@ -653,7 +733,7 @@ public class ButterflyGUI {
 			break;
 		}
 	}
-	
+
 	public void addLine(ImageView image, ImageView image2) {
 		Line line = new Line(image.getLayoutX() + 35,image.getLayoutY() + 45,image2.getLayoutX() + 10,image2.getLayoutY()+40);
 		line.setStrokeWidth(3);
