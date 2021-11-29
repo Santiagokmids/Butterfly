@@ -22,26 +22,26 @@ public class Butterfly {
 	public void addVerticeInMatrix() {
 		matrixGraph.addVertice("Colombia");
 		matrixGraph.addVertice("España");
-		matrixGraph.addVertice("Japon");
+		matrixGraph.addVertice("Japón");
 		matrixGraph.addVertice("EEUU");
 		matrixGraph.addVertice("Australia");
 		matrixGraph.addVertice("Nigeria");
 		matrixGraph.addVertice("Rusia");
 		matrixGraph.addVertice("Portugal");
-		matrixGraph.addVertice("Dubai");
+		matrixGraph.addVertice("Dubái");
 		matrixGraph.addVertice("Madagascar");
 	}
 	
 	public void addVerticeInList() {
 		listGraph.addVertice("Colombia");
 		listGraph.addVertice("España");
-		listGraph.addVertice("Japon");
+		listGraph.addVertice("Japón");
 		listGraph.addVertice("EEUU");
 		listGraph.addVertice("Australia");
 		listGraph.addVertice("Nigeria");
 		listGraph.addVertice("Rusia");
 		listGraph.addVertice("Portugal");
-		listGraph.addVertice("Dubai");
+		listGraph.addVertice("Dubái");
 		listGraph.addVertice("Madagascar");
 	}
 	
@@ -100,5 +100,40 @@ public class Butterfly {
 	
 	public int dijkstraInList(String start, String end){
 		return listGraph.makeDijkstra(new ListVertice<String, String, Integer>(start), new ListVertice<String, String, Integer>(end));
+	}
+
+	public boolean searchFlight(String origin, String destination, Integer weight, boolean typeGraph) {
+		
+		Integer weightInteger = 0;
+		boolean verify = false;
+		
+		if (!typeGraph) {
+			if (listGraph.searchEdge(origin, destination) != null) {
+				weightInteger = listGraph.searchEdge(origin, destination);
+			}
+		}else {
+			if (matrixGraph.searchEdge(origin, destination) != null) {
+				weightInteger = matrixGraph.searchEdge(origin, destination);
+			}
+		}
+		if (weightInteger.equals(weight)) {
+			verify = true;
+		}
+		return verify;
+	}
+	
+	public boolean add(String origin, String destinatio, Integer weight) {
+		boolean verify = false;
+		verify = addEdgeMatrix(origin, destinatio, weight);
+		verify = addEdgeList(origin, destinatio, weight);
+		
+		return verify;
+	}
+
+	public boolean delete(String origin, String destinatio, Integer weight) {
+		boolean verify = false;
+		verify = deleteEdgeInList(origin, destinatio, weight);
+		verify = deleteEdgeInMatrix(origin, destinatio, weight);
+		return verify;
 	}
 }

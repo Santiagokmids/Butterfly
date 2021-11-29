@@ -187,8 +187,10 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 					newVertice = newVertice.getNext();
 				}
 			}
-
-			weight = newVertice.getEdge().get(0).getHeight();
+			
+			if (!newVertice.getEdge().isEmpty()) {
+				weight = newVertice.getEdge().get(0).getHeight();
+			}
 		}
 
 		return weight;

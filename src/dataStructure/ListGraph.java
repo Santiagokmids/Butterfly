@@ -58,6 +58,7 @@ implements IListGraph<U, V, H> {
 				i = listVertice.size();
 			}
 		}
+		
 		if (foundA == true && foundB == true && (int)height > 0) {
 			listVertice.get(positionA).getAdjacency().add(listVertice.get(positionB).getValue());
 			ListEdge<U, V, H> list = new ListEdge<U,V,H>(listVertice.get(positionA),listVertice.get(positionB),height);
@@ -183,7 +184,6 @@ implements IListGraph<U, V, H> {
 		boolean stop = false;
 
 		for (int i = 0; i < listVertice.size() && !stop; i++) {
-
 			for (int j = 0; j < listVertice.get(i).getEdge().size() && !stop; j++) {
 				if(verticeInit.compareTo(listVertice.get(i).getEdge().get(j).getInitVertice().getValue()) == 0 && verticeEnd.compareTo(listVertice.get(i).getEdge().get(j).getFinalVertice().getValue()) == 0 
 						&& weight.compareTo(listVertice.get(i).getEdge().get(j).getHeight()) == 0) {

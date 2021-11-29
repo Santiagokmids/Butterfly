@@ -29,10 +29,8 @@ public class ListVertice<V extends Comparable<V>, U, H>{
 			}
 		}if(noFound) {
 			edge.add(ed);
-			return true;
-			
 		}
-		return false;
+		return noFound;
 	}
 	
 	public V getValue() {
