@@ -114,6 +114,9 @@ public class ButterflyGUI {
 	@FXML
 	private Label countryLabel;
 	
+    @FXML
+    private Label graphLabel;
+
 	boolean typeGraph = false; //If is false = listGraph. If is true = matrixGraph
 	boolean btnConfigVerify = true;
 	boolean btnSearchVerify = true;
@@ -225,7 +228,7 @@ public class ButterflyGUI {
 
 		Scene scene = new Scene(root);
 		Stage stage = new Stage();
-		
+
 		searchCountryOrigin.getItems().addAll("Colombia","Japón","Estados Unidos","España","Nigeria","Australia","Rusia","Dubái","Madagascar");
 		searchCountryDestiny.getItems().addAll("Colombia","Japón","Estados Unidos","España","Nigeria","Australia","Rusia","Dubái","Madagascar");
 		stage.setScene(scene);
@@ -237,7 +240,7 @@ public class ButterflyGUI {
 		String origin = searchCountryOrigin.getValue();
 		String destiny = searchCountryDestiny.getValue();
 		String country = "";
-		
+
 		if(!typeGraph) {
 			ArrayList<ListVertice<String, String, Integer>> countries = butterfly.dfsInList(origin);
 			for (int i = 0; i < countries.size(); i++) {
@@ -255,18 +258,30 @@ public class ButterflyGUI {
 		}
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Búsqueda realizada");
-		
+
 		if(country.equals("")) {
 			alert.setHeaderText("No encontrado");
-			alert.setContentText("No exite un vuelo entre "+origin+" y "+destiny);
+			alert.setContentText("No existe un vuelo entre "+origin+" y "+destiny);
 			alert.showAndWait();
-			
+
 		}else {
 			alert.setHeaderText("Se ha encontrado");
 			alert.setContentText("Sí existe un vuelo entre "+origin+" y "+destiny);
 			alert.showAndWait();
 		}
-		
+
+	}
+
+	@FXML
+	public void changeGraph(ActionEvent event) {
+		if(!typeGraph) {
+			graphLabel.setText("Grafo representado por matriz de adjacencia");
+			typeGraph = true;
+			
+		}else {
+			graphLabel.setText("Grafo representado por lista de adjacencia");
+			typeGraph = false;
+		}
 	}
 
 	private void changeAllButton() {
