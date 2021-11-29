@@ -6,12 +6,16 @@ import java.net.URISyntaxException;
 import java.awt.*;
 
 import javafx.event.ActionEvent;
+import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -27,6 +31,24 @@ import javafx.stage.Stage;
 import model.Butterfly;
 
 public class ButterflyGUI {
+	
+	@FXML
+    private ComboBox<String> cbOrigin;
+
+    @FXML
+    private ComboBox<String> cbDestination;
+
+    @FXML
+    private TextField tfCost;
+
+    @FXML
+    private Button btnAdd;
+
+    @FXML
+    private Button btnDelete;
+
+    @FXML
+    private Button btnModify;
 	
 	@FXML
     private ImageView imgPhoto;
@@ -103,6 +125,9 @@ public class ButterflyGUI {
 	boolean btnConfigVerify = true;
 	boolean btnSearchVerify = true;
 	boolean btnCostVerify = true;
+	boolean btnAddVerify = true;
+	boolean btnDeleteVerify = true;
+	boolean btnModifyVerify = true;
 
 	Butterfly butterfly;
 	
@@ -118,10 +143,6 @@ public class ButterflyGUI {
 	Image dubaiImage = new Image("/images/dubai.jpg");
 	Image portugalImage = new Image("/images/portugal.jpg");
 	Image madagascarImage = new Image("/images/madagascar.jpg"); 
-	
-	//Source of the information
-	
-	String link = "https://es.wikipedia.org/";
 	
 	//Information of the countries
 	
@@ -185,6 +206,32 @@ public class ButterflyGUI {
 			btnConfig.setStyle(styleString);
 			btnConfig.setEffect(dropShadow);
 			btnConfigVerify = false;
+			
+			
+			try {
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("addFlight.fxml"));
+				loader.setController(this);
+				Parent root;
+				
+				root = loader.load();
+				
+				Scene scene = new Scene(root);
+				Stage stage = new Stage();
+				stage.initModality(Modality.APPLICATION_MODAL);
+				
+				cbOrigin.getItems().clear();
+				cbDestination.getItems().clear();
+				
+				cbOrigin.getItems().addAll("Colombia","Japón","Estados Unidos","España","Nigeria","Australia","Rusia","Dubái","Madagascar");
+				cbDestination.getItems().addAll("Colombia","Japón","Estados Unidos","España","Nigeria","Australia","Rusia","Dubái","Madagascar");
+				
+				stage.setScene(scene);
+				stage.showAndWait();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			
 			break;
 		case "Buscar Vuelo":
 			btnSearch.setStyle(styleString);
@@ -200,8 +247,85 @@ public class ButterflyGUI {
 			break;
 		}
 	}
+	
+	@FXML
+	public void handleClicksTwo(ActionEvent event) {
+		Button button = (Button) event.getSource();
+		String optionString = button.getText();
+		String styleString = "-fx-background-color: rgb(24,135,128);";
+		DropShadow dropShadow = new DropShadow();
+
+		changeAllButtonTwo();
+		
+		switch (optionString) {
+		case "Agregar":
+			btnAdd.setStyle(styleString);
+			btnAdd.setEffect(dropShadow);
+			btnAddVerify = false;
+			
+			addFlight();
+			
+			break;
+		case "Eliminar":
+			btnDelete.setStyle(styleString);
+			btnDelete.setEffect(dropShadow);
+			btnDeleteVerify = false;
+			break;
+		case "Modificar":
+			btnModify.setStyle(styleString);
+			btnModify.setEffect(dropShadow);
+			btnModifyVerify = false;
+			break;
+		default:
+			break;
+		}
+	}
+	
+	private void addFlight() {
+		
+		try {
+			Integer newInteger = Integer.parseInt(tfCost.getText());
+			
+			if (newInteger > 0) {
+				if (!cbOrigin.getValue().equals(cbDestination.getValue())) {
+					
+				}else {
+					Alert alert = new Alert(AlertType.ERROR);
+					alert.setTitle("ERROR");
+					alert.setHeaderText("Error de vuelos");
+					alert.setContentText("El vuelo no puede ir hacia el mismo país.");
+					alert.showAndWait();
+				}
+			}else {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("ERROR");
+				alert.setHeaderText("Error de formato");
+				alert.setContentText("El costo debe ser un valor numérico positivo.");
+				alert.showAndWait();
+			}
+			
+		} catch (NumberFormatException e) {
+			
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("ERROR");
+			alert.setHeaderText("Error de formato");
+			alert.setContentText("El costo debe ser un valor numérico.");
+			alert.showAndWait();
+		}
+		
+	}
+
+	private void changeAllButtonTwo() {
+		
+		btnAddVerify = btnDeleteVerify = btnModifyVerify = true;
+		
+		changeStyle(btnAdd.getText());
+		changeStyle(btnDelete.getText());
+		changeStyle(btnModify.getText());
+	}
 
 	private void changeAllButton() {
+		
 		btnConfigVerify = btnSearchVerify = btnCostVerify = true;
 
 		changeStyle(btnConfig.getText());
@@ -230,6 +354,24 @@ public class ButterflyGUI {
 			if (btnCostVerify) {
 				btnCost.setStyle(style);
 				btnCost.setEffect(null);
+			}
+			break;
+		case "Agregar":
+			if (btnAddVerify) {
+				btnAdd.setStyle(style);
+				btnAdd.setEffect(null);
+			}
+			break;
+		case "Eliminar":
+			if (btnDeleteVerify) {
+				btnDelete.setStyle(style);
+				btnDelete.setEffect(null);
+			}
+			break;
+		case "Modificar":
+			if (btnModifyVerify) {
+				btnModify.setStyle(style);
+				btnModify.setEffect(null);
 			}
 			break;
 		default:
@@ -269,6 +411,24 @@ public class ButterflyGUI {
 			if (btnCostVerify) {
 				btnCost.setStyle(style);
 				btnCost.setEffect(dropShadow);
+			}
+			break;
+		case "Agregar":
+			if (btnAddVerify) {
+				btnAdd.setStyle(style);
+				btnAdd.setEffect(dropShadow);
+			}
+			break;
+		case "Eliminar":
+			if (btnDeleteVerify) {
+				btnDelete.setStyle(style);
+				btnDelete.setEffect(dropShadow);
+			}
+			break;
+		case "Modificar":
+			if (btnModifyVerify) {
+				btnModify.setStyle(style);
+				btnModify.setEffect(dropShadow);
 			}
 			break;
 		default:
@@ -495,7 +655,6 @@ public class ButterflyGUI {
 	}
 	
 	public void addLine(ImageView image, ImageView image2) {
-		
 		Line line = new Line(image.getLayoutX() + 35,image.getLayoutY() + 45,image2.getLayoutX() + 10,image2.getLayoutY()+40);
 		line.setStrokeWidth(3);
 		mainPane.getChildren().add(line);
