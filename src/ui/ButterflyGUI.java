@@ -314,12 +314,88 @@ public class ButterflyGUI {
 			btnModify.setStyle(styleString);
 			btnModify.setEffect(dropShadow);
 			btnModifyVerify = false;
+			
+			modifyFlight();
+			
 			break;
 		default:
 			break;
 		}
 	}
 	
+	private void modifyFlight() {
+		try {
+			Integer newInteger = Integer.parseInt(tfCost.getText());
+			
+			if (newInteger > 0) {
+				
+				if (cbOrigin.getValue() == null || cbDestination.getValue() == null) {
+					Alert alert = new Alert(AlertType.ERROR);
+					alert.setTitle("ERROR");
+					alert.setHeaderText("Error de vuelos");
+					alert.setContentText("Debe seleccionar los dos paises.");
+					alert.showAndWait();
+				}else {
+					if (!cbOrigin.getValue().equals(cbDestination.getValue())) {
+						
+						boolean verify = butterfly.searchFlight(cbOrigin.getValue(), cbDestination.getValue(), typeGraph);
+						
+						if (!verify) {
+							Alert alert = new Alert(AlertType.ERROR);
+							alert.setTitle("ERROR");
+							alert.setHeaderText("Error de vuelos");
+							alert.setContentText("Los países seleccionados no poseen un vuelo activo");
+							alert.showAndWait();
+							
+							cbOrigin.setValue(null);
+							cbDestination.setValue(null);
+							tfCost.setText("");
+							
+						}else {
+							
+							boolean deleted = butterfly.modify(cbOrigin.getValue(), cbDestination.getValue(), newInteger);
+							
+							if (deleted) {
+								Alert alert = new Alert(AlertType.INFORMATION);
+								alert.setTitle("Felicidades");
+								alert.setHeaderText("Vuelo modificado");
+								alert.setContentText("El vuelo entre los dos países fue modificado correctamente.");
+								alert.showAndWait();
+							}else {
+								Alert alert = new Alert(AlertType.ERROR);
+								alert.setTitle("ERROR");
+								alert.setHeaderText("Error de vuelos");
+								alert.setContentText("Ocurrió un error inesperado al intentar modificar el vuelo.");
+								alert.showAndWait();
+							}
+						}
+					}else {
+						Alert alert = new Alert(AlertType.ERROR);
+						alert.setTitle("ERROR");
+						alert.setHeaderText("Error de vuelos");
+						alert.setContentText("El vuelo no puede ir hacia el mismo país.");
+						alert.showAndWait();
+					}
+				}
+				
+			}else {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("ERROR");
+				alert.setHeaderText("Error de formato");
+				alert.setContentText("El costo debe ser un valor numérico positivo.");
+				alert.showAndWait();
+			}
+			
+		} catch (NumberFormatException e) {
+			
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("ERROR");
+			alert.setHeaderText("Error de formato");
+			alert.setContentText("El costo debe ser un valor numérico.");
+			alert.showAndWait();
+		}
+	}
+
 	private void deleteFlight() {
 		try {
 			Integer newInteger = Integer.parseInt(tfCost.getText());
@@ -356,7 +432,7 @@ public class ButterflyGUI {
 								Alert alert = new Alert(AlertType.INFORMATION);
 								addLines(cbOrigin.getValue(), cbDestination.getValue(), 1);
 								alert.setTitle("Felicidades");
-								alert.setHeaderText("Vuelo agregado");
+								alert.setHeaderText("Vuelo eliminado");
 								alert.setContentText("El vuelo entre los dos países fue eliminado correctamente.");
 								alert.showAndWait();
 							}else {
@@ -1033,7 +1109,6 @@ public class ButterflyGUI {
 			}
 		}
 		JOptionPane.showMessageDialog(null, out, "Costo", JOptionPane.WARNING_MESSAGE);
-
 	}
 
 }

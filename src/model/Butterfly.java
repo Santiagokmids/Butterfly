@@ -53,8 +53,8 @@ public class Butterfly {
 		return listGraph.addEdge(valueIni, valueEnd, weight);
 	}
 	
-	public boolean modifyEdgeMatrix(String valueIni, String valueEnd, int weight, int newWeight) {
-		return matrixGraph.modifyEdge(valueIni, valueEnd, weight, newWeight);
+	public boolean modifyEdgeMatrix(String valueIni, String valueEnd, int newWeight) {
+		return matrixGraph.modifyEdge(valueIni, valueEnd, newWeight);
 	}
 	
 	public boolean modifyEdgeList(String valueIni, String valueEnd, int newWeight) {
@@ -122,6 +122,26 @@ public class Butterfly {
 		return verify;
 	}
 	
+	public boolean searchFlight(String origin, String destination, boolean typeGraph) {
+		
+		Integer weightInteger = 0;
+		boolean verify = false;
+		
+		if (!typeGraph) {
+			if (listGraph.searchEdge(origin, destination) != null) {
+				weightInteger = listGraph.searchEdge(origin, destination);
+			}
+		}else {
+			if (matrixGraph.searchEdge(origin, destination) != null) {
+				weightInteger = matrixGraph.searchEdge(origin, destination);
+			}
+		}
+		if (!weightInteger.equals(0)) {
+			verify = true;
+		}
+		return verify;
+	}
+	
 	public boolean add(String origin, String destinatio, Integer weight) {
 		boolean verify = false;
 		verify = addEdgeMatrix(origin, destinatio, weight);
@@ -136,5 +156,11 @@ public class Butterfly {
 		verify = deleteEdgeInMatrix(origin, destinatio, weight);
 		return verify;
 	}
-	
+
+	public boolean modify(String origin, String destinatio, Integer weight) {
+		boolean verify = false;
+		verify = modifyEdgeList(origin, destinatio, weight);
+		verify = modifyEdgeMatrix(origin, destinatio, weight);
+		return verify;
+	}
 }

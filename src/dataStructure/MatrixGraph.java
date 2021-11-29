@@ -930,33 +930,32 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 	}
 
 	@Override
-	public boolean modifyEdge(V initial, V end, H weight, H newWeight) {
+	public boolean modifyEdge(V initial, V end, H newWeight) {
 
 		boolean verify = false;
 
 		for (int i = 0; i < edges.size() && !verify; i++) {
 			if (edges.get(i).getInitVertice().getValue().compareTo(initial) == 0
 					&& edges.get(i).getFinalVertice().getValue().compareTo(end) == 0
-					&& edges.get(i).getHeight().compareTo(weight) == 0 && (int)newWeight > 0) {
+					&& (int)newWeight > 0) {
 				verify = true;
 				edges.get(i).setHeight(newWeight);
-				modifyEdgeInVertice(initial, end, weight, newWeight);
-				modifyEdgeInMatrix(initial, end, weight, newWeight);
+				modifyEdgeInVertice(initial, end, newWeight);
+				modifyEdgeInMatrix(initial, end, newWeight);
 			}
 		}
 
 		return verify;
 	}
 
-	private void modifyEdgeInVertice(V initial, V end, H weight, H newWeight) {
+	private void modifyEdgeInVertice(V initial, V end, H newWeight) {
 
 		for (int i = 0; i < vertice.size(); i++) {
 			if (vertice.get(i).getValue().compareTo(initial) == 0) {
 
 				for (int j = 0; j < vertice.get(i).getEdge().size(); j++) {
 
-					if (vertice.get(i).getEdge().get(j).getFinalVertice().getValue().compareTo(end) == 0
-							&& weight.compareTo(vertice.get(i).getEdge().get(j).getHeight()) == 0) {
+					if (vertice.get(i).getEdge().get(j).getFinalVertice().getValue().compareTo(end) == 0) {
 						vertice.get(i).getEdge().get(j).setHeight(newWeight);
 					}
 				}
@@ -964,7 +963,7 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 		}
 	}
 
-	private void modifyEdgeInMatrix(V initial, V end, H weight, H newWeight) {
+	private void modifyEdgeInMatrix(V initial, V end, H newWeight) {
 
 		int indexA = -1, indexB = -1;
 
