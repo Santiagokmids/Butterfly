@@ -40,7 +40,7 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 			for (int i = 0; i < edges.size(); i++) {
 				addEdge(findPosition(edges.get(i).getInitVertice()), findPosition(edges.get(i).getFinalVertice()),
 						edges.get(i).getHeight());
-			}
+			}	
 		}
 	}
 
@@ -61,12 +61,8 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 	}
 
 	private void createMatrix(Vertice<V, U, H> current) {
-
-		if (first == null && !vertice.isEmpty()) {
-			first = vertice.get(0);
-		} else {
-			createMatrix(first, first, current, 0, 0);
-		}
+		first = current;
+		createMatrix(first, first, current, 0, 0);
 	}
 
 	private void createMatrix(Vertice<V, U, H> dynamicV, Vertice<V, U, H> dynamic, Vertice<V, U, H> current, int cont,
@@ -391,6 +387,7 @@ public class MatrixGraph<V extends Comparable<V>, U, H extends Comparable<H>> im
 
 	public int makeDijkstra(Vertice<V, U, H> start, Vertice<V, U, H> end) {
 		ArrayList<H> dijkstra = dijkstra(start);
+
 		int weight = -1;
 
 		for (int i = 0; i < vertice.size(); i++) {

@@ -567,7 +567,7 @@ public class ButterflyGUI {
 
 		searchCountryOrigin.getItems().addAll("Colombia", "Japón", "Estados Unidos", "España", "Nigeria", "Australia","Portugal",
 				"Rusia", "Dubái", "Madagascar");
-		searchCountryOrigin.getItems().addAll("Colombia", "Japón", "Estados Unidos", "España", "Nigeria", "Australia","Portugal",
+		searchCountryDestiny.getItems().addAll("Colombia", "Japón", "Estados Unidos", "España", "Nigeria", "Australia","Portugal",
 				"Rusia", "Dubái", "Madagascar");
 		stage.setScene(scene);
 		stage.showAndWait();
@@ -582,6 +582,7 @@ public class ButterflyGUI {
 		if (typeGraph) {
 			if (!typeGraph) {
 				ArrayList<ListVertice<String, String, Integer>> countries = butterfly.bfsInList(origin);
+				countries.remove(0);
 				for (int i = 0; i < countries.size(); i++) {
 					if (destiny.equalsIgnoreCase(countries.get(i).getValue())) {
 						country = destiny;
@@ -589,6 +590,7 @@ public class ButterflyGUI {
 				}
 			} else {
 				ArrayList<Vertice<String, String, Integer>> countries = butterfly.bfsInMatrix(origin);
+				countries.remove(0);
 				for (int i = 0; i < countries.size(); i++) {
 					if (destiny.equalsIgnoreCase(countries.get(i).getValue())) {
 						country = destiny;
@@ -1065,9 +1067,10 @@ public class ButterflyGUI {
 
 	@FXML
 	void buttonCostMini(ActionEvent event) {
-		String ini = countryFinalMin.getValue();
+		String ini = countryIniMin.getValue();
 		String fin = countryFinalMin.getValue();
 		String out = "";
+		
 		if (fin.equals("Todos")) {
 			if (!typeGraph) {
 				out = "Estos son los costos mínimos \n";
@@ -1080,7 +1083,6 @@ public class ButterflyGUI {
 					} else {
 						out += "No se puede viajar desde " + ini + " hasta " + list.get(i).getValue();
 					}
-
 				}
 
 			} else {
@@ -1101,10 +1103,10 @@ public class ButterflyGUI {
 		} else {
 			if (!typeGraph) {
 				out += "Este es el costo mínimo \n";
-				out+= butterfly.dijkstraInList(ini, fin);
+				out += butterfly.dijkstraInList(ini, fin);
 
 			} else {
-				out = "Este es el costo mínimo \n";
+				out += "Este es el costo mínimo \n";
 				out += butterfly.dijkstraInMatrix(ini, fin);
 			}
 		}
