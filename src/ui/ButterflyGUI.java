@@ -12,9 +12,12 @@ import dataStructure.Vertice;
 
 import java.awt.*;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -70,10 +73,10 @@ public class ButterflyGUI {
 	private Label lblCountry;
 
 	@FXML
-	private TableView<?> tvFlight;
+	private TableView<Vertice<String, String, Integer>> tvFlight;
 
 	@FXML
-	private TableColumn<?, ?> tcCountry;
+	private TableColumn<Vertice<String, String, Integer>, String> tcCountry;
 
 	@FXML
 	private ComboBox<String> searchCountryOrigin;
@@ -143,6 +146,8 @@ public class ButterflyGUI {
 
 	@FXML
 	private Label graphLabel;
+	
+	public ObservableList<Vertice<String, String, Integer>> vertice;
 
 	boolean typeGraph = false; // If is false = listGraph. If is true = matrixGraph
 	boolean btnConfigVerify = true;
@@ -672,9 +677,17 @@ public class ButterflyGUI {
 		default:
 			break;
 		}
-
+		inicializateTableView(lblCountry.getText());
+		
 		stage.setScene(scene);
 		stage.showAndWait();
+	}
+	
+	public void inicializateTableView(String lbl) {
+
+		vertice = FXCollections.observableArrayList(butterfly.dfsInMatrix("lbl"));
+		tvFlight.setItems(vertice);
+		tcCountry.setCellValueFactory(new PropertyValueFactory<Vertice<String, String, Integer>, String>("value"));
 	}
 
 	public void addLines(String initVertice, String finalVertice) {
@@ -768,11 +781,14 @@ public class ButterflyGUI {
 	}
 
 	public void loadMin() throws IOException {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("searchTrip2.fxml"));
+		
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("searchCost.fxml"));
 		loader.setController(this);
 		Parent root = loader.load();
+		
 		countryIniMin.getItems().addAll("Colombia", "Japón", "Estados Unidos", "España", "Nigeria", "Australia",
 				"Rusia", "Dubái", "Madagascar");
+		
 		countryIniMin.setValue("Colombia");
 		countryFinalMin.getItems().addAll("Colombia", "Japón", "Estados Unidos", "España", "Nigeria", "Australia",
 				"Rusia", "Dubái", "Madagascar", "Todos");

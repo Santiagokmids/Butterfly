@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ComboBox fx:id="countryIniMin" layoutX="301.0" layoutY="117.0" prefHeight="28.0" prefWidth="174.0" promptText="Seleccionar " style="-fx-background-color: LIGHTSEAGREEN;" />
+      <ComboBox fx:id="countryFinalMin" layoutX="301.0" layoutY="172.0" prefHeight="28.0" prefWidth="174.0" promptText="Seleccionar" style="-fx-background-color: LIGHTSEAGREEN;" />
+      <Button layoutX="183.0" layoutY="258.0" mnemonicParsing="false" onAction="#buttonCostMini" style="-fx-background-color: LIGHTSEAGREEN;" text="Buscar Costo minimo" textOverrun="LEADING_ELLIPSIS">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="20.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="OPEN_HAND" />
+         </cursor>
+         <effect>
+            <DropShadow />
+         </effect></Button>
+      <Label layoutX="105.0" layoutY="172.0" text="Pais de destino:">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="116.0" layoutY="117.0" text="Pais de origen:">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <Pane layoutX="-4.0" prefHeight="49.0" prefWidth="606.0" style="-fx-background-color: LIGHTSEAGREEN;">
+         <children>
+            <Label alignment="CENTER" layoutX="41.0" layoutY="8.0" prefHeight="34.0" prefWidth="526.0" text="Buscar Costo Mínimo" textFill="WHITE">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="29.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
