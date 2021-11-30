@@ -15,6 +15,9 @@ public class Butterfly {
 	public Butterfly() {
 		matrixGraph = new MatrixGraph<>();
 		listGraph = new ListGraph<>();
+	}
+	
+	public void createGraphs() {
 		addVerticeInList();
 		addVerticeInMatrix();
 	}

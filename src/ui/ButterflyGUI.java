@@ -193,6 +193,7 @@ public class ButterflyGUI {
 
 	public ButterflyGUI(Butterfly butterfly) {
 		this.butterfly = butterfly;
+		butterfly.createGraphs();
 	}
 
 	@FXML
